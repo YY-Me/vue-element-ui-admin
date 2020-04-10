@@ -46,6 +46,7 @@
 </template>
 <script>
   export default {
+    name: 'system-user',
     data() {
       return {
         form: {

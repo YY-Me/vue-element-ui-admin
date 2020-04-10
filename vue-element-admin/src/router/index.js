@@ -78,15 +78,38 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/form',
+    path: '/system-user',
+    name: 'system-user',
     component: Layout,
-    redirect: '/form',
+    redirect: '/system-user',
+    meta: { icon: 'system-user', title: '系统用户' },
     children: [
       {
-        path: 'form',
-        component: () => import('@/views/form/index'),
-        name: 'form',
-        meta: { title: '表单', icon: 'dashboard' }
+        path: 'user',
+        component: () => import('@/views/system/user/index'),
+        name: 'system-user',
+        meta: { title: '系统用户', icon: 'system-user' }
+      }
+    ]
+  },
+  {
+    path: '/system-permission',
+    name: 'system-permission',
+    component: Layout,
+    redirect: '/system-role',
+    meta: { icon: 'system-permission', title: '权限管理' },
+    children: [
+      {
+        path: 'role',
+        component: () => import('@/views/system/role/index'),
+        name: 'system-role',
+        meta: { title: '角色管理', icon: 'system-role' }
+      },
+      {
+        path: 'menu',
+        component: () => import('@/views/system/menu/index'),
+        name: 'system-menu',
+        meta: { title: '系统菜单', icon: 'system-menu' }
       }
     ]
   }
