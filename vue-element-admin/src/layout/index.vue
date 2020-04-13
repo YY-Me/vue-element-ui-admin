@@ -8,9 +8,9 @@
         <tags-view v-if="needTagsView" />
       </div>
       <app-main />
-      <right-panel v-if="showSettings">
+      <!--<right-panel v-if="showSettings">
         <settings />
-      </right-panel>
+      </right-panel>-->
     </div>
   </div>
 </template>
@@ -57,6 +57,15 @@ export default {
 }
 </script>
 
+<style lang="scss">
+  .el-card {
+    .el-card__header {
+      .el-form-item {
+        margin-bottom: 0;
+      }
+    }
+  }
+</style>
 <style lang="scss" scoped>
   @import "~@/styles/mixin.scss";
   @import "~@/styles/variables.scss";

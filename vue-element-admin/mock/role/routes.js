@@ -33,19 +33,6 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: '',
-    component: 'layout/Layout',
-    redirect: 'dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: 'views/dashboard/index',
-        name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
-      }
-    ]
-  },
-  {
     path: '/documentation',
     component: 'layout/Layout',
     children: [
@@ -54,19 +41,6 @@ export const constantRoutes = [
         component: 'views/documentation/index',
         name: 'Documentation',
         meta: { title: 'Documentation', icon: 'documentation', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/guide',
-    component: 'layout/Layout',
-    redirect: '/guide/index',
-    children: [
-      {
-        path: 'index',
-        component: 'views/guide/index',
-        name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
       }
     ]
   }

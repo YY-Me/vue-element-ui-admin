@@ -1,9 +1,13 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
-               @toggleClick="toggleSideBar"/>
+    <hamburger
+      id="hamburger-container"
+      :is-active="sidebar.opened"
+      class="hamburger-container"
+      @toggleClick="toggleSideBar"
+    />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container"/>
+    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
@@ -16,59 +20,77 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
-          <el-avatar size="small" :src="avatar + '?imageView2/1/w/80/h/80'"/>
-          <span class="login-user">管理员<i class="el-icon-caret-bottom"/></span>
+          <el-avatar size="small" :src="avatar + '?imageView2/1/w/80/h/80'" />
+          <span class="login-user">管理员<i class="el-icon-caret-bottom" /></span>
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item @click.native="logout">
-            <span style="display:block;"><svg-icon style="margin-right: 4px;" icon-class="log-out"/>退出登录</span>
+            <span style="display:block;"><svg-icon style="margin-right: 4px;" icon-class="log-out" />退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+      <el-tooltip content="Global Size" effect="dark" placement="bottom">
+        <size-select id="size-select" class="right-menu-item hover-effect" />
+      </el-tooltip>
+      <span class="right-menu-item hover-effect" style="margin-right: 15px;" @click.stop="showPanel">
+        <svg-icon icon-class="more" />
+      </span>
 
     </div>
+    <right-panel ref="rightPanel">
+      <settings />
+    </right-panel>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import Breadcrumb from '@/components/Breadcrumb'
-  import Hamburger from '@/components/Hamburger'
-  import { addClass } from '@/utils'
+import { mapGetters } from 'vuex'
+import RightPanel from '@/components/RightPanel'
+import Breadcrumb from '@/components/Breadcrumb'
+import Hamburger from '@/components/Hamburger'
+import SizeSelect from '@/components/SizeSelect'
+import Settings from './Settings'
 
-  export default {
-    components: {
-      Breadcrumb,
-      Hamburger
+export default {
+  components: {
+    Breadcrumb,
+    Hamburger,
+    RightPanel,
+    SizeSelect,
+    Settings
+  },
+  computed: {
+    ...mapGetters([
+      'sidebar',
+      'avatar',
+      'device'
+    ])
+  },
+  methods: {
+    toggleSideBar() {
+      this.$store.dispatch('app/toggleSideBar')
     },
-    computed: {
-      ...mapGetters([
-        'sidebar',
-        'avatar',
-        'device'
-      ])
+    async logout() {
+      const that = this
+      this.$confirm('是否退出登录？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async function() {
+        await that.$store.dispatch('user/logout')
+        that.$router.push(`/login?redirect=${that.$route.fullPath}`)
+      }).catch(() => {
+      })
     },
-    methods: {
-      toggleSideBar() {
-        this.$store.dispatch('app/toggleSideBar')
-      },
-      async logout() {
-        this.$confirm('是否退出登录？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$store.dispatch('user/logout')
-          this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-        }).catch(() => {
-        })
-      },
-      show() {
-        console.log("ss")
-        addClass(document.body, 'showRightPanel')
+    showPanel() {
+      try {
+        this.$refs.rightPanel.showRightPanel()
+      } catch (e) {
+        console.log(e)
       }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -129,7 +151,6 @@
       }
 
       .avatar-container {
-        margin-right: 15px;
 
         .avatar-wrapper {
           margin-top: 8px;
