@@ -18,45 +18,29 @@
     </div>
     <div>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column
-          type="selection"
-          width="50"
-        />
-        <el-table-column
-          prop="name"
-          label="用户名"
-          min-width="120"
-        />
-        <el-table-column
-          prop="province"
-          label="昵称"
-          min-width="120"
-        />
-        <el-table-column
-          prop="city"
-          label="电话"
-          min-width="120"
-        />
-        <el-table-column
-          prop="address"
-          label="角色"
-          min-width="200"
-        />
-        <el-table-column
-          prop="zip"
-          label="状态"
-          min-width="120"
-        />
-        <el-table-column
-          prop="date"
-          label="更新时间"
-          min-width="150"
-        />
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="100"
-        >
+        <el-table-column type="selection" width="50" />
+        <el-table-column prop="userName" label="用户名" min-width="120" />
+        <el-table-column prop="nickName" label="昵称" min-width="120" />
+        <el-table-column prop="phone" label="电话" min-width="120" />
+        <el-table-column label="角色" min-width="200">
+          <template slot-scope="scope">
+            <el-tag v-for="r in scope.row.role" size="mini">{{ r }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="状态" min-width="120">
+          <template slot-scope="scope">
+            <el-tooltip :content="scope.row.isEnable?'已启用':'已禁用'" placement="top">
+              <el-switch
+                v-model="scope.row.isEnable"
+                :active-value="true"
+                :inactive-value="false"
+                @change="switchChange(scope.row)"
+              />
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column prop="updateTime" label="更新时间" min-width="150" />
+        <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="handleClick(scope.row)">查看</el-button>
             <el-button type="text" size="small">编辑</el-button>
@@ -90,12 +74,13 @@ export default {
         pageSize: 10
       },
       tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
+        userName: '王小虎',
+        nickName: '王小虎',
+        phone: '70983928',
+        role: ['超级管理员'],
+        isEnable: true,
+        createTime: '2016-05-02',
+        updateTime: '2016-05-02'
       }]
     }
   },
@@ -109,6 +94,9 @@ export default {
       console.log('submit!')
     },
     getList() {
+
+    },
+    switchChange(row) {
 
     }
   }
