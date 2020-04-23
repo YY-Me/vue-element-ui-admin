@@ -3,12 +3,12 @@
     <div slot="header">
       <el-form size="small" :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="用户名:">
-          <el-input v-model="formInline.user" placeholder="审批人" clearable />
+          <el-input v-model="formInline.user" placeholder="用户名/电话" clearable />
         </el-form-item>
         <el-form-item label="状态:">
-          <el-select v-model="formInline.region" placeholder="活动区域" clearable>
-            <el-option label="启用" value="shanghai" />
-            <el-option label="已禁用" value="beijing" />
+          <el-select v-model="formInline.region" placeholder="用户状态" clearable>
+            <el-option label="启用" :value="true" />
+            <el-option label="已禁用" :value="false" />
           </el-select>
         </el-form-item>
         <el-form-item>
