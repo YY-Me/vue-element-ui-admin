@@ -84,10 +84,9 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/system-user',
-    name: 'system-user',
+    path: '/system',
     component: Layout,
-    redirect: '/system-user',
+    redirect: '/system',
     meta: { icon: 'system-user', title: '系统用户' },
     children: [
       {
@@ -95,27 +94,6 @@ export const constantRoutes = [
         component: () => import('@/views/system/user/index'),
         name: 'system-user',
         meta: { title: '系统用户', icon: 'system-user' }
-      }
-    ]
-  },
-  {
-    path: '/system-permission',
-    name: 'system-permission',
-    component: Layout,
-    redirect: '/system-role',
-    meta: { icon: 'system-permission', title: '权限管理' },
-    children: [
-      {
-        path: 'role',
-        component: () => import('@/views/system/role/index'),
-        name: 'system-role',
-        meta: { title: '角色管理', icon: 'system-role' }
-      },
-      {
-        path: 'menu',
-        component: () => import('@/views/system/menu/index'),
-        name: 'system-menu',
-        meta: { title: '系统菜单', icon: 'system-menu' }
       }
     ]
   }
@@ -126,48 +104,6 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  {
-    path: '/permission',
-    component: Layout,
-    redirect: '/permission/page',
-    alwaysShow: true, // will always show the root menu
-    name: 'Permission',
-    meta: {
-      title: 'Permission',
-      icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
-    children: [
-      {
-        path: 'page',
-        component: () => import('@/views/permission/page'),
-        name: 'PagePermission',
-        meta: {
-          title: 'Page Permission',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'Directive Permission'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
-        path: 'role',
-        component: () => import('@/views/permission/role'),
-        name: 'RolePermission',
-        meta: {
-          title: 'Role Permission',
-          roles: ['admin']
-        }
-      }
-    ]
-  },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

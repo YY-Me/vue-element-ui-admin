@@ -3,7 +3,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 const state = {
-  token: getToken(),
+  access_token: getToken(),
   name: '',
   avatar: '',
   introduction: '',
@@ -12,7 +12,7 @@ const state = {
 
 const mutations = {
   SET_TOKEN: (state, token) => {
-    state.token = token
+    state.access_token = token
   },
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
@@ -35,8 +35,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        console.log(data)
+        commit('SET_TOKEN', data.access_token)
+        setToken(data.access_token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -47,24 +48,12 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getInfo().then(response => {
         const { data } = response
-
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
-
         const { roles, name, avatar, introduction } = data
-
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
-        }
-
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -75,7 +64,7 @@ const actions = {
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      logout(state.access_token).then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
         removeToken()
