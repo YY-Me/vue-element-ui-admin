@@ -87,12 +87,6 @@ export default {
     },
     data: function(val) {
       this.tempData = val
-      this.tempData.role = []
-      if (this.tempData.roles) {
-        this.tempData.roles.forEach(item => {
-          this.tempData.role.push(item.id)
-        })
-      }
     }
   },
   mounted() {
@@ -100,6 +94,7 @@ export default {
   },
   methods: {
     close() {
+      this.$refs['formName'].clearValidate()
       this.$emit('close')
     },
     initRoles() {
@@ -153,7 +148,7 @@ export default {
   .add-edit {
     .el-dialog {
       .el-dialog__body {
-        padding: 10px 20px !important;
+        padding: 10px 20px 0 20px !important;
       }
     }
   }
