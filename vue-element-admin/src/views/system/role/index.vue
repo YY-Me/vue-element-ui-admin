@@ -46,7 +46,7 @@
 </template>
 <script>
   export default {
-    name: 'system-role',
+    name: 'systemRole',
     data() {
       return {
         form: {

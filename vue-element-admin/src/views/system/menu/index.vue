@@ -46,7 +46,7 @@
 </template>
 <script>
   export default {
-    name: 'system-menu',
+    name: 'systemMenu',
     data() {
       return {
         form: {
