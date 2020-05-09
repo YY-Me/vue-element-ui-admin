@@ -101,19 +101,33 @@ export const constantRoutes = [
     path: '/permission',
     component: Layout,
     redirect: '/role',
-    meta: { icon: 'system-user', title: '权限中心' },
+    meta: { icon: 'permission', title: '权限中心' },
     children: [
       {
         path: 'role',
         component: () => import('@/views/system/role/index'),
         name: 'systemRole',
-        meta: { title: '角色管理', icon: 'system-user' }
+        meta: { title: '角色管理', icon: 'role' }
       },
       {
         path: 'menu',
         component: () => import('@/views/system/menu/index'),
         name: 'systemMenu',
-        meta: { title: '菜单管理', icon: 'system-user' }
+        meta: { title: '菜单管理', icon: 'menu' }
+      }
+    ]
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/tenant',
+    meta: { icon: 'tenant', title: '租户管理' },
+    children: [
+      {
+        path: 'tenant',
+        component: () => import('@/views/tenant/index'),
+        name: 'tenant',
+        meta: { title: '租户管理', icon: 'tenant' }
       }
     ]
   }

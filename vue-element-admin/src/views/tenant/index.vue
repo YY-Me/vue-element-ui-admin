@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="always">
-    <div slot="header" ref="sysUserSearchHeader">
-      <el-form :inline="true" :model="listQuery">
+    <div slot="header" ref="sysUserSearchHeader" class="sysUserSearchHeader">
+      <el-form :inline="true" :model="listQuery" class="demo-form-inline">
         <el-form-item label="用户名:">
           <el-input style="width: 160px" v-model="listQuery.namePhone" placeholder="用户名/电话" clearable/>
         </el-form-item>
@@ -24,10 +24,10 @@
       <el-table ref="tableCot" v-loading="loading" element-loading-text="请稍后..." :data="tableData" border
                 style="width: 100%" :max-height="customTableHeight">
         <el-table-column type="selection" width="40"/>
-        <el-table-column prop="userName" label="用户名" min-width="100" show-overflow-tooltip/>
-        <el-table-column prop="nickName" label="昵称" min-width="100" show-overflow-tooltip/>
-        <el-table-column prop="phone" label="电话" min-width="100" show-overflow-tooltip/>
-        <el-table-column label="角色" min-width="150" show-overflow-tooltip>
+        <el-table-column prop="userName" label="用户名" min-width="120" show-overflow-tooltip/>
+        <el-table-column prop="nickName" label="昵称" min-width="120" show-overflow-tooltip/>
+        <el-table-column prop="phone" label="电话" min-width="120" show-overflow-tooltip/>
+        <el-table-column label="角色" min-width="200" show-overflow-tooltip>
           <template slot-scope="scope">
             <el-tag v-for="r in scope.row.roles" size="mini">{{ r.name }}</el-tag>
           </template>
@@ -44,8 +44,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="createUserName" label="创建人" min-width="100" show-overflow-tooltip/>
-        <el-table-column prop="updateTime" label="最近更新时间" min-width="120"/>
+        <el-table-column prop="updateTime" label="更新时间" min-width="150"/>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-tag style="cursor:pointer;" size="mini" @click="addEdit(scope.row)">编辑</el-tag>
@@ -67,7 +66,7 @@
 </template>
 <script>
   import Pagination from '@/components/Pagination'
-  import addEdit from '@/views/system/user/addEdit'
+  import addEdit from '@/views/tenant/addEdit'
   import systemUserApi from '@/api/system/user'
 
   export default {
