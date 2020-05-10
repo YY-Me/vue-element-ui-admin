@@ -118,7 +118,7 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/',
+    path: '/tenant',
     component: Layout,
     redirect: '/tenant',
     meta: { icon: 'tenant', title: '租户管理' },
