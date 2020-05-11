@@ -15,7 +15,7 @@
           <el-button type="primary" icon="el-icon-search" @click="search">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-circle-plus" @click="addEdit(null)">增加</el-button>
+          <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addEdit(null)">增加</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -46,10 +46,12 @@
         </el-table-column>
         <el-table-column prop="createUserName" label="创建人" min-width="100" show-overflow-tooltip/>
         <el-table-column prop="updateTime" label="最近更新时间" min-width="120"/>
-        <el-table-column fixed="right" label="操作" width="100">
+        <el-table-column fixed="right" label="操作" width="126">
           <template slot-scope="scope">
-            <el-tag style="cursor:pointer;" size="mini" @click="addEdit(scope.row)">编辑</el-tag>
-            <el-tag style="cursor:pointer;" size="mini" type="danger" @click="remove(scope.row)">删除</el-tag>
+            <el-tag style="cursor:pointer;" size="mini" @click="addEdit(scope.row)"><i class="el-icon-edit"/>编辑</el-tag>
+            <el-tag style="cursor:pointer;" size="mini" type="danger" @click="remove(scope.row)"><i
+              class="el-icon-delete"/>删除
+            </el-tag>
           </template>
         </el-table-column>
       </el-table>
@@ -58,7 +60,6 @@
       <!--添加/编辑-->
       <add-edit
         :dialog-visible="addEditVisible"
-        :operation-type="operationType"
         :data="addEditData"
         @close="closeDialog"
       />
@@ -77,7 +78,6 @@
       return {
         loading: false,
         addEditVisible: false,
-        operationType: 1,
         customTableHeight: 200,
         formInline: {
           user: '',
@@ -152,7 +152,6 @@
         })
       },
       addEdit(row) {
-        this.operationType = row ? 2 : 1
         if (row) {
           row.role = []
           if (row.roles) {
@@ -179,8 +178,8 @@
       },
       closeDialog() {
         this.addEditVisible = false
-        this.operationType = 1
         this.addEditData = {
+          id: null,
           userName: '',
           nickName: '',
           phone: '',

@@ -189,3 +189,24 @@ aside {
 .multiselect--active {
   z-index: 1000 !important;
 }
+
+//simple-dialog
+.simple-dialog {
+  .el-dialog {
+    .el-dialog__body {
+      padding: 10px 20px !important;
+    }
+    .el-dialog__footer{
+      padding: 10px 20px !important;
+    }
+  }
+}
+//ztree
+.ztree1{
+  >li{
+    display: block;
+    float: left;
+    width: 50%;
+    overflow-x: auto;
+  }
+}
