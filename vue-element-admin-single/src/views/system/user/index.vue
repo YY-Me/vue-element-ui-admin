@@ -1,6 +1,6 @@
 <template>
   <el-card shadow="always">
-    <div slot="header" ref="sysUserSearchHeader">
+    <div slot="header" ref="topHeader">
       <el-form :inline="true" :model="listQuery">
         <el-form-item label="用户名:">
           <el-input style="width: 160px" v-model="listQuery.namePhone" placeholder="用户名/电话" clearable/>
@@ -103,8 +103,9 @@
       this.getList()
       let that = this
       window.onresize = () => {
-        let tempHeaderHeight = this.$refs.sysUserSearchHeader.offsetHeight + 37
-        let tempHeight = document.body.clientHeight - (210 + tempHeaderHeight)
+        //37是box的header的padding，70=(60+10)是顶部的高度
+        let tempHeaderHeight = this.$refs.topHeader.offsetHeight + 37 + 70
+        let tempHeight = document.body.clientHeight - (106 + tempHeaderHeight)
         if (tempHeight < 300) {
           tempHeight = 300
         }

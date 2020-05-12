@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-editor-container">
+    <div class="copyright">Copyright © 2020 纯真年代 | 1396513066@qq.com</div>
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row :gutter="32">

@@ -211,7 +211,7 @@
     mounted() {
       let that = this
       window.onresize = () => {
-        let tempHeight = document.body.clientHeight - (160)
+        let tempHeight = document.body.clientHeight - (122)
         if (tempHeight < 300) {
           tempHeight = 300
         }

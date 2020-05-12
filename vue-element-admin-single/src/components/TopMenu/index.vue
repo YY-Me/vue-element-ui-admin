@@ -1,47 +1,73 @@
 <template>
-  <el-tabs class="top-menu" v-model="activeName" @tab-click="handleClick">
-    <el-tab-pane>
-      <span slot="label"><i class="el-icon-date"></i> 我的行程</span>
-      我的行程
-    </el-tab-pane>
-    <el-tab-pane label="用户管理">用户管理</el-tab-pane>
-    <el-tab-pane label="配置管理">配置管理</el-tab-pane>
-    <el-tab-pane label="角色管理">角色管理</el-tab-pane>
-    <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
-  </el-tabs>
+  <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+    <top-menu-item v-if="!route.hidden" v-for="route in permission_routes_test" :item="route" :path="route.path"/>
+  </el-menu>
 </template>
 
 <script>
+  import topMenuItem from './topMenuItem'
+
   export default {
     name: 'topMenu',
+    components: { topMenuItem },
     data() {
       return {
-        activeName: 'second'
+        activeIndex: '1',
+        permission_routes_test: [{
+          id: 1,
+          pId: 0,
+          title: '业务系统',
+          path: '/',
+          icon: 'biz',
+          children: []
+        }, {
+          id: 2,
+          pId: 0,
+          title: '用户中心',
+          path: '/system',
+          icon: 'system-user',
+          children: [{
+            id: 21,
+            pId: 2,
+            title: '用户管理',
+            path: 'user',
+            icon: 'user-manage-all',
+            children: []
+          }]
+        }, {
+          id: 3,
+          pId: 0,
+          title: '系统配置',
+          path: '/permission',
+          icon: 'system-config',
+          children: [{
+            id: 31,
+            pId: 3,
+            title: '角色管理',
+            path: 'role',
+            icon: 'role',
+            children: []
+          }, {
+            id: 32,
+            pId: 3,
+            title: '菜单管理',
+            path: 'menu',
+            icon: 'menu',
+            children: []
+          }]
+        }]
       }
     },
+    mounted() {
+      console.log(this.permission_routes_test)
+    },
     methods: {
-      handleClick(tab, event) {
-        console.log(tab, event)
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath)
       }
     }
   }
 </script>
 
-<style lang="scss">
-  .top-menu {
-    .el-tabs__header {
-      margin-bottom: 0 !important;
-
-      .el-tabs__item {
-        font-size: 16px !important;
-        height: 60px !important;
-        line-height: 60px !important;
-      }
-    }
-
-    .el-tabs__content {
-      height: 0 !important;
-      overflow: hidden;
-    }
-  }
+<style lang="scss" scoped>
 </style>

@@ -9,18 +9,18 @@
       </div>
 
       <div class="drawer-item">
-        <span>打开标签-查看</span>
-        <el-switch v-model="tagsView" class="drawer-switch" />
+        <span>LOGO显示</span>
+        <el-switch v-model="sidebarLogo" class="drawer-switch" />
+      </div>
+
+      <div class="drawer-item">
+        <span>导航栏显示</span>
+        <el-switch disabled v-model="tagsView" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
         <span>固定头</span>
-        <el-switch v-model="fixedHeader" class="drawer-switch" />
-      </div>
-
-      <div class="drawer-item">
-        <span>侧边栏徽标</span>
-        <el-switch v-model="sidebarLogo" class="drawer-switch" />
+        <el-switch disabled v-model="fixedHeader" class="drawer-switch" />
       </div>
 
     </div>

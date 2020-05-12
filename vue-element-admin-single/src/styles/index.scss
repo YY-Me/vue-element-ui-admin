@@ -196,17 +196,24 @@ aside {
     .el-dialog__body {
       padding: 10px 20px !important;
     }
-    .el-dialog__footer{
+
+    .el-dialog__footer {
       padding: 10px 20px !important;
     }
   }
 }
+
 //ztree
-.ztree1{
-  >li{
+.ztree1 {
+  > li {
     display: block;
     float: left;
     width: 50%;
     overflow-x: auto;
   }
+}
+
+//
+.bold {
+  font-weight: bold;
 }

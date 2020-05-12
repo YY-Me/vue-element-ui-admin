@@ -8,12 +8,14 @@ module.exports = {
   showSettings: true,
 
   /**
+   * 由于此系统的布局，不要将tagsView打开
    * @type {boolean} true | false
    * @description Whether need tagsView
    */
-  tagsView: true,
+  tagsView: false,
 
   /**
+   * 由于此系统的布局，不要将fixedHeader关闭
    * @type {boolean} true | false
    * @description Whether fix the header
    */
