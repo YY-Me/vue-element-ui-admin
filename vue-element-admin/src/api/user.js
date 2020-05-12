@@ -21,3 +21,10 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function resetPass(pass) {
+  return request({
+    url: `/user/rePass/${pass}`,
+    method: 'put'
+  })
+}

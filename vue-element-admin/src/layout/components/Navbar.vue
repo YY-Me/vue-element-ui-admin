@@ -24,8 +24,17 @@
           <span class="login-user">管理员<i class="el-icon-caret-bottom" /></span>
         </div>
         <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="rePassVisible=true">
+            <span style="display:block;"><svg-icon
+              style="margin-right: 4px;"
+              icon-class="repassword"
+            />密码修改</span>
+          </el-dropdown-item>
           <el-dropdown-item @click.native="logout">
-            <span style="display:block;"><svg-icon style="margin-right: 4px;" icon-class="log-out" />退出登录</span>
+            <span style="display:block;"><svg-icon
+              style="margin-right: 4px;"
+              icon-class="log-out"
+            />退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -35,8 +44,12 @@
       <span class="right-menu-item hover-effect" style="margin-right: 15px;" @click.stop="showPanel">
         <svg-icon icon-class="more" />
       </span>
-
     </div>
+    <!--密碼修改-->
+    <re-password
+      :dialog-visible="rePassVisible"
+      @close="closeDialog"
+    />
     <right-panel ref="rightPanel">
       <settings />
     </right-panel>
@@ -50,6 +63,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import SizeSelect from '@/components/SizeSelect'
 import Settings from './Settings'
+import rePassword from '@/components/RePassword/index'
 
 export default {
   components: {
@@ -57,7 +71,14 @@ export default {
     Hamburger,
     RightPanel,
     SizeSelect,
-    Settings
+    Settings,
+    rePassword
+  },
+  data() {
+    return {
+      username: '管理员',
+      rePassVisible: false
+    }
   },
   computed: {
     ...mapGetters([
@@ -88,6 +109,9 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    closeDialog() {
+      this.rePassVisible = false
     }
   }
 }
