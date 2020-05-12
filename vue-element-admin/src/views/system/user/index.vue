@@ -72,7 +72,7 @@
   import systemUserApi from '@/api/system/user'
 
   export default {
-    name: 'SystemUser',
+    name: 'systemUser',
     components: { Pagination, addEdit },
     data() {
       return {

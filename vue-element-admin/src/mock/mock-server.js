@@ -19,9 +19,80 @@ const userInfo = {
   status: 200,
   message: 'ok',
   data: {
-    name: 'admin',
+    userName: 'admin',
+    nickName: 'admin',
     avatar: 'https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1246207470,1516116328&fm=111&gp=0.jpg',
-    roles: ['admin']
+    roles: ['aaa'],
+    permission: [],
+    menu: [{
+      id: 1,
+      pId: -1,
+      title: '首页',
+      path: '/',
+      icon: 'dashboard',
+      children: [{
+        id: 11,
+        pId: 1,
+        title: '首页',
+        name: 'dashboard',
+        path: 'dashboard',
+        icon: 'dashboard',
+        children: []
+      }]
+    }, {
+      id: 2,
+      pId: -1,
+      title: '系统用户',
+      path: '/system',
+      icon: 'system-user',
+      children: [{
+        id: 21,
+        pId: 2,
+        title: '用户管理',
+        name: 'systemUser',
+        path: 'user',
+        icon: 'system-user',
+        children: []
+      }]
+    }, {
+      id: 3,
+      pId: -1,
+      title: '权限中心',
+      path: '/permission',
+      icon: 'permission',
+      children: [{
+        id: 31,
+        pId: 3,
+        title: '角色管理',
+        name: 'systemRole',
+        path: 'role',
+        icon: 'role',
+        children: []
+      }, {
+        id: 32,
+        pId: 3,
+        title: '菜单管理',
+        name: 'systemMenu',
+        path: 'menu',
+        icon: 'menu',
+        children: []
+      }]
+    }, {
+      id: 4,
+      pId: -1,
+      title: '租户管理',
+      path: '/tenant',
+      icon: 'tenant',
+      children: [{
+        id: 41,
+        pId: 4,
+        title: '租户管理',
+        name: 'tenant',
+        path: 'tenant',
+        icon: 'tenant',
+        children: []
+      }]
+    }]
   }
 }
 const systemUserList = {

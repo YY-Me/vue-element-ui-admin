@@ -84,10 +84,11 @@
   import Pagination from '@/components/Pagination'
   import addEdit from '@/views/tenant/addEdit'
   import tenantUserApi from '@/api/tenant/user'
-
+  import permission from '@/directive/permission/index.js'
   export default {
-    name: 'SystemUser',
+    name: 'tenant',
     components: { Pagination, addEdit },
+    directives: { permission },
     data() {
       return {
         loading: false,

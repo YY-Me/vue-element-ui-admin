@@ -4,9 +4,11 @@ import router, { resetRouter } from '@/router'
 
 const state = {
   access_token: getToken(),
-  name: '',
+  userName: '',
+  nickName: '',
   avatar: '',
-  introduction: '',
+  menu: [],
+  permission: [],
   roles: []
 }
 
@@ -14,22 +16,28 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.access_token = token
   },
-  SET_INTRODUCTION: (state, introduction) => {
-    state.introduction = introduction
-  },
   SET_NAME: (state, name) => {
-    state.name = name
+    state.userName = name
+  },
+  SET_NICK_NAME: (state, name) => {
+    state.nickName = name
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_MENU: (state, menu) => {
+    state.menu = menu
+  },
+  SET_PERMISSION: (state, permission) => {
+    state.permission = permission
   }
 }
 
 const actions = {
-  // user login
+  // 用户登录
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
@@ -45,15 +53,18 @@ const actions = {
     })
   },
 
-  // get user info
+  // 获取登录用户基本信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
         const { data } = response
-        const { roles, name, avatar, introduction } = data
+        const { userName, nickName, avatar, roles, menu, permission } = data
         commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
+        commit('SET_NAME', userName)
         commit('SET_AVATAR', avatar)
+        commit('SET_NICK_NAME', nickName)
+        commit('SET_MENU', menu)
+        commit('SET_PERMISSION', permission)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -61,19 +72,19 @@ const actions = {
     })
   },
 
-  // user logout
+  // 退出登录
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       logout(state.access_token).then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
+        commit('SET_MENU', [])
+        commit('SET_PERMISSION', [])
         removeToken()
         resetRouter()
-
-        // reset visited views and cached views
+        // 重置访问的视图和缓存的视图
         // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
         dispatch('tagsView/delAllViews', null, { root: true })
-
         resolve()
       }).catch(error => {
         reject(error)
@@ -81,7 +92,7 @@ const actions = {
     })
   },
 
-  // remove token
+  // 移除token，退出登录需要
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
@@ -91,7 +102,7 @@ const actions = {
     })
   },
 
-  // dynamically modify permissions
+  // 模板自带动态修改权限，暂时未用到
   changeRoles({ commit, dispatch }, role) {
     return new Promise(async resolve => {
       const token = role + '-token'

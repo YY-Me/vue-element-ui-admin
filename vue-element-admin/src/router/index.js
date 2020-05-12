@@ -68,68 +68,6 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
-  },
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    meta: { icon: 'dashboard', title: '首页' },
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'dashboard',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/system',
-    component: Layout,
-    redirect: '/user',
-    meta: { icon: 'system-user', title: '系统用户' },
-    children: [
-      {
-        path: 'user',
-        component: () => import('@/views/system/user/index'),
-        name: 'SystemUser',
-        meta: { title: '系统用户', icon: 'system-user' }
-      }
-    ]
-  },
-  {
-    path: '/permission',
-    component: Layout,
-    redirect: '/role',
-    meta: { icon: 'permission', title: '权限中心' },
-    children: [
-      {
-        path: 'role',
-        component: () => import('@/views/system/role/index'),
-        name: 'systemRole',
-        meta: { title: '角色管理', icon: 'role' }
-      },
-      {
-        path: 'menu',
-        component: () => import('@/views/system/menu/index'),
-        name: 'systemMenu',
-        meta: { title: '菜单管理', icon: 'menu' }
-      }
-    ]
-  },
-  {
-    path: '/tenant',
-    component: Layout,
-    redirect: '/tenant',
-    meta: { icon: 'tenant', title: '租户管理' },
-    children: [
-      {
-        path: 'tenant',
-        component: () => import('@/views/tenant/index'),
-        name: 'tenant',
-        meta: { title: '租户管理', icon: 'tenant' }
-      }
-    ]
   }
 ]
 

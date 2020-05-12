@@ -99,7 +99,7 @@ export default {
     }
   },
   mounted() {
-    this.initRoles()
+
   },
   methods: {
     close() {
