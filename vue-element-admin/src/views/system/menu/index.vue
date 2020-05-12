@@ -108,7 +108,7 @@
         customTableHeight: 200,
         tableData: [{
           id: 1,
-          pId: -1,
+          pId: 0,
           name: '首页',
           path: '/',
           icon: 'dashboard',
@@ -130,7 +130,7 @@
           }]
         }, {
           id: 2,
-          pId: -1,
+          pId: 0,
           name: '系统用户',
           permission: 'sys:user:index',
           path: '/system',
@@ -152,7 +152,7 @@
           }]
         }, {
           id: 3,
-          pId: -1,
+          pId: 0,
           name: '权限中心',
           path: '/permission',
           icon: 'permission',
@@ -185,7 +185,7 @@
           }]
         }, {
           id: 4,
-          pId: -1,
+          pId: 0,
           name: '租户管理',
           permission: 'sys:tenant:index',
           path: '/tenant',
@@ -297,7 +297,7 @@
           let parent = this.getNode(row.pId)
           tempData.pId = row.pId
           tempData.name = '同级菜单'
-          if (row.pId === -1) {
+          if (row.pId === 0) {
             parent.push(tempData)
           } else {
             parent.children.push(tempData)
@@ -314,7 +314,7 @@
         this.iconBindData = null
       },
       getNode(id) {
-        if (id === -1) {
+        if (id === 0) {
           return this.tableData
         } else {
           return this.getChild(this.tableData, id)

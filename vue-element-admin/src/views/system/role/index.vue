@@ -70,7 +70,7 @@
               enable: true,
               idKey: 'id',
               pIdKey: 'pId',
-              rootPId: -1
+              rootPId: 0
             }
           }
         },

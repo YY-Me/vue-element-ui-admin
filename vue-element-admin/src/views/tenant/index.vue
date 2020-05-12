@@ -85,6 +85,7 @@
   import addEdit from '@/views/tenant/addEdit'
   import tenantUserApi from '@/api/tenant/user'
   import permission from '@/directive/permission/index.js'
+
   export default {
     name: 'tenant',
     components: { Pagination, addEdit },

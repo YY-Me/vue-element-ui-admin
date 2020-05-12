@@ -1,33 +1,35 @@
 import Vue from 'vue'
 
 import Cookies from 'js-cookie'
-
-import 'normalize.css/normalize.css' // a modern alternative to CSS resets
+// a modern alternative to CSS resets
+import 'normalize.css/normalize.css'
 
 import Element from 'element-ui'
 import './styles/element-variables.scss'
-
-import '@/styles/index.scss' // global css
+// global css
+import '@/styles/index.scss'
 
 import App from './App'
 import store from './store'
 import router from './router'
+// icon
+import './icons'
+// permission control
+import './permission'
+// global filters
+import * as filters from './filters'
 
-import './icons' // icon
-import './permission' // permission control
-
-import * as filters from './filters' // global filters
 require('@/mock/mock-server')
 
 Vue.use(Element, {
-  size: Cookies.get('size') || 'medium' // set element-ui default size
+  // set element-ui default size
+  size: Cookies.get('size') || 'medium'
 })
 
 // register global utility filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
-
 Vue.config.productionTip = false
 
 new Vue({

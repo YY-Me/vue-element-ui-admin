@@ -56,7 +56,7 @@
               enable: true,
               idKey: 'id',
               pIdKey: 'pId',
-              rootPId: -1
+              rootPId: 0
             }
           }
         },
@@ -83,14 +83,14 @@
     methods: {
       initRole() {
         this.treePermission = [
-          { id: 1, pId: -1, name: '首页' },
+          { id: 1, pId: 0, name: '首页' },
           { id: 2, pId: 1, name: '控制台' },
-          { id: 3, pId: -1, name: '系统用户' },
+          { id: 3, pId: 0, name: '系统用户' },
           { id: 4, pId: 3, name: '用户管理' },
-          { id: 5, pId: -1, name: '权限中心' },
+          { id: 5, pId: 0, name: '权限中心' },
           { id: 6, pId: 5, name: '角色管理' },
           { id: 7, pId: 5, name: '菜单管理' },
-          { id: 8, pId: -1, name: '租户管理' },
+          { id: 8, pId: 0, name: '租户管理' },
           { id: 9, pId: 8, name: '租户管理' }
         ]
       },

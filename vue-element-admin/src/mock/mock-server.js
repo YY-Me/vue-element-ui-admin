@@ -26,7 +26,7 @@ const userInfo = {
     permission: [],
     menu: [{
       id: 1,
-      pId: -1,
+      pId: 0,
       title: '首页',
       path: '/',
       icon: 'dashboard',
@@ -41,7 +41,7 @@ const userInfo = {
       }]
     }, {
       id: 2,
-      pId: -1,
+      pId: 0,
       title: '系统用户',
       path: '/system',
       icon: 'system-user',
@@ -56,7 +56,7 @@ const userInfo = {
       }]
     }, {
       id: 3,
-      pId: -1,
+      pId: 0,
       title: '权限中心',
       path: '/permission',
       icon: 'permission',
@@ -79,7 +79,7 @@ const userInfo = {
       }]
     }, {
       id: 4,
-      pId: -1,
+      pId: 0,
       title: '租户管理',
       path: '/tenant',
       icon: 'tenant',

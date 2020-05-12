@@ -76,7 +76,7 @@ export function filterAsyncRoutes(routes) {
   const res = []
   routes.forEach(item => {
     let component = Layout
-    if (item.pId !== -1) {
+    if (item.pId !== 0) {
       component = componentList[item.name]
     }
     let tempRoute = {
@@ -84,7 +84,7 @@ export function filterAsyncRoutes(routes) {
       component: component,
       meta: { title: item.title, icon: item.icon }
     }
-    if (item.name === 'dashboard' && item.pId !== -1) {
+    if (item.name === 'dashboard' && item.pId !== 0) {
       tempRoute.meta.affix = true
     }
     if (component === Layout && item.children[0]) {
