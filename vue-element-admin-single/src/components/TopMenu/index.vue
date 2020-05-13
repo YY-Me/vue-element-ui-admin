@@ -36,13 +36,17 @@
     computed: {
       ...mapGetters([
         'permission_routes'
-      ]),
-      activeIndex() {
-        return this.$route.fullPath
+      ])
+    },
+    watch: {
+      $route(to, from) {
+        this.activeIndex = to.path
+        this.initMenu()
       }
     },
     data() {
       return {
+        activeIndex: null,
         topMenu: [{
           id: 1,
           pId: 0,
@@ -56,35 +60,14 @@
           title: '用户中心',
           path: '/system',
           icon: 'system-user',
-          children: [{
-            id: 21,
-            pId: 2,
-            title: '用户管理',
-            path: 'user',
-            icon: 'user-manage-all',
-            children: []
-          }]
+          children: []
         }, {
           id: 3,
           pId: 0,
           title: '系统配置',
           path: '/permission',
           icon: 'system-config',
-          children: [{
-            id: 31,
-            pId: 3,
-            title: '角色管理',
-            path: 'role',
-            icon: 'role',
-            children: []
-          }, {
-            id: 32,
-            pId: 3,
-            title: '菜单管理',
-            path: 'menu',
-            icon: 'menu',
-            children: []
-          }]
+          children: []
         }]
       }
     },
@@ -94,9 +77,15 @@
     methods: {
       init() {
         this.activeIndex = this.$route.fullPath
-        let item = this.getMenuByPath(this.activeIndex)
-        if (item) {
-          this.resolveTopLeftMenu(item)
+        this.initMenu()
+      },
+      initMenu() {
+        let tempSplit = this.activeIndex.split('/')
+        if (tempSplit && tempSplit.length > 1 && tempSplit[1] && tempSplit[1] !== '') {
+          let item = this.getMenuByPath(`/${tempSplit[1]}`)
+          if (item) {
+            this.resolveTopLeftMenu(item)
+          }
         }
       },
       handleSelect(key, keyPath) {
