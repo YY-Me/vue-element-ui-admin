@@ -39,6 +39,12 @@
     min-height: 100vh;
     position: relative;
     background-color: #f1f1f1;
+
+    > .el-card {
+      > .el-card__body {
+        padding: 15px !important;
+      }
+    }
   }
 
   .hasTagsView {

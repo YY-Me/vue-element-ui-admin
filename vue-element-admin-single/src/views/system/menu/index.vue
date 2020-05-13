@@ -1,6 +1,10 @@
 <template>
   <el-card shadow="always">
     <div>
+      <el-radio-group v-model="type">
+        <el-radio :label="1">左侧菜单</el-radio>
+        <el-radio :label="2">顶部菜单</el-radio>
+      </el-radio-group>
       <el-table :data="tableData" style="width: 100%;"
                 row-key="id" border default-expand-all
                 :max-height="customTableHeight"
@@ -103,6 +107,7 @@
     components: { icon },
     data() {
       return {
+        type: 1,
         iconVisible: false,
         iconBindData: null,
         customTableHeight: 200,

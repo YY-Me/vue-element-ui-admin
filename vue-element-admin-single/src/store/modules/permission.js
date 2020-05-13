@@ -44,7 +44,7 @@ function hasPermission(roles, route) {
 const state = {
   routes: [],
   addRoutes: [],
-  topRoutes: []
+  topLeftRoutes: []
 }
 
 const mutations = {
@@ -52,8 +52,8 @@ const mutations = {
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
   },
-  SET_TOP_ROUTES: (state, topRoutes) => {
-    state.topRoutes = topRoutes
+  SET_TOP_LEFT_ROUTES: (state, topLeftRoutes) => {
+    state.topLeftRoutes = topLeftRoutes
   }
 }
 
@@ -70,10 +70,10 @@ const actions = {
       resolve(accessedRoutes)
     })
   },
-  generateTopRoutes({ commit }, treePermission) {
+  generateTopLeftRoutes({ commit }, treePermission) {
     treePermission = treePermission || []
     return new Promise(resolve => {
-      commit('SET_TOP_ROUTES', treePermission)
+      commit('SET_TOP_LEFT_ROUTES', treePermission)
       resolve(treePermission)
     })
   }
