@@ -7,8 +7,8 @@
     <el-menu-item @click="test(item)" v-if="!item.hidden&&(!item.children||(item.children&&item.children.length===0))"
                   :index="item.path"
                   v-for="item in topMenu">
-      <span :class="item.pId===0?'top-menu-span':''"><svg-icon class="mr-4"
-                                                               :icon-class="item.icon"/>{{item.title}}</span>
+      <span :class="item.pId===0?'top-menu-span':''">
+        <svg-icon class="mr-4" :icon-class="item.icon"/>{{item.title}}</span>
     </el-menu-item>
 
     <el-submenu v-if="!item.hidden&&item.children&&item.children.length>0" :index="item.path"
@@ -16,8 +16,8 @@
                 :hide-timeout="100"
                 v-for="item in topMenu">
       <template slot="title">
-        <span @click="test(item)" :class="item.pId===0?'top-menu-span':''"><svg-icon class="mr-4"
-                                                                                     :icon-class="item.icon+''"/>{{item.title}}</span>
+        <span @click="test(item)" :class="item.pId===0?'top-menu-span':''">
+          <svg-icon class="mr-4" :icon-class="item.icon+''"/>{{item.title}}</span>
       </template>
       <top-menu-item v-if="!route.hidden" v-for="route in item.children" :item="route" :path="item.path"/>
     </el-submenu>
@@ -51,7 +51,7 @@
           id: 1,
           pId: 0,
           title: '业务系统',
-          path: '/',
+          path: '/dashboard',
           icon: 'biz',
           children: []
         }, {
@@ -81,15 +81,16 @@
       },
       initMenu() {
         let tempSplit = this.activeIndex.split('/')
-        if (tempSplit && tempSplit.length > 1 && tempSplit[1] && tempSplit[1] !== '') {
-          let item = this.getMenuByPath(`/${tempSplit[1]}`)
+        if (tempSplit && tempSplit.length > 1 && tempSplit[1]) {
+          let newPath = `/${tempSplit[1]}`
+          this.activeIndex = newPath
+          let item = this.getMenuByPath(newPath)
           if (item) {
             this.resolveTopLeftMenu(item)
           }
         }
       },
       handleSelect(key, keyPath) {
-        console.log('key:' + key)
         if (key) {
           key = key + ''
           let tempItem = this.getMenuByPath(key)
@@ -105,9 +106,7 @@
       },
       test(item) {
         this.activeIndex = item.path
-        if (item.children && item.children.length > 0) {
-          this.resolveTopLeftMenu(item)
-        }
+        this.resolveTopLeftMenu(item)
       },
       async resolveTopLeftMenu(item) {
         let tempMenu = []
@@ -118,7 +117,11 @@
         })
         //重置左侧路由
         const generateTopRoutes = await store.dispatch('permission/generateTopRoutes', tempMenu)
-        console.log(tempMenu)
+        if (tempMenu && tempMenu[0] && tempMenu[0].children && tempMenu[0].children.length > 0) {
+          this.$router.push({
+            path: tempMenu[0].path === '/' ? tempMenu[0].path : (tempMenu[0].path + '/' + tempMenu[0].children[0].path)
+          })
+        }
       },
       resolveTopLeftMenuByPath(path) {
         //根据path找到item
