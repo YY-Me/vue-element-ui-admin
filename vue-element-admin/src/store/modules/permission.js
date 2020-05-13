@@ -57,11 +57,11 @@ const actions = {
   generateRoutes({ commit }, treePermission) {
     treePermission = treePermission || []
     return new Promise(resolve => {
-      //根据后端权限生成路由信息
+      // 根据后端权限生成路由信息
       let accessedRoutes
       accessedRoutes = filterAsyncRoutes(treePermission)
-      accessedRoutes.concat(asyncRoutes)
-      //vuex里面存储动态的路由，以便于菜单显示
+      accessedRoutes = accessedRoutes.concat(asyncRoutes)
+      // vuex里面存储动态的路由，以便于菜单显示
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)
     })
@@ -79,7 +79,7 @@ export function filterAsyncRoutes(routes) {
     if (item.pId !== 0) {
       component = componentList[item.name]
     }
-    let tempRoute = {
+    const tempRoute = {
       path: item.path,
       component: component,
       meta: { title: item.title, icon: item.icon }

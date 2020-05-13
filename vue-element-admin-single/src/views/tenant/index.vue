@@ -1,6 +1,6 @@
 <template>
   <el-card shadow="always">
-    <div slot="header" ref="tenantUserSearchHeader" class="sysUserSearchHeader">
+    <div slot="header" ref="topHeader" class="sysUserSearchHeader">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline">
         <el-form-item label="用户名:">
           <el-input style="width: 160px" v-model="listQuery.namePhone" placeholder="用户名/电话" clearable/>

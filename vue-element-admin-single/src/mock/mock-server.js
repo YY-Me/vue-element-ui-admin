@@ -27,13 +27,14 @@ const userInfo = {
     menu: [{
       id: 1,
       pId: 0,
+      topId: 1,
       title: '首页',
       path: '/',
       icon: 'dashboard',
       children: [{
         id: 11,
         pId: 1,
-        title: '首页',
+        title: '控制台',
         name: 'dashboard',
         path: 'dashboard',
         icon: 'dashboard',
@@ -42,6 +43,7 @@ const userInfo = {
     }, {
       id: 2,
       pId: 0,
+      topId: 2,
       title: '系统用户',
       path: '/system',
       icon: 'system-user',
@@ -57,6 +59,7 @@ const userInfo = {
     }, {
       id: 3,
       pId: 0,
+      topId: 3,
       title: '权限中心',
       path: '/permission',
       icon: 'permission',
@@ -80,6 +83,7 @@ const userInfo = {
     }, {
       id: 4,
       pId: 0,
+      topId: 2,
       title: '租户管理',
       path: '/tenant',
       icon: 'tenant',

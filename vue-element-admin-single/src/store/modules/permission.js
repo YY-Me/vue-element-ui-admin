@@ -43,13 +43,17 @@ function hasPermission(roles, route) {
 
 const state = {
   routes: [],
-  addRoutes: []
+  addRoutes: [],
+  topRoutes: []
 }
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
+  },
+  SET_TOP_ROUTES: (state, topRoutes) => {
+    state.topRoutes = topRoutes
   }
 }
 
@@ -60,10 +64,17 @@ const actions = {
       //根据后端权限生成路由信息
       let accessedRoutes
       accessedRoutes = filterAsyncRoutes(treePermission)
-      accessedRoutes.concat(asyncRoutes)
+      accessedRoutes = accessedRoutes.concat(asyncRoutes)
       //vuex里面存储动态的路由，以便于菜单显示
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)
+    })
+  },
+  generateTopRoutes({ commit }, treePermission) {
+    treePermission = treePermission || []
+    return new Promise(resolve => {
+      commit('SET_TOP_ROUTES', treePermission)
+      resolve(treePermission)
     })
   }
 }
@@ -83,6 +94,9 @@ export function filterAsyncRoutes(routes) {
       path: item.path,
       component: component,
       meta: { title: item.title, icon: item.icon }
+    }
+    if (item.pId === 0) {
+      tempRoute.topId = item.topId
     }
     if (item.name === 'dashboard' && item.pId !== 0) {
       tempRoute.meta.affix = true

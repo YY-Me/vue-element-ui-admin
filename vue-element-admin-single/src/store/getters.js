@@ -10,6 +10,7 @@ const getters = {
   nickName: state => state.user.nickName,
   roles: state => state.user.roles,
   permission: state => state.user.permission,
-  permission_routes: state => state.permission.routes
+  permission_routes: state => state.permission.routes,
+  permission_top_routes: state => state.permission.topRoutes
 }
 export default getters

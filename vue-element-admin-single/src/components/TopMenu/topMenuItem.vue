@@ -1,12 +1,12 @@
 <template>
-  <el-menu-item v-if="!item.children||(item.children&&item.children.length===0)" :index="item.path">
+  <el-menu-item v-if="!item.children||(item.children&&item.children.length===0)" :index="path+'/'+item.path">
     <span :class="item.pId===0?'bold':''"><svg-icon class="mr-4" :icon-class="item.icon"/>{{item.title}}</span>
   </el-menu-item>
-  <el-submenu v-else :index="item.path" :show-timeout="100" :hide-timeout="100">
+  <el-submenu v-else :index="path+'/'+item.path" :show-timeout="100" :hide-timeout="100">
     <template slot="title">
       <span :class="item.pId===0?'bold':''"><svg-icon class="mr-4" :icon-class="item.icon+''"/>{{item.title}}</span>
     </template>
-    <!--<top-menu-item v-if="!route.hidden" v-for="route in item.children" :item="route" :path="route.path"/>-->
+    <top-menu-item v-if="!route.hidden" v-for="route in item.children" :item="route" :path="path"/>
   </el-submenu>
 </template>
 
@@ -15,12 +15,16 @@
     name: 'topMenuItem',
     props: {
       item: {
-        type: Object,
-        required: true
+        type: Object
+      },
+      path: {
+        type: String
       }
     },
     data() {
-      return {}
+      return {
+        msg: ''
+      }
     }
   }
 </script>
