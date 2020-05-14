@@ -76,6 +76,10 @@ export default {
         key: 'theme',
         value: val
       })
+      this.$store.dispatch('settings/changeSetting', {
+        key: 'menuActiveText',
+        value: val
+      })
     }
   }
 }

@@ -79,16 +79,15 @@
       init() {
         this.activeIndex = this.$route.fullPath
         this.initMenu()
-        this.leftFirstCheck()
       },
       initMenu() {
         let tempSplit = this.activeIndex.split('/')
         if (tempSplit && tempSplit.length > 1 && tempSplit[1]) {
           let basePath = `/${tempSplit[1]}`
-          console.log(basePath)
           this.activeIndex = basePath
           let item = this.getTopMenuByBasePath(basePath) || this.getTopMenuByPath(basePath)
           if (item) {
+            this.activeIndex = item.path
             this.resolveTopLeftMenu(item)
           }
         }

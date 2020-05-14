@@ -1,10 +1,12 @@
-import variables from '@/styles/element-variables.scss'
+import elementVariables from '@/styles/element-variables.scss'
+import variables from '@/styles/variables.scss'
 import defaultSettings from '@/settings'
 
 const { showSettings, tagsView, fixedHeader, sidebarLogo } = defaultSettings
 
 const state = {
-  theme: variables.theme,
+  theme: elementVariables.theme,
+  menuActiveText: variables.menuActiveText,
   showSettings: showSettings,
   tagsView: tagsView,
   fixedHeader: fixedHeader,
