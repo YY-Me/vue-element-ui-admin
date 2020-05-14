@@ -179,102 +179,6 @@ const systemUserList = {
       isEnable: true,
       createTime: '2019-12-11',
       updateTime: '2020-12-11'
-    }, {
-      id: 2,
-      userName: 'lisi',
-      nickName: '里斯',
-      phone: '18895623548',
-      roles: [{
-        id: 1,
-        name: '管理員'
-      }],
-      isEnable: true,
-      createTime: '2019-05-02',
-      updateTime: '2019-05-02'
-    }, {
-      id: 2,
-      userName: 'lisi',
-      nickName: '里斯',
-      phone: '18895623548',
-      roles: [{
-        id: 1,
-        name: '管理員'
-      }],
-      isEnable: true,
-      createTime: '2019-05-02',
-      updateTime: '2019-05-02'
-    }, {
-      id: 2,
-      userName: 'lisi',
-      nickName: '里斯',
-      phone: '18895623548',
-      roles: [{
-        id: 1,
-        name: '管理員'
-      }],
-      isEnable: true,
-      createTime: '2019-05-02',
-      updateTime: '2019-05-02'
-    }, {
-      id: 2,
-      userName: 'lisi',
-      nickName: '里斯',
-      phone: '18895623548',
-      roles: [{
-        id: 1,
-        name: '管理員'
-      }],
-      isEnable: true,
-      createTime: '2019-05-02',
-      updateTime: '2019-05-02'
-    }, {
-      id: 2,
-      userName: 'lisi',
-      nickName: '里斯',
-      phone: '18895623548',
-      roles: [{
-        id: 1,
-        name: '管理員'
-      }],
-      isEnable: true,
-      createTime: '2019-05-02',
-      updateTime: '2019-05-02'
-    }, {
-      id: 2,
-      userName: 'lisi',
-      nickName: '里斯',
-      phone: '18895623548',
-      roles: [{
-        id: 1,
-        name: '管理員'
-      }],
-      isEnable: true,
-      createTime: '2019-05-02',
-      updateTime: '2019-05-02'
-    }, {
-      id: 2,
-      userName: 'lisi',
-      nickName: '里斯',
-      phone: '18895623548',
-      roles: [{
-        id: 1,
-        name: '管理員'
-      }],
-      isEnable: true,
-      createTime: '2019-05-02',
-      updateTime: '2019-05-02'
-    }, {
-      id: 2,
-      userName: 'lisi',
-      nickName: '里斯',
-      phone: '18895623548',
-      roles: [{
-        id: 1,
-        name: '管理員'
-      }],
-      isEnable: true,
-      createTime: '2019-05-02',
-      updateTime: '2019-05-02'
     }
   ]
 }
@@ -309,6 +213,127 @@ const systemTenantList = {
     }
   ]
 }
+
+const systemMenuList = {
+  status: 200,
+  message: 'ok',
+  data: [
+    {
+      id: 1,
+      pId: 0,
+      title: '首页',
+      path: '/index',
+      icon: 'dashboard',
+      type: 1,
+      mType: 1,
+      sort: 0,
+      permission: 'index',
+      edit: false,
+      children: [{
+        id: 11,
+        pId: 1,
+        title: '控制台',
+        name: 'console',
+        path: 'console',
+        icon: 'dashboard',
+        type: 1,
+        mType: 1,
+        permission: 'dashboard',
+        edit: false,
+        sort: 0,
+        children: []
+      }]
+    }, {
+      id: 2,
+      pId: 0,
+      title: '系统用户',
+      permission: 'sys:user:index',
+      path: '/system',
+      icon: 'system-user',
+      type: 1,
+      mType: 1,
+      sort: 0,
+      edit: false,
+      children: [{
+        id: 21,
+        pId: 2,
+        title: '用户管理',
+        permission: 'sys:user:list',
+        path: 'user',
+        icon: 'system-user',
+        name: 'systemUser',
+        type: 1,
+        mType: 1,
+        edit: false,
+        sort: 0,
+        children: []
+      }]
+    }, {
+      id: 3,
+      pId: 0,
+      title: '权限中心',
+      path: '/permission',
+      icon: 'permission',
+      permission: 'sys:permission:index',
+      type: 1,
+      mType: 1,
+      sort: 0,
+      edit: false,
+      children: [{
+        id: 31,
+        pId: 3,
+        title: '角色管理',
+        permission: 'sys:role',
+        name: 'systemRole',
+        path: 'role',
+        icon: 'role',
+        type: 1,
+        mType: 1,
+        edit: false,
+        sort: 0,
+        children: []
+      }, {
+        id: 32,
+        pId: 3,
+        title: '菜单管理',
+        permission: 'sys:menu',
+        name: 'systemMenu',
+        path: 'menu',
+        icon: 'menu',
+        type: 1,
+        mType: 1,
+        edit: false,
+        sort: 0,
+        children: []
+      }]
+    }, {
+      id: 4,
+      pId: 0,
+      title: '租户管理',
+      permission: 'sys:tenant:index',
+      path: '/tenant',
+      icon: 'tenant',
+      type: 1,
+      mType: 1,
+      sort: 0,
+      edit: false,
+      children: [{
+        id: 41,
+        pId: 4,
+        title: '租户管理',
+        permission: 'sys:tenant:list',
+        name: 'tenant',
+        path: 'tenant',
+        icon: 'tenant',
+        type: 1,
+        mType: 1,
+        edit: false,
+        sort: 0,
+        children: []
+      }]
+    }
+  ]
+}
 Mock.mock('/dev-api/auth/login', 'post', login)
 Mock.mock('/dev-api/user/userInfo', 'get', userInfo)
 Mock.mock('/dev-api/auth/logout', 'post', response)
@@ -316,5 +341,7 @@ Mock.mock('/dev-api/auth/logout', 'post', response)
 Mock.mock(RegExp('/dev-api/system/user.*'), 'get', systemUserList)
 
 Mock.mock(RegExp('/dev-api/system/tenant.*'), 'get', systemTenantList)
+
+Mock.mock(RegExp('/dev-api/system/menu.*'), 'get', systemMenuList)
 
 export default Mock
