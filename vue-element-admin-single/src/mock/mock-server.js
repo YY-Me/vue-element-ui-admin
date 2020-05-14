@@ -28,7 +28,7 @@ const userInfo = {
       id: 1,
       pId: 0,
       title: '业务系统',
-      path: '/dashboard',
+      path: '/top1',
       icon: 'biz',
       mType: 1,
       children: []
@@ -71,7 +71,7 @@ const userInfo = {
       pId: 0,
       topId: 1,
       title: '首页',
-      path: '/',
+      path: '/index',
       icon: 'dashboard',
       mType: 0,
       children: [{
@@ -79,7 +79,7 @@ const userInfo = {
         pId: 1,
         title: '控制台',
         name: 'dashboard',
-        path: 'dashboard',
+        path: 'console',
         icon: 'dashboard',
         mType: 0,
         children: []
@@ -95,7 +95,7 @@ const userInfo = {
       children: [{
         id: 21,
         pId: 2,
-        title: '用户管理',
+        title: '系统用户',
         name: 'systemUser',
         path: 'user',
         icon: 'system-user',

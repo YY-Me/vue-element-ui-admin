@@ -44,39 +44,11 @@
       $route(to, from) {
         this.activeIndex = to.path
         this.initMenu()
-      },
-      activeIndex() {
-        console.log(this.activeIndex)
       }
     },
     data() {
       return {
-        activeIndex: '',
-        topMenu: [{
-          id: 1,
-          pId: 0,
-          title: '业务系统',
-          path: '/dashboard',
-          icon: 'biz',
-          mType: 1,
-          children: []
-        }, {
-          id: 2,
-          pId: 0,
-          title: '用户中心',
-          path: '/top2',
-          icon: 'user-manage-all',
-          mType: 1,
-          children: []
-        }, {
-          id: 3,
-          pId: 0,
-          title: '系统配置',
-          path: '/top3',
-          icon: 'system-config',
-          mType: 1,
-          children: []
-        }]
+        activeIndex: ''
       }
     },
     mounted() {
@@ -88,24 +60,10 @@
         this.initMenu()
       },
       initMenu() {
-        let tempSplit = this.activeIndex.split('/')
-        if (tempSplit && tempSplit.length > 1 && tempSplit[1]) {
-          let basePath = `/${tempSplit[1]}`
-          let topItem = this.getTopMenuByPath(basePath)
-          if (topItem) {
-            this.activeIndex = this.$route.fullPath
-          } else {
-            let item = this.getTopMenuByBasePath(basePath)
-            if (item) {
-              this.activeIndex = item.path
-              this.resolveTopLeftMenu(item)
-            }
-          }
-        }
+        this.handleSelect(this.$route.fullPath)
       },
       handleSelect(key, keyPath) {
         console.log('key=' + key)
-        console.log('keyPath=' + keyPath)
         if (key) {
           key = key + ''
           let tempItem = this.getTopMenuByPath(key)
@@ -114,9 +72,18 @@
             this.resolveTopLeftMenuByPath(key)
             this.leftFirstCheck()
           } else {
-            this.$router.push({
-              path: key
-            })
+            let basePath = this.getBasePath(key)
+            if (basePath) {
+              let item = this.getTopMenuByBasePath(basePath)
+              if (item) {
+                this.activeIndex = item.path
+                this.resolveTopLeftMenu(item)
+              } else {
+                this.$router.push({
+                  path: key
+                })
+              }
+            }
           }
         }
       },
@@ -128,9 +95,9 @@
         }
       },
       getTopMenuByPath(path) {
-        for (let i = 0; i < this.topMenu.length; i++) {
-          if (this.topMenu[i].path === path) {
-            return this.topMenu[i]
+        for (let i = 0; i < this.permission_top_routes.length; i++) {
+          if (this.permission_top_routes[i].path === path) {
+            return this.permission_top_routes[i]
           }
         }
       },
@@ -143,9 +110,9 @@
           }
         }
         if (topId) {
-          for (let i = 0; i < this.topMenu.length; i++) {
-            if (this.topMenu[i].id === topId) {
-              return this.topMenu[i]
+          for (let i = 0; i < this.permission_top_routes.length; i++) {
+            if (this.permission_top_routes[i].id === topId) {
+              return this.permission_top_routes[i]
             }
           }
         }
@@ -168,6 +135,13 @@
             path: tempMenu[0].path === '/' ? tempMenu[0].path : (tempMenu[0].path + '/' + tempMenu[0].children[0].path)
           })
         }
+      },
+      getBasePath(key) {
+        let tempSplit = key.split('/')
+        if (tempSplit && tempSplit.length > 1 && tempSplit[1]) {
+          return `/${tempSplit[1]}`
+        }
+        return null
       }
     }
   }
