@@ -10,7 +10,8 @@ const componentList = {
   'systemUser': () => import('@/views/system/user/index'),
   'systemRole': () => import('@/views/system/role/index'),
   'systemMenu': () => import('@/views/system/menu/index'),
-  'tenant': () => import('@/views/tenant/index')
+  'tenant': () => import('@/views/tenant/index'),
+  'topTenant': () => import('@/views/tenant/index')
 }
 const dynamicRoutes = [
   {
@@ -44,6 +45,7 @@ function hasPermission(roles, route) {
 const state = {
   routes: [],
   addRoutes: [],
+  topRoutes: [],
   topLeftRoutes: []
 }
 
@@ -51,6 +53,9 @@ const mutations = {
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
+  },
+  SET_TOP_ROUTES: (state, topRoutes) => {
+    state.topRoutes = topRoutes
   },
   SET_TOP_LEFT_ROUTES: (state, topLeftRoutes) => {
     state.topLeftRoutes = topLeftRoutes
@@ -70,6 +75,13 @@ const actions = {
       resolve(accessedRoutes)
     })
   },
+  generateTopRoutes({ commit }, treePermission) {
+    treePermission = treePermission || []
+    return new Promise(resolve => {
+      commit('SET_TOP_ROUTES', treePermission)
+      resolve(treePermission)
+    })
+  },
   generateTopLeftRoutes({ commit }, treePermission) {
     treePermission = treePermission || []
     return new Promise(resolve => {
@@ -86,32 +98,46 @@ const actions = {
 export function filterAsyncRoutes(routes) {
   const res = []
   routes.forEach(item => {
-    let component = Layout
-    if (item.pId !== 0) {
-      component = componentList[item.name]
-    }
-    let tempRoute = {
-      path: item.path,
-      component: component,
-      meta: { title: item.title, icon: item.icon }
-    }
-    if (item.pId === 0) {
-      tempRoute.topId = item.topId
-    }
-    if (item.name === 'dashboard' && item.pId !== 0) {
-      tempRoute.meta.affix = true
-    }
-    if (component === Layout && item.children[0]) {
-      tempRoute.redirect = item.children[0].path
-    } else {
-      if (item.name) {
-        tempRoute.name = item.name
+    if (item.mType === 0) {
+      let component = Layout
+      if (item.pId !== 0) {
+        component = componentList[item.name]
       }
+      let tempRoute = {
+        path: item.path,
+        component: component,
+        meta: { title: item.title, icon: item.icon }
+      }
+      if (item.pId === 0) {
+        tempRoute.topId = item.topId
+      }
+      if (item.name === 'dashboard' && item.pId !== 0) {
+        tempRoute.meta.affix = true
+      }
+      if (component === Layout && item.children && item.children.length > 0 && item.children[0]) {
+        tempRoute.redirect = item.children[0].path
+      } else {
+        if (item.name) {
+          tempRoute.name = item.name
+        }
+      }
+      if (item.children && item.children.length > 0) {
+        tempRoute.children = filterAsyncRoutes(item.children)
+      }
+      res.push(tempRoute)
+    } else {
+      //顶部的导航
+      if (item.pId !== 0) {
+        item.component = componentList[item.name]
+      } else {
+        item.component = Layout
+      }
+      item.meta = { title: item.title, icon: item.icon }
+      if (item.children && item.children.length > 0) {
+        item.children = filterAsyncRoutes(item.children)
+      }
+      res.push(item)
     }
-    if (item.children && item.children.length > 0) {
-      tempRoute.children = filterAsyncRoutes(item.children)
-    }
-    res.push(tempRoute)
   })
   return res
 }

@@ -7,6 +7,7 @@ const state = {
   userName: '',
   nickName: '',
   avatar: '',
+  topMenu: [],
   menu: [],
   permission: [],
   roles: []
@@ -30,6 +31,9 @@ const mutations = {
   },
   SET_MENU: (state, menu) => {
     state.menu = menu
+  },
+  SET_TOP_MENU: (state, topMenu) => {
+    state.topMenu = topMenu
   },
   SET_PERMISSION: (state, permission) => {
     state.permission = permission
@@ -58,12 +62,13 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
         const { data } = response
-        const { userName, nickName, avatar, roles, menu, permission } = data
+        const { userName, nickName, avatar, roles, topMenu, menu, permission } = data
         commit('SET_ROLES', roles)
         commit('SET_NAME', userName)
         commit('SET_AVATAR', avatar)
         commit('SET_NICK_NAME', nickName)
         commit('SET_MENU', menu)
+        commit('SET_TOP_MENU', topMenu)
         commit('SET_PERMISSION', permission)
         resolve(data)
       }).catch(error => {

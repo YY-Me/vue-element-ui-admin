@@ -84,6 +84,12 @@ instance.interceptors.response.use(
         type: 'warning'
       })
     }
+    if (response.status === 404) {
+      msg = '请求路径未找到'
+    }
+    if (response.status === 502) {
+      msg = '服务已停止或正在重启中'
+    }
     Message.error({ message: msg, duration: 2000, showClose: false })
     // 返回请求的错误信息
     return Promise.reject(new Error(msg))

@@ -210,3 +210,10 @@ aside {
     overflow-x: auto;
   }
 }
+
+//el-message提示宽度
+.el-message{
+  width: auto;
+  min-width: auto;
+  padding: 8px 16px !important;
+}

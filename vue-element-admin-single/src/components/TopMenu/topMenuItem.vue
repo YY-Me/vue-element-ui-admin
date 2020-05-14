@@ -6,7 +6,7 @@
     <template slot="title">
       <span :class="item.pId===0?'bold':''"><svg-icon class="mr-4" :icon-class="item.icon+''"/>{{item.title}}</span>
     </template>
-    <top-menu-item v-if="!route.hidden" v-for="route in item.children" :item="route" :path="path"/>
+    <top-menu-item v-if="!route.hidden" v-for="route in item.children" :item="route" :path="path+'/'+item.path"/>
   </el-submenu>
 </template>
 

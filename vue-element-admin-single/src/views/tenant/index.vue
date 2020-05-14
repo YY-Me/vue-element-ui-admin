@@ -24,9 +24,30 @@
       <el-table ref="tableCot" v-loading="loading" element-loading-text="请稍后..." :data="tableData" border
                 style="width: 100%" :max-height="customTableHeight">
         <el-table-column type="index" width="40"/>
-        <el-table-column prop="name" label="租户" min-width="120" show-overflow-tooltip/>
-        <el-table-column prop="appId" label="app_id" min-width="120" show-overflow-tooltip/>
-        <el-table-column prop="appSecret" label="app_secret" min-width="160" show-overflow-tooltip/>
+        <el-table-column prop="name" label="租户" min-width="120" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{scope.row.name}}</span>
+            <i v-clipboard:copy='getCopyData(scope.row)' v-clipboard:success='clipboardSuccess'
+               style="cursor: pointer;margin-left: 2px;position: absolute;right: 5px;top: 15px"
+               title="复制app_id和app_secret" class="el-icon-copy-document"/>
+          </template>
+        </el-table-column>
+        <el-table-column prop="appId" label="app_id" min-width="120" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{scope.row.appId}}</span>
+            <i v-clipboard:copy='scope.row.appId' v-clipboard:success='clipboardSuccess'
+               style="cursor: pointer;margin-left: 2px;position: absolute;right: 5px;top: 15px"
+               title="复制app_id" class="el-icon-copy-document"/>
+          </template>
+        </el-table-column>
+        <el-table-column prop="appSecret" label="app_secret" min-width="160" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{scope.row.appSecret}}</span>
+            <i v-clipboard:copy='scope.row.appSecret' v-clipboard:success='clipboardSuccess'
+               style="cursor: pointer;margin-left: 2px;position: absolute;right: 5px;top: 15px"
+               title="复制app_secret" class="el-icon-copy-document"/>
+          </template>
+        </el-table-column>
         <el-table-column prop="qps" label="QPS" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
             <span v-if="0!==scope.row.qps">{{scope.row.qps}}/s</span>
@@ -85,11 +106,12 @@
   import addEdit from '@/views/tenant/addEdit'
   import tenantUserApi from '@/api/tenant/user'
   import permission from '@/directive/permission/index.js'
+  import clipboard from '@/directive/clipboard/index.js'
 
   export default {
     name: 'tenant',
     components: { Pagination, addEdit },
-    directives: { permission },
+    directives: { permission, clipboard },
     data() {
       return {
         loading: false,
@@ -206,6 +228,17 @@
           role: [],
           isEnable: true
         }
+      },
+      getCopyData(row) {
+        return `app_id：${row.appId}，app_secret：${row.appSecret}`
+      },
+      clipboardSuccess() {
+        this.$message({
+          message: '复制成功',
+          type: 'success',
+          duration: 111500
+        })
+        this.$message.success('复制成功')
       }
     }
   }

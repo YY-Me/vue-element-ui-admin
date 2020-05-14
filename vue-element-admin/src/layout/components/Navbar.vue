@@ -38,7 +38,7 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-tooltip content="Global Size" effect="dark" placement="bottom">
+      <el-tooltip content="全局大小设置" effect="dark" placement="bottom">
         <size-select id="size-select" class="right-menu-item hover-effect" />
       </el-tooltip>
       <span class="right-menu-item hover-effect" style="margin-right: 15px;" @click.stop="showPanel">

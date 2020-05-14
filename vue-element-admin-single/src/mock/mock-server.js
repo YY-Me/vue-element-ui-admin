@@ -24,6 +24,48 @@ const userInfo = {
     avatar: 'https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1246207470,1516116328&fm=111&gp=0.jpg',
     roles: ['aaa'],
     permission: [],
+    topMenu: [{
+      id: 1,
+      pId: 0,
+      title: '业务系统',
+      path: '/dashboard',
+      icon: 'biz',
+      mType: 1,
+      children: []
+    }, {
+      id: 2,
+      pId: 0,
+      title: '用户中心',
+      path: '/top2',
+      icon: 'user-manage-all',
+      mType: 1,
+      children: []
+    }, {
+      id: 3,
+      pId: 0,
+      title: '系统配置',
+      path: '/top3',
+      icon: 'system-config',
+      mType: 1,
+      children: []
+    }, {
+      id: 3,
+      pId: 0,
+      title: '顶部一级',
+      path: '/top4',
+      icon: 'system-config',
+      mType: 1,
+      children: [{
+        id: 5,
+        pId: 3,
+        title: '测试二级',
+        name: 'topTenant',
+        path: 'menu',
+        icon: 'menu',
+        mType: 1,
+        children: []
+      }]
+    }],
     menu: [{
       id: 1,
       pId: 0,
@@ -31,6 +73,7 @@ const userInfo = {
       title: '首页',
       path: '/',
       icon: 'dashboard',
+      mType: 0,
       children: [{
         id: 11,
         pId: 1,
@@ -38,6 +81,7 @@ const userInfo = {
         name: 'dashboard',
         path: 'dashboard',
         icon: 'dashboard',
+        mType: 0,
         children: []
       }]
     }, {
@@ -47,6 +91,7 @@ const userInfo = {
       title: '系统用户',
       path: '/system',
       icon: 'system-user',
+      mType: 0,
       children: [{
         id: 21,
         pId: 2,
@@ -54,6 +99,7 @@ const userInfo = {
         name: 'systemUser',
         path: 'user',
         icon: 'system-user',
+        mType: 0,
         children: []
       }]
     }, {
@@ -63,6 +109,7 @@ const userInfo = {
       title: '权限中心',
       path: '/permission',
       icon: 'permission',
+      mType: 0,
       children: [{
         id: 31,
         pId: 3,
@@ -70,6 +117,7 @@ const userInfo = {
         name: 'systemRole',
         path: 'role',
         icon: 'role',
+        mType: 0,
         children: []
       }, {
         id: 32,
@@ -78,6 +126,7 @@ const userInfo = {
         name: 'systemMenu',
         path: 'menu',
         icon: 'menu',
+        mType: 0,
         children: []
       }]
     }, {
@@ -87,6 +136,7 @@ const userInfo = {
       title: '租户管理',
       path: '/tenant',
       icon: 'tenant',
+      mType: 0,
       children: [{
         id: 41,
         pId: 4,
@@ -94,6 +144,7 @@ const userInfo = {
         name: 'tenant',
         path: 'tenant',
         icon: 'tenant',
+        mType: 0,
         children: []
       }]
     }]

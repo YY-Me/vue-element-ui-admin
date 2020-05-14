@@ -6,7 +6,7 @@
     <!--一级菜单在前，多级菜单在后-->
     <el-menu-item v-if="!item.hidden&&(!item.children||(item.children&&item.children.length===0))"
                   :index="item.path"
-                  v-for="item in topMenu">
+                  v-for="item in permission_top_routes">
       <span :class="item.pId===0?'top-menu-span':''">
         <svg-icon class="mr-4" :icon-class="item.icon"/>{{item.title}}</span>
     </el-menu-item>
@@ -14,9 +14,9 @@
     <el-submenu v-if="!item.hidden&&item.children&&item.children.length>0" :index="item.path"
                 :show-timeout="100"
                 :hide-timeout="100"
-                v-for="item in topMenu">
+                v-for="item in permission_top_routes">
       <template slot="title">
-        <span @click="test(item)" :class="item.pId===0?'top-menu-span':''">
+        <span :class="item.pId===0?'top-menu-span':''">
           <svg-icon class="mr-4" :icon-class="item.icon+''"/>{{item.title}}</span>
       </template>
       <top-menu-item v-if="!route.hidden" v-for="route in item.children" :item="route" :path="item.path"/>
@@ -36,6 +36,7 @@
     computed: {
       ...mapGetters([
         'permission_routes',
+        'permission_top_routes',
         'permission_top_left_routes'
       ])
     },
@@ -43,31 +44,37 @@
       $route(to, from) {
         this.activeIndex = to.path
         this.initMenu()
+      },
+      activeIndex() {
+        console.log(this.activeIndex)
       }
     },
     data() {
       return {
-        activeIndex: null,
+        activeIndex: '',
         topMenu: [{
           id: 1,
           pId: 0,
           title: '业务系统',
           path: '/dashboard',
           icon: 'biz',
+          mType: 1,
           children: []
         }, {
           id: 2,
           pId: 0,
           title: '用户中心',
-          path: '/system',
+          path: '/top2',
           icon: 'user-manage-all',
+          mType: 1,
           children: []
         }, {
           id: 3,
           pId: 0,
           title: '系统配置',
-          path: '/permission',
+          path: '/top3',
           icon: 'system-config',
+          mType: 1,
           children: []
         }]
       }
@@ -84,16 +91,21 @@
         let tempSplit = this.activeIndex.split('/')
         if (tempSplit && tempSplit.length > 1 && tempSplit[1]) {
           let basePath = `/${tempSplit[1]}`
-          this.activeIndex = basePath
-          let item = this.getTopMenuByBasePath(basePath) || this.getTopMenuByPath(basePath)
-          if (item) {
-            this.activeIndex = item.path
-            this.resolveTopLeftMenu(item)
+          let topItem = this.getTopMenuByPath(basePath)
+          if (topItem) {
+            this.activeIndex = this.$route.fullPath
+          } else {
+            let item = this.getTopMenuByBasePath(basePath)
+            if (item) {
+              this.activeIndex = item.path
+              this.resolveTopLeftMenu(item)
+            }
           }
         }
       },
       handleSelect(key, keyPath) {
-        console.log('key')
+        console.log('key=' + key)
+        console.log('keyPath=' + keyPath)
         if (key) {
           key = key + ''
           let tempItem = this.getTopMenuByPath(key)
@@ -107,12 +119,6 @@
             })
           }
         }
-      },
-      test(item) {
-        console.log('test')
-        this.activeIndex = item.path
-        this.resolveTopLeftMenu(item)
-        this.leftFirstCheck()
       },
       resolveTopLeftMenuByPath(path) {
         //根据path找到item
