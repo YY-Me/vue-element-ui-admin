@@ -233,11 +233,6 @@
         return `app_id：${row.appId}，app_secret：${row.appSecret}`
       },
       clipboardSuccess() {
-        this.$message({
-          message: '复制成功',
-          type: 'success',
-          duration: 111500
-        })
         this.$message.success('复制成功')
       }
     }
