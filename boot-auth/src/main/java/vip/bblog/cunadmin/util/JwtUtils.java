@@ -30,7 +30,7 @@ public class JwtUtils {
     public static CustomToken createToken(String userName, String uuid, Long expireSeconds) {
         HashMap<String, Object> value = new HashMap<>(1);
         value.put("token", uuid);
-        value.put("username", uuid);
+        value.put("username", userName);
         SignatureAlgorithm signature = SignatureAlgorithm.HS256;
         byte[] secretBytes = DatatypeConverter.parseBase64Binary(SECRET);
         Key secretKey = new SecretKeySpec(secretBytes, signature.getJcaName());

@@ -1,6 +1,7 @@
 package vip.bblog.cunadmin.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
@@ -38,6 +39,7 @@ public class CustomTokenServiceJwtImpl implements CustomTokenService {
         String uuid = UUID.randomUUID().toString();
         CustomToken customToken = JwtUtils.createToken(loginUser.getUsername(), uuid, expireSeconds);
         loginUser.setCustomToken(customToken);
+        loginUser.setToken(uuid);
         cacheLoginUserLimit(loginUser);
         return loginUser.getCustomToken();
     }
@@ -46,7 +48,7 @@ public class CustomTokenServiceJwtImpl implements CustomTokenService {
      * 缓存登录信息，待登录次数限制
      */
     private void cacheLoginUserLimit(LoginUser loginUser) {
-        String cacheKey = String.format("%s:%s", loginUser.getUsername(), loginUser.getCustomToken().getAccess_token());
+        String cacheKey = String.format("%s:%s", loginUser.getUsername(), loginUser.getToken());
         Set<String> keys = redisTemplate.keys(this.getLoginCacheKey(String.format("%s:*", loginUser.getUsername())));
         if (null != keys && keys.size() > maxTokenLimit) {
             String tempKey = keys.iterator().next();
@@ -64,7 +66,7 @@ public class CustomTokenServiceJwtImpl implements CustomTokenService {
      * 缓存登录信息
      */
     private void cacheLoginUser(LoginUser loginUser) {
-        String cacheKey = String.format("%s:%s", loginUser.getUsername(), loginUser.getCustomToken().getAccess_token());
+        String cacheKey = String.format("%s:%s", loginUser.getUsername(), loginUser.getToken());
         redisTemplate.boundValueOps(this.getLoginCacheKey(cacheKey)).set(loginUser, expireSeconds, TimeUnit.SECONDS);
     }
 
@@ -85,7 +87,7 @@ public class CustomTokenServiceJwtImpl implements CustomTokenService {
      */
     @Override
     public CustomToken refresh(LoginUser loginUser) {
-        String cacheKey = String.format("%s:%s", loginUser.getUsername(), loginUser.getCustomToken().getAccess_token());
+        String cacheKey = String.format("%s:%s", loginUser.getUsername(), loginUser.getToken());
         LoginUser oldInfo = redisTemplate.boundValueOps(this.getLoginCacheKey(cacheKey)).get();
         Assert.notNull(oldInfo, "获取登录信息失败，请重新登录");
         String uuid = UUID.randomUUID().toString();
@@ -109,7 +111,7 @@ public class CustomTokenServiceJwtImpl implements CustomTokenService {
     @Override
     public void deleteToken(String jwtToken) {
         String uuid = JwtUtils.getuuid(jwtToken);
-        if (uuid != null) {
+        if (StringUtils.isNotBlank(uuid)) {
             String key = this.getLoginCacheKey(uuid);
             LoginUser loginUser = redisTemplate.opsForValue().get(key);
             if (loginUser != null) {
