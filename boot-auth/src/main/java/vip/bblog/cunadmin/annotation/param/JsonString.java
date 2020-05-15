@@ -1,11 +1,11 @@
-package vip.bblog.cunadmin.annotation.valid.param;
+package vip.bblog.cunadmin.annotation.param;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
- * @author <a href="1396513066@qq.com">Yu Yong</a>
+ * @author <a href="1396513066@qq.com">yy</a>
  * @version 1.0
  * @date 2019年10月10日 15:44
  * @desc JsonString 自定义校验规则：必须是json对象或数组的字符串

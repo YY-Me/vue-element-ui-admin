@@ -10,14 +10,7 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
 import java.io.File;
 
-/**
- * <p>
- * mysql 代码生成器
- * </p>
- *
- * @author zhuyc
- * @since 2019-03-20
- */
+
 public class CodeGenerator {
 
     public static void main(String[] args) {
@@ -25,7 +18,7 @@ public class CodeGenerator {
 
         //全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir(System.getProperty("user.dir") + File.separator + "system" + File.separator + "src" + File.separator + "main" + File.separator + "java");
+        gc.setOutputDir(System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "java");
         gc.setFileOverride(true);
         gc.setAuthor("yy");
         gc.setEnableCache(false);
@@ -57,7 +50,7 @@ public class CodeGenerator {
         sc.setEntityTableFieldAnnotationEnable(true);
         //去除表前缀
         //sc.setTablePrefix("sys_");
-        sc.setInclude("sys_user,sys_role,sys_menu,sys_user_role,sys_role_menu,sys_biz_tenant");
+        sc.setInclude("sys_user,sys_role,sys_menu,sys_user_role,sys_role_menu,sys_biz_tenant".split(","));
         mpg.setStrategy(sc);
 
         // 包配置

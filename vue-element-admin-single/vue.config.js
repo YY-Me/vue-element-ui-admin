@@ -35,6 +35,28 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      '/dev-api': {
+        // 此处的写法，目的是为了 将 /api 替换成 https://www.baidu.com/
+        target: 'http://127.0.0.1:18080/',
+        // 允许跨域
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/dev-api': ''
+        }
+      },
+      '/prod-api': {
+        // 此处的写法，目的是为了 将 /api 替换成 https://www.baidu.com/
+        target: 'http://192.168.0.72:8051/',
+        // 允许跨域
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/prod-api': ''
+        }
+      }
     }
   },
   configureWebpack: {

@@ -21,6 +21,7 @@
         <mybatis-plus.version>3.3.1</mybatis-plus.version>
         <fastjson.version>1.2.62</fastjson.version>
         <collections4.version>4.4</collections4.version>
+        <jwt.version>0.9.1</jwt.version>
         <knife4j.version>2.0.2</knife4j.version>
     </properties>
 
@@ -29,6 +30,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <dependency>
@@ -79,6 +85,17 @@
             <version>${collections4.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jwt.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+
         <!--swagger-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
@@ -91,6 +108,11 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
             <version>3.3.1.tmp</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+            <version>2.2</version>
         </dependency>
     </dependencies>
 

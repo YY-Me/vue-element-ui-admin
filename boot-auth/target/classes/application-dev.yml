@@ -1,12 +1,12 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/boot-auth?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://127.0.0.1:3306/cun_admin?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: root
-    name: boot-auth-datasource
+    name: cun_admin-datasource
   redis:
-    host: redis
+    host: 127.0.0.1
     port: 6379
     password:
     timeout: 20s
@@ -28,4 +28,4 @@ mybatis-plus:
 #log
 logging:
   level:
-    com.wuliu: debug
+    vip.bblog: debug

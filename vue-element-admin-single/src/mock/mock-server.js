@@ -334,7 +334,7 @@ const systemMenuList = {
     }
   ]
 }
-Mock.mock('/dev-api/auth/login', 'post', login)
+//Mock.mock('/dev-api/auth/login', 'post', login)
 Mock.mock('/dev-api/user/userInfo', 'get', userInfo)
 Mock.mock('/dev-api/auth/logout', 'post', response)
 

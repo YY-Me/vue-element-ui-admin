@@ -3,7 +3,7 @@ package vip.bblog.cunadmin.common.enums;
 import lombok.AllArgsConstructor;
 
 /**
- * @author <a href="1396513066@qq.com">Yu Yong</a>
+ * @author <a href="1396513066@qq.com">yy</a>
  * @version 1.0
  * @date 2019年03月25日 17:54
  * @desc ErrorEnum 业务处理错误码

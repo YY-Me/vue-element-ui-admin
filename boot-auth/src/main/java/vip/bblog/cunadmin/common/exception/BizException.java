@@ -8,7 +8,7 @@ import vip.bblog.cunadmin.common.enums.BizExceptionEnum;
 import java.io.Serializable;
 
 /**
- * @author <a href="1396513066@qq.com">Yu Yong</a>
+ * @author <a href="1396513066@qq.com">yy</a>
  * @version 1.0
  * @date 2020年05月15日 10:45
  * @desc BizException 业务异常处理
