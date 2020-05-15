@@ -1,14 +1,15 @@
-package vip.bblog.boot.auth;
+package vip.bblog.cunadmin;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * @author yy
  * @version 1.0
  * @date 2020-1-23
  */
+@EnableAsync
 @SpringBootApplication
 public class BootAuthApplication {
 
