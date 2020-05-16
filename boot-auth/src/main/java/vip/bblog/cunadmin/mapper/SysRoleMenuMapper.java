@@ -1,4 +1,4 @@
-package vip.bblog.cunadmin.dao;
+package vip.bblog.cunadmin.mapper;
 
 import vip.bblog.cunadmin.entity.SysRoleMenu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

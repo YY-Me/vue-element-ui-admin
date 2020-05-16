@@ -1,4 +1,4 @@
-package vip.bblog.cunadmin.dao;
+package vip.bblog.cunadmin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;

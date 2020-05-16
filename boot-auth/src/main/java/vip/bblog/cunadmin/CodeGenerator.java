@@ -1,14 +1,16 @@
 package vip.bblog.cunadmin;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+import com.baomidou.mybatisplus.generator.InjectionConfig;
+import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CodeGenerator {
@@ -17,8 +19,9 @@ public class CodeGenerator {
         AutoGenerator mpg = new AutoGenerator();
 
         //全局配置
+        String projectPath = System.getProperty("user.dir");
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir(System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "java");
+        gc.setOutputDir(projectPath + "/src/main/java");
         gc.setFileOverride(true);
         gc.setAuthor("yy");
         gc.setEnableCache(false);
@@ -55,20 +58,33 @@ public class CodeGenerator {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("vip.bblog.cunadmin");
+        pc.setParent("vip.bblog.cunadmin.system");
         pc.setEntity("entity");
         pc.setService("service");
         pc.setServiceImpl("service.impl");
         pc.setController("controller");
-        pc.setMapper("dao");
-        pc.setXml("xml");
+        pc.setMapper("mapper");
         mpg.setPackageInfo(pc);
 
-        // 自定义配置
-
-        // 选择 freemarker 引擎需要指定如下加，注意 pom 依赖必须有！
-
-        /*mpg.setTemplateEngine(new FreemarkerTemplateEngine());*/
+        String templatePath = "/templates/mapper.xml.vm";
+        // 自定义输出配置
+        InjectionConfig cfg = new InjectionConfig() {
+            @Override
+            public void initMap() {
+            }
+        };
+        List<FileOutConfig> focList = new ArrayList<>();
+        // 自定义配置会被优先输出
+        focList.add(new FileOutConfig(templatePath) {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
+                return projectPath + "/src/main/resources/mapper/" + pc.getModuleName()
+                        + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
+            }
+        });
+        cfg.setFileOutConfigList(focList);
+        mpg.setCfg(cfg);
         mpg.execute();
     }
 

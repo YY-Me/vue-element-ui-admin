@@ -1,7 +1,7 @@
 package vip.bblog.cunadmin.service.impl;
 
 import vip.bblog.cunadmin.entity.SysBizTenant;
-import vip.bblog.cunadmin.dao.SysBizTenantMapper;
+import vip.bblog.cunadmin.mapper.SysBizTenantMapper;
 import vip.bblog.cunadmin.service.SysBizTenantService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

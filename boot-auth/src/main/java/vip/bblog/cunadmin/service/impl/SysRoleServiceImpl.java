@@ -3,7 +3,7 @@ package vip.bblog.cunadmin.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vip.bblog.cunadmin.dao.SysRoleMapper;
+import vip.bblog.cunadmin.mapper.SysRoleMapper;
 import vip.bblog.cunadmin.entity.SysRole;
 import vip.bblog.cunadmin.service.SysRoleService;
 

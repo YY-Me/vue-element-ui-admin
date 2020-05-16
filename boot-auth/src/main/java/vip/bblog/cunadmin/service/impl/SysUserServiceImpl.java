@@ -8,7 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vip.bblog.cunadmin.common.entity.LoginUser;
-import vip.bblog.cunadmin.dao.SysUserMapper;
+import vip.bblog.cunadmin.mapper.SysUserMapper;
 import vip.bblog.cunadmin.entity.SysMenu;
 import vip.bblog.cunadmin.entity.SysRole;
 import vip.bblog.cunadmin.entity.SysUser;

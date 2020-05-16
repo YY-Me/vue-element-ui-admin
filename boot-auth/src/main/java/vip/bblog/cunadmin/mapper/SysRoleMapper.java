@@ -1,4 +1,4 @@
-package vip.bblog.cunadmin.dao;
+package vip.bblog.cunadmin.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

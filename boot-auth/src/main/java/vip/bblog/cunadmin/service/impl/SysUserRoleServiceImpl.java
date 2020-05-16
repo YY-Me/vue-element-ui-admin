@@ -1,7 +1,7 @@
 package vip.bblog.cunadmin.service.impl;
 
 import vip.bblog.cunadmin.entity.SysUserRole;
-import vip.bblog.cunadmin.dao.SysUserRoleMapper;
+import vip.bblog.cunadmin.mapper.SysUserRoleMapper;
 import vip.bblog.cunadmin.service.SysUserRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

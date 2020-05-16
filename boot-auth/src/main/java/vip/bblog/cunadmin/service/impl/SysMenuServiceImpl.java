@@ -2,8 +2,7 @@ package vip.bblog.cunadmin.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import vip.bblog.cunadmin.entity.SysMenu;
-import vip.bblog.cunadmin.dao.SysMenuMapper;
-import vip.bblog.cunadmin.entity.SysRole;
+import vip.bblog.cunadmin.mapper.SysMenuMapper;
 import vip.bblog.cunadmin.service.SysMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
