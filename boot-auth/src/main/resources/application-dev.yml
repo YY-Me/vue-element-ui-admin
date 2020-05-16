@@ -18,7 +18,7 @@ spring:
         max-wait: -1ms
 #mybatis-plus
 mybatis-plus:
-  mapper-locations: classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:/mapper/*/*Mapper.xml
   configuration:
     mapUnderscoreToCamelCase: true
   global-config:

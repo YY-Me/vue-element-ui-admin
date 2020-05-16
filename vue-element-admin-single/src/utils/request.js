@@ -87,6 +87,9 @@ instance.interceptors.response.use(
     if (response.status === 404) {
       msg = '请求路径未找到'
     }
+    if (response.status === 500) {
+      msg = '服务器异常，请稍后再试'
+    }
     if (response.status === 502) {
       msg = '服务已停止或正在重启中'
     }

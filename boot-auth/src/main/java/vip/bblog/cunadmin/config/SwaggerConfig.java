@@ -49,7 +49,7 @@ public class SwaggerConfig {
                         "其他说明" +
                         "</b>")
                 .version("1.0")
-                .contact(new Contact("yuyong", "http://www.blbbl.vip", "1396513066@qq.com"))
+                .contact(new Contact("yy", "http://www.blbbl.vip", "1396513066@qq.com"))
                 .build();
     }
 

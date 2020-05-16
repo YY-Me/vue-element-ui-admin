@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  */
 @EnableAsync
 @SpringBootApplication
-@MapperScan("vip.bblog.cunadmin.dao")
+@MapperScan(basePackages = {"vip.bblog.cunadmin.modules.*.mapper"})
 public class BootAuthApplication {
 
     public static void main(String[] args) {

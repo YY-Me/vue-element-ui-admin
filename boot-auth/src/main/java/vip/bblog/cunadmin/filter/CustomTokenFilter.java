@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import vip.bblog.cunadmin.common.entity.CustomToken;
 import vip.bblog.cunadmin.common.entity.LoginUser;
-import vip.bblog.cunadmin.service.CustomTokenService;
+import vip.bblog.cunadmin.modules.auth.CustomTokenService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

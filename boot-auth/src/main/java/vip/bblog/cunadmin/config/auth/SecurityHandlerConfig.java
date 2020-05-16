@@ -14,7 +14,7 @@ import vip.bblog.cunadmin.common.entity.BaseResult;
 import vip.bblog.cunadmin.common.entity.CustomToken;
 import vip.bblog.cunadmin.common.entity.LoginUser;
 import vip.bblog.cunadmin.filter.CustomTokenFilter;
-import vip.bblog.cunadmin.service.CustomTokenService;
+import vip.bblog.cunadmin.modules.auth.CustomTokenService;
 import vip.bblog.cunadmin.util.ResponseUtils;
 
 /**
