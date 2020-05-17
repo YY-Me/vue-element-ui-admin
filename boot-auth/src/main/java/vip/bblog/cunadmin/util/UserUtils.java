@@ -20,4 +20,8 @@ public class UserUtils {
         return loginUser;
     }
 
+    public static String getUserName() {
+        return getLoginUser().getUsername();
+    }
+
 }

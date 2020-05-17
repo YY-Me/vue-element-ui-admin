@@ -8,7 +8,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import vip.bblog.cunadmin.annotation.group.Default;
+import vip.bblog.cunadmin.annotation.group.Update;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -23,17 +27,19 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("sys_menu")
-@ApiModel(value="SysMenu对象", description="系统-菜单")
+@ApiModel(value = "SysMenu对象", description = "系统-菜单")
 public class SysMenu implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "menu id")
     @TableId("id")
+    @NotNull(message = "菜单id不能为空", groups = Update.class)
     private Integer id;
 
     @ApiModelProperty(value = "标题")
     @TableField("title")
+    @NotBlank(message = "标题不能为空", groups = {Default.class, Update.class})
     private String title;
 
     @ApiModelProperty(value = "唯一，找路由使用")

@@ -45,7 +45,7 @@ public class BaseResult<T> implements Serializable {
         this(code, msg, null);
     }
 
-    private BaseResult(T data) {
+    public BaseResult(T data) {
         this(SUCCESS_CODE, SUCCESS_MESSAGE, data);
     }
 

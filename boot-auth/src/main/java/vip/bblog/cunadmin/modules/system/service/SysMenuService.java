@@ -2,6 +2,7 @@ package vip.bblog.cunadmin.modules.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import vip.bblog.cunadmin.modules.system.entity.SysMenu;
+import vip.bblog.cunadmin.modules.system.vo.MenuTree;
 
 import java.util.List;
 
@@ -22,4 +23,37 @@ public interface SysMenuService extends IService<SysMenu> {
      */
     List<SysMenu> listByRoleId(List<Integer> roleId);
 
+    /**
+     * 添加菜单
+     * @param menu 信息
+     * @return R
+     */
+    SysMenu addMenu(SysMenu menu);
+
+    /**
+     * 更新菜单信息
+     * @param menu 信息
+     * @return R
+     */
+    SysMenu updateMenu(SysMenu menu);
+
+    /**
+     * 刪除菜单
+     * @param menuId 菜单id
+     */
+    void delete(Integer menuId);
+
+    /**
+     * tree结构查询
+     * @param mType 布局类型
+     * @return R
+     */
+    List<MenuTree> listTreeAll(Integer mType);
+
+    /**
+     * 简单结构查询
+     * @param mType 布局类型
+     * @return R
+     */
+    List<SysMenu> listSimpleAll(Integer mType);
 }

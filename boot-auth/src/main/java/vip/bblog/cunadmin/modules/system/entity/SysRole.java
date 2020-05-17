@@ -45,13 +45,9 @@ public class SysRole implements Serializable {
     @TableField("is_enable")
     private Boolean isEnable;
 
-    @ApiModelProperty(value = "创建人id")
-    @TableField("create_user_id")
-    private Integer createUserId;
-
     @ApiModelProperty(value = "创建人账号")
-    @TableField("create_user_name")
-    private String createUserName;
+    @TableField("update_user_name")
+    private String updateUserName;
 
     @ApiModelProperty(value = "创建时间")
     @TableField("create_time")

@@ -21,6 +21,19 @@ public class PageResult<T> extends BaseResult<T> implements Serializable {
     private static final long serialVersionUID = 3086977781477220031L;
 
     @ApiModelProperty(value = "总记录数")
-    private Long count;
+    private long count;
 
+    public PageResult() {
+        super();
+        this.count = 0;
+    }
+
+    public PageResult(T data, long count) {
+        super(data);
+        this.count = count;
+    }
+
+    public static <T> PageResult<T> success(T data, long count) {
+        return new PageResult<T>(data, count);
+    }
 }
