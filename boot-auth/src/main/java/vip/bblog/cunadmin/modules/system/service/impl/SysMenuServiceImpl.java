@@ -43,8 +43,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      */
     @Override
     public List<SysMenu> listByRoleId(List<Integer> roleId) {
-        List<SysMenu> sysMenus = sysMenuMapper.listByRoleId(roleId);
-        return sysMenus;
+        return sysMenuMapper.listByRoleId(roleId);
     }
 
     /**
