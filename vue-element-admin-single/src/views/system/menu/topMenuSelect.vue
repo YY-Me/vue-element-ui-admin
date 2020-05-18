@@ -56,11 +56,11 @@
       }
     },
     mounted() {
-      this.getTopMenu()
+
     },
     methods: {
       getTopMenu() {
-        menuApi.list().then(res => {
+        menuApi.listTree({ mType: 2 }).then(res => {
           let data = res.data || []
           data.forEach(item => {
             if (item.children.length === 0) {
@@ -68,16 +68,6 @@
             }
           })
         })
-        this.topMenu = [{
-          id: 1,
-          title: '业务系统'
-        }, {
-          id: 2,
-          title: '用户中心'
-        }, {
-          id: 3,
-          title: '系统配置'
-        }]
       },
       selected() {
         this.$emit('selected', { data: this.bindData, value: this.select })

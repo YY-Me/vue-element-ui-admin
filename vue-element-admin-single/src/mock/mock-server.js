@@ -33,14 +33,6 @@ const userInfo = {
       mType: 1,
       children: []
     }, {
-      id: 2,
-      pId: 0,
-      title: '用户中心',
-      path: '/top2',
-      icon: 'user-manage-all',
-      mType: 1,
-      children: []
-    }, {
       id: 3,
       pId: 0,
       title: '系统配置',
@@ -87,7 +79,7 @@ const userInfo = {
     }, {
       id: 2,
       pId: 0,
-      topId: 2,
+      topId: 3,
       title: '系统用户',
       path: '/system',
       icon: 'system-user',
@@ -132,7 +124,7 @@ const userInfo = {
     }, {
       id: 4,
       pId: 0,
-      topId: 2,
+      topId: 1,
       title: '租户管理',
       path: '/tenant',
       icon: 'tenant',
@@ -338,10 +330,10 @@ const systemMenuList = {
 //Mock.mock('/dev-api/auth/logout', 'post', response)
 Mock.mock('/dev-api/user/userInfo', 'get', userInfo)
 
-Mock.mock(RegExp('/dev-api/system/user.*'), 'get', systemUserList)
+//Mock.mock(RegExp('/dev-api/system/user.*'), 'get', systemUserList)
 
 Mock.mock(RegExp('/dev-api/system/tenant.*'), 'get', systemTenantList)
 
-Mock.mock(RegExp('/dev-api/system/menu.*'), 'get', systemMenuList)
+//Mock.mock(RegExp('/dev-api/system/menu.*'), 'get', systemMenuList)
 
 export default Mock

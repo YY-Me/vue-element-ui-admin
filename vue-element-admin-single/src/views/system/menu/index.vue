@@ -2,22 +2,24 @@
   <el-card shadow="always">
     <div>
       <div style="margin-bottom: 10px">
-        <el-radio-group v-model="listQuery.type" @change="getList">
+        <el-radio-group v-model="listQuery.mType" @change="getList">
           <el-radio :label="1">左侧菜单</el-radio>
           <el-radio :label="2">顶部菜单</el-radio>
         </el-radio-group>
-        <span style="font-size: 14px;margin-left: 10px;" v-if="listQuery.type===1" type="primary">
+        <span style="font-size: 14px;margin-left: 10px;" v-if="listQuery.mType===1" type="primary">
           <i class="el-icon-warning"/>
           点击一级标题可设置顶部菜单
         </span>
+        <el-button type="primary" icon="el-icon-circle-plus-outline" size="mini" style="margin-left: 5px;"
+                   v-if="this.tableData.length===0" @click="handleCommand(1,{pId: 0})">增加
+        </el-button>
       </div>
       <el-table :data="tableData" style="width: 100%;" v-loading="loading" element-loading-text="请稍后..."
                 row-key="id" border default-expand-all :max-height="customTableHeight"
                 :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
         <el-table-column prop="title" label="标题" min-width="100" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-input style="width: 50%" size="small" v-model="scope.row.title" v-if="scope.row.edit"
-                      placeholder="标题">
+            <el-input style="width: 50%" size="small" v-model="scope.row.title" v-if="scope.row.edit" placeholder="标题">
               {{scope.row.title}}
             </el-input>
             <span @click="setTopMenu(scope.row)" class="menu-title" v-else-if="scope.row.pId===0&&scope.row.mType===1">
@@ -26,7 +28,14 @@
             <span v-else>{{scope.row.title}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="name" min-width="80" show-overflow-tooltip/>
+        <el-table-column prop="name" label="name" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <el-input size="small" v-model="scope.row.name" v-if="scope.row.edit" placeholder="name">
+              {{scope.row.name}}
+            </el-input>
+            <span v-else>{{scope.row.name}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="path" label="路由地址" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
             <el-input size="small" v-model="scope.row.path" v-if="scope.row.edit" placeholder="路由地址">
@@ -121,7 +130,7 @@
         customTableHeight: 200,
         tableData: [],
         listQuery: {
-          type: 1
+          mType: 1
         }
       }
     },
@@ -146,7 +155,7 @@
     methods: {
       getList() {
         this.loading = true
-        menuApi.list(this.listQuery).then(res => {
+        menuApi.listTree(this.listQuery).then(res => {
           this.tableData = res.data || []
           this.loading = false
         }).catch(() => this.loading = false)
@@ -156,47 +165,32 @@
         this.tempBindData = row
       },
       saveIcon(data) {
-        menuApi.update({ id: data.data.id, topId: data.value }).then(res => {
+        console.log(data)
+        if (data.data.edit) {
           data.data.icon = data.value
-        })
+        } else {
+          menuApi.update({ id: data.data.id, title: data.data.title, icon: data.value }).then(res => {
+            data.data.icon = data.value
+          })
+        }
       },
       edit(row) {
         row.edit = true
         console.log(row)
       },
       save(row) {
+        let data = JSON.parse(JSON.stringify(row))
         if (row.newd && 1 === row.newd) {
-          menuApi.save({
-            pId: row.pId
-          }).then(res => {
+          data.id = null
+          data.mType = this.listQuery.mType
+          menuApi.save(data).then(res => {
             row.edit = false
             row.id = res.data.id
-            row.pId = res.data.pId
-            row.name = res.data.name
-            row.permission = res.data.permission
-            row.path = res.data.path
-            row.icon = res.data.icon
-            row.type = res.data.type
-            row.sort = res.data.sort
+            row.newd = 2
           })
         } else {
-          menuApi.update({
-            id: row.id,
-            title: row.name,
-            path: row.path,
-            sort: row.sort,
-            permission: row.permission,
-            type: row.type
-          }).then(res => {
+          menuApi.update(data).then(res => {
             row.edit = false
-            row.id = res.data.id
-            row.pId = res.data.pId
-            row.name = res.data.name
-            row.permission = res.data.permission
-            row.path = res.data.path
-            row.icon = res.data.icon
-            row.type = res.data.type
-            row.sort = res.data.sort
           })
         }
       },
@@ -207,7 +201,7 @@
         let tempData = {
           'id': new Date().getTime(),
           'pId': row.pId,
-          'name': '菜单名称',
+          'title': '菜单名称',
           'path': '',
           'icon': '',
           'sort': 0,
@@ -221,7 +215,7 @@
         if (type === 1) {
           let parent = this.getNode(row.pId)
           tempData.pId = row.pId
-          tempData.name = '同级菜单'
+          tempData.title = '同级菜单'
           if (row.pId === 0) {
             parent.push(tempData)
           } else {
@@ -230,7 +224,7 @@
         } else {
           row.children = row.children || []
           tempData.pId = row.id
-          tempData.name = '子菜单'
+          tempData.title = '子菜单'
           row.children.push(tempData)
         }
       },

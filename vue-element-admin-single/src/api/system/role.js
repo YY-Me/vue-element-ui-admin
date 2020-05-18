@@ -7,6 +7,11 @@ const roleApi = {
     method: 'get',
     data: { notLoading: true }
   }),
+  getOne: roleId => request({
+    url: `system/role/${roleId}`,
+    method: 'get',
+    data: { notLoading: true }
+  }),
   save: data => request({
     url: `system/role`,
     method: 'post',
@@ -17,8 +22,8 @@ const roleApi = {
     method: 'put',
     data
   }),
-  status: status => request({
-    url: `system/role/status/${status}`,
+  status: (roleId, status) => request({
+    url: `system/role/${roleId}/status/${status}`,
     method: 'put'
   }),
   remove: id => request({

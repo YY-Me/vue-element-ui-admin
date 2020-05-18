@@ -18,6 +18,8 @@ public class MenuTree extends SysMenu implements Serializable {
 
     private static final long serialVersionUID = 6513292876863682735L;
 
+    private Boolean edit = false;
+
     private List<MenuTree> children;
 
 }

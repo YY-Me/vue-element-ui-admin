@@ -1,9 +1,6 @@
 package vip.bblog.cunadmin.modules.system.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -31,7 +28,7 @@ public class SysUser implements Serializable {
     private static final long serialVersionUID=1L;
 
     @ApiModelProperty(value = "主键，内部id")
-    @TableId("id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty(value = "账号")
@@ -41,6 +38,10 @@ public class SysUser implements Serializable {
     @ApiModelProperty(value = "昵称")
     @TableField("nick_name")
     private String nickName;
+
+    @ApiModelProperty(value = "电话")
+    @TableField("phone")
+    private String phone;
 
     @ApiModelProperty(value = "密码")
     @TableField("password")

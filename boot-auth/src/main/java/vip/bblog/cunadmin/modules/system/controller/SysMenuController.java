@@ -29,7 +29,7 @@ import java.util.List;
 @Api(tags = "web:菜单管理")
 @ApiSort(3)
 @RestController
-@RequestMapping("/sys/menu")
+@RequestMapping("/system/menu")
 public class SysMenuController {
 
     @Autowired

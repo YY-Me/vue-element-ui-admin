@@ -20,7 +20,8 @@
 
       </template>
 
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
+      <el-dropdown  class="avatar-container right-menu-item hover-effect" trigger="hover"
+                    :show-timeout="100" :hide-timeout="100">
         <div class="avatar-wrapper">
           <el-avatar size="small" :src="avatar + '?imageView2/1/w/80/h/80'"/>
           <span class="login-user">管理员<i class="el-icon-caret-bottom"/></span>

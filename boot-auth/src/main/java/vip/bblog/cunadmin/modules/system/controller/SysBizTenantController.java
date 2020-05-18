@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-05-15
  */
 @RestController
-@RequestMapping("/sysBizTenant")
+@RequestMapping("/system/tenant")
 public class SysBizTenantController {
 
 }

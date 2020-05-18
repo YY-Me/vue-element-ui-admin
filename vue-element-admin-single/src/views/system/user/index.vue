@@ -29,7 +29,7 @@
         <el-table-column prop="phone" label="电话" min-width="100" show-overflow-tooltip/>
         <el-table-column label="角色" min-width="150" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-tag v-for="r in scope.row.roles" size="mini">{{ r.name }}</el-tag>
+            <el-tag style="margin-left: 2px;" v-for="r in scope.row.roles" size="mini">{{ r.roleName }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="状态" min-width="100">
@@ -44,7 +44,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="createUserName" label="创建人" min-width="100" show-overflow-tooltip/>
+        <el-table-column prop="updateUserName" label="创建人" min-width="100" show-overflow-tooltip/>
         <el-table-column prop="updateTime" label="最近更新时间" min-width="120"/>
         <el-table-column fixed="right" label="操作" width="126">
           <template slot-scope="scope">
@@ -143,8 +143,8 @@
           closeOnClickModal: false,
           type: 'warning'
         }).then(() => {
-          systemUserApi.status(enable).then(res => {
-
+          systemUserApi.status(row.id, enable).then(res => {
+            this.$message.success('操作成功')
           }).catch(() => {
             row.isEnable = !enable
           })
@@ -157,7 +157,7 @@
           row.role = []
           if (row.roles) {
             row.roles.forEach(item => {
-              row.role.push(item.id)
+              row.role.push(item.roleId)
             })
           }
           this.addEditData = JSON.parse(JSON.stringify(row))
@@ -178,6 +178,9 @@
         })
       },
       closeDialog() {
+        if (this.addEditVisible) {
+          this.getList()
+        }
         this.addEditVisible = false
         this.addEditData = {
           id: null,

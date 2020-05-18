@@ -48,14 +48,18 @@ public class CustomTokenServiceJwtImpl implements CustomTokenService {
      * 缓存登录信息，待登录次数限制
      */
     private void cacheLoginUserLimit(LoginUser loginUser) {
+        loginUser.setPassword("******");
         String cacheKey = String.format("%s:%s", loginUser.getUsername(), loginUser.getToken());
         Set<String> keys = redisTemplate.keys(this.getLoginCacheKey(String.format("%s:*", loginUser.getUsername())));
         if (null != keys && keys.size() > maxTokenLimit) {
             String tempKey = keys.iterator().next();
-            redisTemplate.boundValueOps(tempKey).set(loginUser, expireSeconds, TimeUnit.SECONDS);
             LoginUser tempInfo = redisTemplate.boundValueOps(tempKey).get();
             if (null != tempInfo) {
+                loginUser.setToken(tempInfo.getToken());
                 loginUser.setCustomToken(tempInfo.getCustomToken());
+                redisTemplate.boundValueOps(tempKey).set(loginUser, expireSeconds, TimeUnit.SECONDS);
+            } else {
+                redisTemplate.boundValueOps(this.getLoginCacheKey(cacheKey)).set(loginUser, expireSeconds, TimeUnit.SECONDS);
             }
         } else {
             redisTemplate.boundValueOps(this.getLoginCacheKey(cacheKey)).set(loginUser, expireSeconds, TimeUnit.SECONDS);
@@ -66,6 +70,7 @@ public class CustomTokenServiceJwtImpl implements CustomTokenService {
      * 缓存登录信息
      */
     private void cacheLoginUser(LoginUser loginUser) {
+        loginUser.setPassword("******");
         String cacheKey = String.format("%s:%s", loginUser.getUsername(), loginUser.getToken());
         redisTemplate.boundValueOps(this.getLoginCacheKey(cacheKey)).set(loginUser, expireSeconds, TimeUnit.SECONDS);
     }
@@ -87,6 +92,7 @@ public class CustomTokenServiceJwtImpl implements CustomTokenService {
      */
     @Override
     public CustomToken refresh(LoginUser loginUser) {
+        loginUser.setPassword("******");
         String cacheKey = String.format("%s:%s", loginUser.getUsername(), loginUser.getToken());
         LoginUser oldInfo = redisTemplate.boundValueOps(this.getLoginCacheKey(cacheKey)).get();
         Assert.notNull(oldInfo, "获取登录信息失败，请重新登录");

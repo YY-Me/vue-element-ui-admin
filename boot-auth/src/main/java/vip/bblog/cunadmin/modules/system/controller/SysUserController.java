@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import vip.bblog.cunadmin.annotation.group.Default;
 import vip.bblog.cunadmin.annotation.group.Update;
 import vip.bblog.cunadmin.common.entity.BaseResult;
-import vip.bblog.cunadmin.common.entity.PageParams;
 import vip.bblog.cunadmin.common.entity.PageResult;
 import vip.bblog.cunadmin.modules.system.dto.RoleAddDTO;
 import vip.bblog.cunadmin.modules.system.dto.UserAddDTO;
-import vip.bblog.cunadmin.modules.system.entity.SysUser;
+import vip.bblog.cunadmin.modules.system.dto.UserQueryParams;
 import vip.bblog.cunadmin.modules.system.service.SysUserService;
+import vip.bblog.cunadmin.modules.system.vo.SysUserVO;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ import java.util.List;
 @Api(tags = "web:系统用户管理")
 @ApiSort(1)
 @RestController
-@RequestMapping("/sys/user")
+@RequestMapping("/system/user")
 public class SysUserController {
 
     @Autowired
@@ -49,6 +49,13 @@ public class SysUserController {
         return BaseResult.success(sysUserService.updateUser(user));
     }
 
+    @ApiOperation(value = "更新状态")
+    @PutMapping("{userId}/status/{enable}")
+    public BaseResult<RoleAddDTO> updateRole(@PathVariable Integer userId, @PathVariable Boolean enable) {
+        sysUserService.updateRoleStatus(userId, enable);
+        return BaseResult.success();
+    }
+
     @ApiOperation(value = "刪除用户")
     @DeleteMapping("{userId}")
     public BaseResult<RoleAddDTO> deleteUser(@PathVariable Integer userId) {
@@ -58,8 +65,8 @@ public class SysUserController {
 
     @ApiOperation(value = "分页查询")
     @GetMapping
-    public PageResult<List<SysUser>> listPage(PageParams pageParams) {
-        return sysUserService.listPage(pageParams);
+    public PageResult<List<SysUserVO>> listPage(UserQueryParams params) {
+        return sysUserService.listPage(params);
     }
 
     @ApiOperation(value = "根据id查找")

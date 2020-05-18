@@ -33,9 +33,12 @@ public class UserAddDTO implements Serializable {
     @ApiModelProperty(value = "密码")
     private String password;
 
+    @ApiModelProperty(value = "电话")
+    private String phone;
+
     @ApiModelProperty(value = "昵称")
     private String nickName;
 
     @ApiModelProperty(value = "角色")
-    private List<Integer> roleId;
+    private List<Integer> role;
 }

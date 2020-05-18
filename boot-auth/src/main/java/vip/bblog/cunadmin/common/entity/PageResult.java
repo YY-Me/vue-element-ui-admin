@@ -33,6 +33,10 @@ public class PageResult<T> extends BaseResult<T> implements Serializable {
         this.count = count;
     }
 
+    public static <T> PageResult<T> success() {
+        return new PageResult<>();
+    }
+
     public static <T> PageResult<T> success(T data, long count) {
         return new PageResult<T>(data, count);
     }

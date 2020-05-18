@@ -1,8 +1,10 @@
 package vip.bblog.cunadmin.modules.system.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,7 +35,7 @@ public class SysMenu implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "menu id")
-    @TableId("id")
+    @TableId(value = "id", type = IdType.AUTO)
     @NotNull(message = "菜单id不能为空", groups = Update.class)
     private Integer id;
 
@@ -52,10 +54,12 @@ public class SysMenu implements Serializable {
 
     @ApiModelProperty(value = "父类id，默认0（第一级）")
     @TableField("p_id")
+    @JsonProperty("pId")
     private Integer pId;
 
     @ApiModelProperty(value = "顶部id")
     @TableField("t_id")
+    @JsonProperty("tId")
     private Integer tId;
 
     @ApiModelProperty(value = "1：菜单，2：按钮")
@@ -64,6 +68,7 @@ public class SysMenu implements Serializable {
 
     @ApiModelProperty(value = "1：左侧菜单，2：顶部菜单")
     @TableField("m_type")
+    @JsonProperty("mType")
     private Integer mType;
 
     @ApiModelProperty(value = "路径，一级加/，其他不要加/")
@@ -77,6 +82,5 @@ public class SysMenu implements Serializable {
     @ApiModelProperty(value = "排序")
     @TableField("sort")
     private Integer sort;
-
 
 }

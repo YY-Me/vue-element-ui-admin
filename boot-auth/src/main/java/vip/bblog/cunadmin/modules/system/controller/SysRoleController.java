@@ -29,7 +29,7 @@ import java.util.List;
 @Api(tags = "web:角色管理")
 @ApiSort(2)
 @RestController
-@RequestMapping("/sys/role")
+@RequestMapping("/system/role")
 public class SysRoleController {
 
     @Autowired
@@ -46,6 +46,13 @@ public class SysRoleController {
     @PutMapping
     public BaseResult<RoleAddDTO> updateRole(@Validated(Update.class) @RequestBody RoleAddDTO role) {
         return BaseResult.success(sysRoleService.updateRole(role));
+    }
+
+    @ApiOperation(value = "更新状态")
+    @PutMapping("{roleId}/status/{enable}")
+    public BaseResult<RoleAddDTO> updateRole(@PathVariable Integer roleId, @PathVariable Boolean enable) {
+        sysRoleService.updateRoleStatus(roleId, enable);
+        return BaseResult.success();
     }
 
     @ApiOperation(value = "刪除角色")

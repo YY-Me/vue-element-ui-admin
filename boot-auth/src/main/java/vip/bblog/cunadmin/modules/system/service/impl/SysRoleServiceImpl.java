@@ -18,6 +18,7 @@ import vip.bblog.cunadmin.modules.system.entity.SysRoleMenu;
 import vip.bblog.cunadmin.modules.system.mapper.SysRoleMapper;
 import vip.bblog.cunadmin.modules.system.service.SysRoleMenuService;
 import vip.bblog.cunadmin.modules.system.service.SysRoleService;
+import vip.bblog.cunadmin.util.Assert;
 import vip.bblog.cunadmin.util.UserUtils;
 
 import java.util.List;
@@ -59,12 +60,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         entity.setUpdateUserName(UserUtils.getUserName());
         this.save(entity);
         //保存角色-菜单关联
-        this.saveRoleMenu(entity.getId(), role.getMenuId());
+        this.saveRoleMenu(entity.getId(), role.getMenu());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public RoleAddDTO updateRole(RoleAddDTO role) {
+        this.checkSystem(role.getId());
         SysRole entity = new SysRole();
         BeanUtils.copyProperties(role, entity);
         entity.setUpdateUserName(UserUtils.getUserName());
@@ -72,7 +74,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         //删除-添加
         sysRoleMenuService.deleteByRoleId(entity.getId());
         //保存角色-菜单关联
-        this.saveRoleMenu(role.getId(), role.getMenuId());
+        this.saveRoleMenu(role.getId(), role.getMenu());
         return role;
     }
 
@@ -84,6 +86,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(Integer roleId) {
+        this.checkSystem(roleId);
         this.removeById(roleId);
         sysRoleMenuService.deleteByRoleId(roleId);
     }
@@ -116,9 +119,25 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             result = new RoleAddDTO();
             BeanUtils.copyProperties(roleInfo, result);
             List<Integer> menuIds = sysRoleMenuService.getByRoleId(roleId);
-            result.setMenuId(menuIds);
+            result.setMenu(menuIds);
         }
         return BaseResult.success(result);
+    }
+
+    /**
+     * 更新状态
+     *
+     * @param roleId id
+     * @param enable boolean
+     */
+    @Override
+    public void updateRoleStatus(Integer roleId, Boolean enable) {
+        this.checkSystem(roleId);
+        SysRole entity = new SysRole();
+        entity.setId(roleId);
+        entity.setIsEnable(enable);
+        entity.setUpdateUserName(UserUtils.getUserName());
+        this.updateById(entity);
     }
 
     /**
@@ -130,6 +149,18 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             List<SysRoleMenu> list = menuId.stream().map(id -> new SysRoleMenu(roleId, id))
                     .collect(Collectors.toList());
             sysRoleMenuService.saveBatch(list);
+        }
+    }
+
+    /**
+     * 检查是否是系统级别
+     *
+     * @param roleId 角色id
+     */
+    private void checkSystem(Integer roleId) {
+        SysRole info = this.getById(roleId);
+        if (null != info) {
+            Assert.isTrue(!info.getIsSystem(), "系统级别，禁止操作");
         }
     }
 

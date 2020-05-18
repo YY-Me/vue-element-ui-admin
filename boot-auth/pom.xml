@@ -18,7 +18,7 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <mybatis-plus.version>3.3.1</mybatis-plus.version>
+        <mybatis-plus.version>3.3.0</mybatis-plus.version>
         <fastjson.version>1.2.62</fastjson.version>
         <collections4.version>4.4</collections4.version>
         <jwt.version>0.9.1</jwt.version>

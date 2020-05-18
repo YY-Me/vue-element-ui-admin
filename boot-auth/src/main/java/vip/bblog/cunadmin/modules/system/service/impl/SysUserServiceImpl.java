@@ -12,9 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vip.bblog.cunadmin.common.entity.BaseResult;
 import vip.bblog.cunadmin.common.entity.LoginUser;
-import vip.bblog.cunadmin.common.entity.PageParams;
 import vip.bblog.cunadmin.common.entity.PageResult;
 import vip.bblog.cunadmin.modules.system.dto.UserAddDTO;
+import vip.bblog.cunadmin.modules.system.dto.UserQueryParams;
 import vip.bblog.cunadmin.modules.system.entity.SysMenu;
 import vip.bblog.cunadmin.modules.system.entity.SysRole;
 import vip.bblog.cunadmin.modules.system.entity.SysUser;
@@ -24,11 +24,11 @@ import vip.bblog.cunadmin.modules.system.service.SysMenuService;
 import vip.bblog.cunadmin.modules.system.service.SysRoleService;
 import vip.bblog.cunadmin.modules.system.service.SysUserRoleService;
 import vip.bblog.cunadmin.modules.system.service.SysUserService;
+import vip.bblog.cunadmin.modules.system.vo.SysUserVO;
+import vip.bblog.cunadmin.modules.system.vo.UserRoleVO;
 import vip.bblog.cunadmin.util.UserUtils;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -52,6 +52,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private SysUserRoleService sysUserRoleService;
 
     @Autowired
+    private SysUserMapper sysUserMapper;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     /**
@@ -69,8 +72,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             //权限与角色
             List<SysRole> roleList = sysRoleService.listByUserId(info.getId());
             if (CollectionUtils.isNotEmpty(roleList)) {
-                List<SysMenu> menuList = sysMenuService.listByRoleId(roleList.stream()
-                        .map(SysRole::getId).collect(Collectors.toList()));
+                List<Integer> collect1 = roleList.stream()
+                        .map(SysRole::getId).collect(Collectors.toList());
+                List<SysMenu> menuList = sysMenuService.listByRoleId(collect1);
                 if (CollectionUtils.isNotEmpty(menuList)) {
                     Set<String> collect = menuList.stream().map(SysMenu::getPermission).collect(Collectors.toSet());
                     loginUser.setPermission(collect);
@@ -89,6 +93,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void addUser(UserAddDTO user) {
         SysUser entity = new SysUser();
+        BeanUtils.copyProperties(user, entity);
         if (StringUtils.isBlank(user.getPassword())) {
             entity.setPassword(UUID.randomUUID().toString());
             entity.setPassword(passwordEncoder.encode(entity.getPassword()));
@@ -96,11 +101,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (StringUtils.isBlank(user.getNickName())) {
             entity.setNickName(user.getUserName());
         }
-        BeanUtils.copyProperties(user, entity);
         entity.setUpdateUserName(UserUtils.getUserName());
         this.save(entity);
         //保存用户-角色关联
-        this.saveUserRole(entity.getId(), user.getRoleId());
+        this.saveUserRole(entity.getId(), user.getRole());
     }
 
     /**
@@ -120,7 +124,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         this.updateById(entity);
         //保存用户-角色关联
         sysUserRoleService.deleteByUserId(user.getId());
-        this.saveUserRole(user.getId(), user.getRoleId());
+        this.saveUserRole(user.getId(), user.getRole());
         return user;
     }
 
@@ -138,15 +142,49 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     /**
      * 分页查询
      *
-     * @param pageParams 参数
+     * @param params 参数
      * @return R
      */
     @Override
-    public PageResult<List<SysUser>> listPage(PageParams pageParams) {
-        Page<SysUser> page = pageParams.getIPage();
-        LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.<SysUser>lambdaQuery();
-        Page<SysUser> result = this.page(page, queryWrapper);
-        return PageResult.success(result.getRecords(), result.getTotal());
+    public PageResult<List<SysUserVO>> listPage(UserQueryParams params) {
+        Page<SysUser> page = params.getIPage();
+        LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery();
+        if (StringUtils.isNotBlank(params.getNamePhone())) {
+            queryWrapper.likeLeft(SysUser::getUserName, params.getNamePhone());
+        }
+        if (null != params.getIsEnable()) {
+            queryWrapper.eq(SysUser::getIsEnable, params.getIsEnable());
+        }
+        Page<SysUser> pageResult = this.page(page, queryWrapper);
+        List<SysUser> records = pageResult.getRecords();
+        if (CollectionUtils.isNotEmpty(records)) {
+            Map<Integer, List<UserRoleVO>> map = this.mapRoleByUserIds(records.stream().map(SysUser::getId)
+                    .collect(Collectors.toList()));
+            List<SysUserVO> collect = records.stream().map(item -> {
+                SysUserVO sysUserVO = new SysUserVO();
+                BeanUtils.copyProperties(item, sysUserVO);
+                sysUserVO.setRoles(map.get(item.getId()));
+                sysUserVO.setPassword("******");
+                return sysUserVO;
+            }).collect(Collectors.toList());
+            return PageResult.success(collect, pageResult.getTotal());
+        }
+        return PageResult.success();
+    }
+
+    /**
+     * 返回map结构
+     *
+     * @param userIds 用户ids
+     * @return R
+     */
+    private Map<Integer, List<UserRoleVO>> mapRoleByUserIds(List<Integer> userIds) {
+        List<UserRoleVO> list = sysUserMapper.listByUserIds(userIds);
+        if (CollectionUtils.isNotEmpty(list)) {
+            return list.stream().collect(
+                    Collectors.groupingBy(UserRoleVO::getUserId));
+        }
+        return new HashMap<>(0);
     }
 
     /**
@@ -163,9 +201,25 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             result = new UserAddDTO();
             BeanUtils.copyProperties(userInfo, result);
             List<Integer> roleId = sysUserRoleService.getByRoleId(userId);
-            result.setRoleId(roleId);
+            result.setPassword("******");
+            result.setRole(roleId);
         }
         return BaseResult.success(result);
+    }
+
+    /**
+     * 更新状态
+     *
+     * @param userId 用户id
+     * @param enable boolean
+     */
+    @Override
+    public void updateRoleStatus(Integer userId, Boolean enable) {
+        SysUser entity = new SysUser();
+        entity.setId(userId);
+        entity.setIsEnable(enable);
+        entity.setUpdateUserName(UserUtils.getUserName());
+        this.updateById(entity);
     }
 
 

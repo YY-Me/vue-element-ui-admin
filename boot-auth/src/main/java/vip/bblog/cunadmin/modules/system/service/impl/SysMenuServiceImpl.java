@@ -3,6 +3,8 @@ package vip.bblog.cunadmin.modules.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import vip.bblog.cunadmin.modules.system.vo.MenuTree;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -40,7 +43,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      */
     @Override
     public List<SysMenu> listByRoleId(List<Integer> roleId) {
-        return sysMenuMapper.listByRoleId(roleId);
+        List<SysMenu> sysMenus = sysMenuMapper.listByRoleId(roleId);
+        return sysMenus;
     }
 
     /**
@@ -89,19 +93,28 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public List<MenuTree> listTreeAll(Integer mType) {
         List<SysMenu> list = this.listSimpleAll(mType);
-        this.convertToTree(list, 0);
-        return null;
+        return this.convertToTree(list, 0);
     }
 
     /**
      * 转换成树形
      *
-     * @param children 数据
-     * @param pId      pid
+     * @param list 数据
+     * @param pId  pid
      */
-    private void convertToTree(List<SysMenu> children, int pId) {
-        List<SysMenu> parent = new ArrayList<>();
-
+    private List<MenuTree> convertToTree(List<SysMenu> list, Integer pId) {
+        List<MenuTree> result = new ArrayList<>();
+        List<SysMenu> parent = list.stream().filter(item -> item.getPId().equals(pId)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(parent)) {
+            //获取children
+            for (SysMenu menu : parent) {
+                MenuTree tempTree = new MenuTree();
+                BeanUtils.copyProperties(menu, tempTree);
+                tempTree.setChildren(this.convertToTree(list, menu.getId()));
+                result.add(tempTree);
+            }
+        }
+        return result;
     }
 
     /**
@@ -116,6 +129,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         if (null != mType) {
             queryWrapper.eq(SysMenu::getMType, mType);
         }
+        queryWrapper.orderByAsc(SysMenu::getMType).orderByAsc(SysMenu::getSort);
         return this.list(queryWrapper);
     }
 }

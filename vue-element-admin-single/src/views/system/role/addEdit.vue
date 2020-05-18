@@ -23,6 +23,7 @@
 <script>
   import tree from 'vue-giant-tree'
   import roleApi from '@/api/system/role'
+  import menuApi from '@/api/system/menu'
 
   export default {
     name: 'RoleAddEdit',
@@ -52,6 +53,9 @@
             enable: true
           },
           data: {
+            key: {
+              name: 'title'
+            },
             simpleData: {
               enable: true,
               idKey: 'id',
@@ -70,29 +74,40 @@
     },
     watch: {
       dialogVisible: function(val) {
+        if (val) {
+          this.initRole()
+        }
         this.tempDialogVisible = val
       },
       data: function(val) {
         this.tempData = val
-        console.log(val)
       }
     },
     mounted() {
-      this.initRole()
+
     },
     methods: {
       initRole() {
-        this.treePermission = [
-          { id: 1, pId: 0, name: '首页' },
-          { id: 2, pId: 1, name: '控制台' },
-          { id: 3, pId: 0, name: '系统用户' },
-          { id: 4, pId: 3, name: '用户管理' },
-          { id: 5, pId: 0, name: '权限中心' },
-          { id: 6, pId: 5, name: '角色管理' },
-          { id: 7, pId: 5, name: '菜单管理' },
-          { id: 8, pId: 0, name: '租户管理' },
-          { id: 9, pId: 8, name: '租户管理' }
-        ]
+        menuApi.list({}).then(res => {
+          this.treePermission = res.data || []
+          this.selectDefault()
+        })
+      },
+      selectDefault() {
+        if (this.tempData.id) {
+          roleApi.getOne(this.tempData.id).then(res => {
+            let tag = true
+            while (tag) {
+              if (null != this.ztreeObj) {
+                res.data.menu.forEach(item => {
+                  let node = this.ztreeObj.getNodeByParam('id', item)
+                  this.ztreeObj.checkNode(node)
+                })
+                tag = false
+              }
+            }
+          })
+        }
       },
       handleCreated: function(ztreeObj) {
         this.ztreeObj = ztreeObj
@@ -105,21 +120,23 @@
             let subData = {
               name: this.tempData.name,
               description: this.tempData.description,
-              permission: []
+              menu: []
             }
             if (checked && checked.length > 0) {
               checked.forEach(item => {
-                subData.permission.push(item.id)
+                subData.menu.push(item.id)
               })
             }
             if (this.tempData.id) {
               subData.id = this.tempData.id
               roleApi.update(subData).then(res => {
-
+                this.$message.success('更新成功')
+                this.close()
               })
             } else {
               roleApi.save(subData).then(res => {
-
+                this.$message.success('添加成功')
+                this.close()
               })
             }
             console.log(checked)

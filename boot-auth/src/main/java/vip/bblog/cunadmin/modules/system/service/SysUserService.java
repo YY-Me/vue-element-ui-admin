@@ -3,10 +3,11 @@ package vip.bblog.cunadmin.modules.system.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import vip.bblog.cunadmin.common.entity.BaseResult;
 import vip.bblog.cunadmin.common.entity.LoginUser;
-import vip.bblog.cunadmin.common.entity.PageParams;
 import vip.bblog.cunadmin.common.entity.PageResult;
 import vip.bblog.cunadmin.modules.system.dto.UserAddDTO;
+import vip.bblog.cunadmin.modules.system.dto.UserQueryParams;
 import vip.bblog.cunadmin.modules.system.entity.SysUser;
+import vip.bblog.cunadmin.modules.system.vo.SysUserVO;
 
 import java.util.List;
 
@@ -48,10 +49,10 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 分页查询
-     * @param pageParams 参数
+     * @param params 参数
      * @return R
      */
-    PageResult<List<SysUser>> listPage(PageParams pageParams);
+    PageResult<List<SysUserVO>> listPage(UserQueryParams params);
 
     /**
      * 根据id查找
@@ -60,4 +61,10 @@ public interface SysUserService extends IService<SysUser> {
      */
     BaseResult<UserAddDTO> selectById(Integer userId);
 
+    /**
+     * 更新状态
+     * @param userId 用户id
+     * @param enable boolean
+     */
+    void updateRoleStatus(Integer userId, Boolean enable);
 }

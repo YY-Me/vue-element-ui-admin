@@ -1,5 +1,6 @@
 package vip.bblog.cunadmin.modules.system.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -30,7 +31,7 @@ public class SysRole implements Serializable {
     private static final long serialVersionUID=1L;
 
     @ApiModelProperty(value = "角色id")
-    @TableId("id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty(value = "角色名称")
@@ -44,6 +45,10 @@ public class SysRole implements Serializable {
     @ApiModelProperty(value = "是否启用，默认1")
     @TableField("is_enable")
     private Boolean isEnable;
+
+    @ApiModelProperty(value = "系统级别，禁止删除，默认0")
+    @TableField("is_system")
+    private Boolean isSystem;
 
     @ApiModelProperty(value = "创建人账号")
     @TableField("update_user_name")

@@ -63,4 +63,11 @@ public interface SysRoleService extends IService<SysRole> {
      * @return R
      */
     BaseResult<RoleAddDTO> selectById(Integer roleId);
+
+    /**
+     * 更新状态
+     * @param roleId id
+     * @param enable boolean
+     */
+    void updateRoleStatus(Integer roleId, Boolean enable);
 }

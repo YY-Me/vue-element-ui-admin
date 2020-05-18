@@ -37,7 +37,7 @@ public class RoleAddDTO implements Serializable {
     @ApiModelProperty(value = "是否启用，默认1")
     private Boolean isEnable;
 
-    @ApiModelProperty(value = "是否启用，默认1")
-    private List<Integer> menuId;
+    @ApiModelProperty(value = "角色对应的菜单及权限")
+    private List<Integer> menu;
 
 }

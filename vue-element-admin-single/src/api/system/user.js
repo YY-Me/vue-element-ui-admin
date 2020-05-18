@@ -21,8 +21,8 @@ const systemUserApi = {
     url: `system/user/${id}`,
     method: 'delete'
   }),
-  status: status => request({
-    url: `system/user/status/${status}`,
+  status: (userId, status) => request({
+    url: `system/user/${userId}/status/${status}`,
     method: 'put'
   })
 }
