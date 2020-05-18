@@ -72,8 +72,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             //权限与角色
             List<SysRole> roleList = sysRoleService.listByUserId(info.getId());
             if (CollectionUtils.isNotEmpty(roleList)) {
-                List<Integer> collect1 = roleList.stream()
-                        .map(SysRole::getId).collect(Collectors.toList());
+                List<Integer> collect1 = roleList.stream().map(SysRole::getId).collect(Collectors.toList());
                 List<SysMenu> menuList = sysMenuService.listByRoleId(collect1);
                 if (CollectionUtils.isNotEmpty(menuList)) {
                     Set<String> collect = menuList.stream().map(SysMenu::getPermission).collect(Collectors.toSet());

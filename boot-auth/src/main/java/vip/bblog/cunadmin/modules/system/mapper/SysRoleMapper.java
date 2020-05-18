@@ -23,6 +23,6 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
      * @param userId 用户id
      * @return R
      */
-    @Select("SELECT b.* FROM sys_user_role a LEFT JOIN sys_role b ON a.user_id =#{userId} AND b.is_enable=1")
+    @Select("SELECT b.* FROM sys_user_role a LEFT JOIN sys_role b ON a.role_id = b.id WHERE a.user_id AND b.is_enable=1")
     List<SysRole> listByUserId(@Param("userId") Integer userId);
 }
