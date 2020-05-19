@@ -106,7 +106,7 @@
         let topId
         for (let i = 0; i < this.permission_routes.length; i++) {
           if (this.permission_routes[i].path === path) {
-            topId = this.permission_routes[i].topId
+            topId = this.permission_routes[i].tId
           }
         }
         if (topId) {
@@ -120,7 +120,7 @@
       async resolveTopLeftMenu(item) {
         let tempMenu = []
         this.permission_routes.forEach(tempItem => {
-          if (!tempItem.hidden && item.id === tempItem.topId) {
+          if (!tempItem.hidden && item.id === tempItem.tId) {
             tempMenu.push(tempItem)
           }
         })

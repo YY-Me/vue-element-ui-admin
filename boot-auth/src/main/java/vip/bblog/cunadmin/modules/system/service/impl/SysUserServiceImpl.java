@@ -24,6 +24,7 @@ import vip.bblog.cunadmin.modules.system.service.SysMenuService;
 import vip.bblog.cunadmin.modules.system.service.SysRoleService;
 import vip.bblog.cunadmin.modules.system.service.SysUserRoleService;
 import vip.bblog.cunadmin.modules.system.service.SysUserService;
+import vip.bblog.cunadmin.modules.system.vo.MenuTree;
 import vip.bblog.cunadmin.modules.system.vo.SysUserVO;
 import vip.bblog.cunadmin.modules.system.vo.UserRoleVO;
 import vip.bblog.cunadmin.util.UserUtils;
@@ -77,6 +78,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 if (CollectionUtils.isNotEmpty(menuList)) {
                     Set<String> collect = menuList.stream().map(SysMenu::getPermission).collect(Collectors.toSet());
                     loginUser.setPermission(collect);
+                    //将顶部菜单与左侧菜单设置到缓存
+                    List<SysMenu> leftMenu = menuList.stream().filter(item -> 1 == item.getMType())
+                            .collect(Collectors.toList());
+                    List<SysMenu> topMenu = menuList.stream().filter(item -> 2 == item.getMType())
+                            .collect(Collectors.toList());
+                    if (CollectionUtils.isNotEmpty(leftMenu)) {
+                        loginUser.setMenu(this.convertToTree(leftMenu, 0));
+                    }
+                    if (CollectionUtils.isNotEmpty(topMenu)) {
+                        loginUser.setTopMenu(this.convertToTree(topMenu, 0));
+                    }
                 }
             }
             return loginUser;
@@ -98,7 +110,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         }
         if (StringUtils.isBlank(user.getNickName())) {
-            entity.setNickName(user.getUserName());
+            entity.setNickName(user.getUsername());
         }
         entity.setUpdateUserName(UserUtils.getUserName());
         this.save(entity);
@@ -149,7 +161,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Page<SysUser> page = params.getIPage();
         LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery();
         if (StringUtils.isNotBlank(params.getNamePhone())) {
-            queryWrapper.likeLeft(SysUser::getUserName, params.getNamePhone());
+            queryWrapper.likeLeft(SysUser::getUsername, params.getNamePhone());
         }
         if (null != params.getIsEnable()) {
             queryWrapper.eq(SysUser::getIsEnable, params.getIsEnable());
@@ -242,7 +254,28 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     public SysUser getUserByUserName(String username) {
         LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.<SysUser>lambdaQuery()
-                .eq(SysUser::getUserName, username);
+                .eq(SysUser::getUsername, username);
         return this.getOne(queryWrapper, false);
+    }
+
+    /**
+     * 转换成树形
+     *
+     * @param list 数据
+     * @param pId  pid
+     */
+    private List<MenuTree> convertToTree(List<SysMenu> list, Integer pId) {
+        List<MenuTree> result = new ArrayList<>();
+        List<SysMenu> parent = list.stream().filter(item -> item.getPId().equals(pId)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(parent)) {
+            //获取children
+            for (SysMenu menu : parent) {
+                MenuTree tempTree = new MenuTree();
+                BeanUtils.copyProperties(menu, tempTree);
+                tempTree.setChildren(this.convertToTree(list, menu.getId()));
+                result.add(tempTree);
+            }
+        }
+        return result;
     }
 }

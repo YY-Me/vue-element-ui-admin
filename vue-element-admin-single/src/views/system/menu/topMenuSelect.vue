@@ -9,7 +9,7 @@
     @close="close"
   >
     <div style="max-height: 300px;overflow-y: auto">
-      <el-radio-group v-model="select">
+      <el-radio-group v-model="select.id">
         <el-radio v-for="menu in topMenu" :label="menu.id">{{menu.title}}</el-radio>
       </el-radio-group>
     </div>
@@ -41,7 +41,10 @@
       return {
         topMenu: [],
         tempVisible: false,
-        select: null
+        select: {
+          id: null,
+          name: null
+        }
       }
     },
     watch: {
@@ -70,12 +73,20 @@
         })
       },
       selected() {
+        this.topMenu.forEach(item => {
+          if (this.select.id === item.id) {
+            this.select.name = item.title
+          }
+        })
         this.$emit('selected', { data: this.bindData, value: this.select })
         this.close()
       },
       close() {
         this.topMenu = []
-        this.select = null
+        this.select = {
+          id: null,
+          name: null
+        }
         this.$emit('close')
       }
     }

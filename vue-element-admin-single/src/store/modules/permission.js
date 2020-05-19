@@ -11,23 +11,12 @@ const componentList = {
   'systemRole': () => import('@/views/system/role/index'),
   'systemMenu': () => import('@/views/system/menu/index'),
   'tenant': () => import('@/views/tenant/index'),
-  'topTenant': () => import('@/views/tenant/index')
+  'test1': () => import('@/views/test/test1'),
+  'test2': () => import('@/views/test/test2'),
+  'test3': () => import('@/views/test/test3'),
+  'test4': () => import('@/views/test/test4'),
+  'test5': () => import('@/views/test/test5')
 }
-const dynamicRoutes = [
-  {
-    path: '/',
-    component: Layout,
-    redirect: 'dashboard',
-    meta: { icon: 'dashboard', title: '首页' },
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'dashboard',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
-      }
-    ]
-  }]
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -70,6 +59,7 @@ const actions = {
       let accessedRoutes
       accessedRoutes = filterAsyncRoutes(treePermission)
       accessedRoutes = accessedRoutes.concat(asyncRoutes)
+      console.log(accessedRoutes)
       //vuex里面存储动态的路由，以便于菜单显示
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)
@@ -98,7 +88,7 @@ const actions = {
 export function filterAsyncRoutes(routes) {
   const res = []
   routes.forEach(item => {
-    if (item.mType === 0) {
+    if (item.mType === 1) {
       let component = Layout
       if (item.pId !== 0) {
         component = componentList[item.name]
@@ -109,7 +99,7 @@ export function filterAsyncRoutes(routes) {
         meta: { title: item.title, icon: item.icon }
       }
       if (item.pId === 0) {
-        tempRoute.topId = item.topId
+        tempRoute.tId = item.tId
       }
       if (item.name === 'dashboard' && item.pId !== 0) {
         tempRoute.meta.affix = true

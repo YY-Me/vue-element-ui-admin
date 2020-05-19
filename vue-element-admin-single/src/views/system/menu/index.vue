@@ -26,6 +26,7 @@
               {{scope.row.title}}
             </span>
             <span v-else>{{scope.row.title}}</span>
+            <span v-if="scope.row.tName">（{{scope.row.tName}}）</span>
           </template>
         </el-table-column>
         <el-table-column prop="name" label="name" min-width="80" show-overflow-tooltip>
@@ -253,8 +254,10 @@
         }
       },
       saveTopMenu(data) {
-        menuApi.update({ id: data.data.id, topId: data.value }).then(res => {
-          data.data.topId = data.data.value
+        menuApi.update({ id: data.data.id, title: data.data.title, tId: data.value.id }).then(res => {
+          this.$message.success('设置成功')
+          data.data.tId = data.value.id
+          data.data.tName = data.value.name
         })
       },
       setTopMenu(row) {

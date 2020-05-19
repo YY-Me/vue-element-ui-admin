@@ -61,10 +61,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
         const { data } = response
-        const { userName, nickName, avatar, roles, topMenu, menu, permission } = data
+        const { username, nickName, avatar, roles, topMenu, menu, permission } = data
         commit('SET_ROLES', roles)
-        commit('SET_NAME', userName)
-        commit('SET_AVATAR', avatar)
+        commit('SET_NAME', username)
+        commit('SET_AVATAR', avatar || 'https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1246207470,1516116328&fm=111&gp=0.jpg')
         commit('SET_NICK_NAME', nickName)
         commit('SET_MENU', menu)
         commit('SET_TOP_MENU', topMenu)

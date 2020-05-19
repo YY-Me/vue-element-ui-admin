@@ -76,6 +76,21 @@ export const constantRoutes = [
   }
 ]
 
+const dynamicRoutes = [
+  {
+    path: '/',
+    component: Layout,
+    redirect: 'dashboard',
+    meta: { icon: 'dashboard', title: '首页' },
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index'),
+        name: 'dashboard',
+        meta: { title: '首页', icon: 'dashboard', affix: true }
+      }
+    ]
+  }]
 /**
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles

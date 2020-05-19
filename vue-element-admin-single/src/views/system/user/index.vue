@@ -24,7 +24,7 @@
       <el-table ref="tableCot" v-loading="loading" element-loading-text="请稍后..." :data="tableData" border
                 style="width: 100%" :max-height="customTableHeight">
         <el-table-column type="selection" width="40"/>
-        <el-table-column prop="userName" label="用户名" min-width="100" show-overflow-tooltip/>
+        <el-table-column prop="username" label="用户名" min-width="100" show-overflow-tooltip/>
         <el-table-column prop="nickName" label="昵称" min-width="100" show-overflow-tooltip/>
         <el-table-column prop="phone" label="电话" min-width="100" show-overflow-tooltip/>
         <el-table-column label="角色" min-width="150" show-overflow-tooltip>
@@ -184,7 +184,7 @@
         this.addEditVisible = false
         this.addEditData = {
           id: null,
-          userName: '',
+          username: '',
           nickName: '',
           phone: '',
           role: [],

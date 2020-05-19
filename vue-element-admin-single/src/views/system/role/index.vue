@@ -35,7 +35,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="130">
           <template slot-scope="scope">
-            <el-tag v-if="!scope.row.isSystem" style="cursor:pointer;" size="mini" @click="addEdit(scope.row)"><i
+            <el-tag style="cursor:pointer;" size="mini" @click="addEdit(scope.row)"><i
               class="el-icon-edit"/>编辑
             </el-tag>
             <el-tag v-if="!scope.row.isSystem" style="cursor:pointer;" size="mini" type="danger"

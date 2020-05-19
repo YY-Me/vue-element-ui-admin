@@ -8,10 +8,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import vip.bblog.cunadmin.modules.system.vo.MenuTree;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,7 +31,7 @@ public class LoginUser implements UserDetails, Serializable {
     private Integer id;
 
     @ApiModelProperty(value = "账号")
-    private String userName;
+    private String username;
 
     @ApiModelProperty(value = "昵称")
     private String nickName;
@@ -45,6 +47,10 @@ public class LoginUser implements UserDetails, Serializable {
 
     @ApiModelProperty(value = "权限信息")
     private Set<String> permission;
+
+    private List<MenuTree> topMenu;
+
+    private List<MenuTree> menu;
 
     private String token;
 
@@ -73,12 +79,6 @@ public class LoginUser implements UserDetails, Serializable {
             });
         }
         return collection;
-    }
-
-    @Override
-    @JsonIgnore
-    public String getUsername() {
-        return this.userName;
     }
 
     @Override

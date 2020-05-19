@@ -28,7 +28,7 @@ public class UserAddDTO implements Serializable {
 
     @ApiModelProperty(value = "账号")
     @NotBlank(message = "账号", groups = Default.class)
-    private String userName;
+    private String username;
 
     @ApiModelProperty(value = "密码")
     private String password;

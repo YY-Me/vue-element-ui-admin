@@ -66,7 +66,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public RoleAddDTO updateRole(RoleAddDTO role) {
-        this.checkSystem(role.getId());
         SysRole entity = new SysRole();
         BeanUtils.copyProperties(role, entity);
         entity.setUpdateUserName(UserUtils.getUserName());

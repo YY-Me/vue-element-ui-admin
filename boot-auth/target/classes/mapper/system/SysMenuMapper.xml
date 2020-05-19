@@ -11,5 +11,6 @@
             <foreach collection="roleId" item="id" index="index" open="(" close=")" separator=",">
                 #{id}
             </foreach>
+            ORDER BY m_type,sort ASC
     </select>
 </mapper>

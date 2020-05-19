@@ -16,6 +16,8 @@ import vip.bblog.cunadmin.modules.system.vo.MenuTree;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -92,7 +94,25 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public List<MenuTree> listTreeAll(Integer mType) {
         List<SysMenu> list = this.listSimpleAll(mType);
-        return this.convertToTree(list, 0);
+        List<Integer> topIds = list.stream().filter(item -> item.getTId() != 0).map(SysMenu::getTId).collect(Collectors.toList());
+        List<MenuTree> result = this.convertToTree(list, 0);
+        if (CollectionUtils.isNotEmpty(result) && CollectionUtils.isNotEmpty(topIds)) {
+            //查询信息
+            LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.<SysMenu>lambdaQuery()
+                    .in(SysMenu::getId, topIds);
+            List<SysMenu> topInfo = this.list(queryWrapper);
+            if (CollectionUtils.isNotEmpty(topInfo)) {
+                Map<Integer, SysMenu> map = topInfo.stream().collect(
+                        Collectors.toMap(SysMenu::getId, Function.identity(), (key1, key2) -> key2));
+                for (MenuTree temp : result) {
+                    SysMenu top = map.get(temp.getTId());
+                    if (null != top) {
+                        temp.setTName(top.getTitle());
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     /**

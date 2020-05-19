@@ -9,8 +9,8 @@
     @close="close"
   >
     <el-form ref="formName" :rules="rules" :model="tempData" label-width="70px">
-      <el-form-item label="用户名:" prop="userName">
-        <el-input v-model="tempData.userName" :disabled="tempData.id&&null!==tempData.id"/>
+      <el-form-item label="用户名:" prop="username">
+        <el-input v-model="tempData.username" :disabled="tempData.id&&null!==tempData.id"/>
       </el-form-item>
       <el-form-item v-if="!(tempData.id&&null!==tempData.id)" label="密码:" prop="password">
         <el-input v-model="tempData.password"/>
@@ -64,7 +64,7 @@
         roles: [],
         tempData: {
           id: null,
-          userName: '',
+          username: '',
           password: '',
           nickName: '',
           phone: '',
@@ -72,7 +72,7 @@
           isEnable: true
         },
         rules: {
-          userName: [
+          username: [
             { required: true, message: '请输入账号', trigger: 'blur' },
             { min: 3, max: 12, message: '长度在 3 到 12 个字符', trigger: 'blur' }
           ],
@@ -111,7 +111,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const temp = {
-              userName: this.tempData.userName,
+              username: this.tempData.username,
               nickName: this.tempData.nickName,
               phone: this.tempData.phone,
               role: this.tempData.role,

@@ -28,12 +28,10 @@ public class BizException extends RuntimeException implements Serializable {
 
     public BizException(String message) {
         super(message);
-        log.warn(message);
     }
 
     public BizException(BizExceptionEnum bizExceptionEnum) {
         super(bizExceptionEnum.getMessage());
         this.bizExceptionEnum = bizExceptionEnum;
-        log.warn(bizExceptionEnum.getMessage());
     }
 }
