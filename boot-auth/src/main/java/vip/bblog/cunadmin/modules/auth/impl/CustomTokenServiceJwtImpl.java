@@ -101,7 +101,7 @@ public class CustomTokenServiceJwtImpl implements CustomTokenService {
         loginUser.setCustomToken(customToken);
         redisTemplate.boundValueOps(this.getLoginCacheKey(cacheKey)).set(loginUser, expireSeconds, TimeUnit.SECONDS);
         //删除旧的token
-
+        this.deleteToken(oldInfo.getCustomToken().getAccess_token());
         return customToken;
     }
 

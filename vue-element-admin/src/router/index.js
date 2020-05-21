@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import nestedRouter from './modules/nested'
 
 Vue.use(Router)
 
@@ -64,6 +65,7 @@ export const constantRoutes = [
     component: () => import('@/views/error-page/404'),
     hidden: true
   },
+  nestedRouter,
   {
     path: '/401',
     component: () => import('@/views/error-page/401'),
