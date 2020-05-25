@@ -13,7 +13,7 @@
         </div>
         <div class="bullshit__headline">{{ message }}</div>
         <div class="bullshit__info">请检查您输入的URL是否正确，或单击下面的按钮返回首页。</div>
-        <a href="" class="bullshit__return-home">回到首页</a>
+        <a @click="back" class="bullshit__return-home">&nbsp;&nbsp;回到首页（{{time}}）</a>
       </div>
     </div>
   </div>
@@ -23,9 +23,35 @@
 
   export default {
     name: 'Page404',
+    data() {
+      return {
+        timer: null,
+        time: 5
+      }
+    },
     computed: {
       message() {
-        return '您无法进入此页面...'
+        return '您访问的页面是否不存在...'
+      }
+    },
+    mounted() {
+      this.initAutoBack()
+    },
+    methods: {
+      initAutoBack() {
+        this.timer = setInterval(() => {
+          this.time -= 1
+          if (this.time === 0) {
+            clearInterval(this.timer)
+            this.$router.replace('/')
+          }
+        }, 1000)
+      },
+      back() {
+        if (this.timer) {
+          clearInterval(this.timer)
+        }
+        this.$router.replace('/')
       }
     }
   }
