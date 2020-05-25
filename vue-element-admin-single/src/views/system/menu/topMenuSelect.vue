@@ -50,6 +50,9 @@
     watch: {
       bindData: function(val) {
         this.bindData = val
+        if (val) {
+          this.select.id = val.tId
+        }
       },
       dialogVisible: function(val) {
         if (val) {

@@ -7,7 +7,7 @@
             b.*
         FROM
             sys_role_menu a
-            LEFT JOIN sys_menu b ON a.menu_id = b.id where a.role_id IN
+            JOIN sys_menu b ON a.menu_id = b.id where a.role_id IN
             <foreach collection="roleId" item="id" index="index" open="(" close=")" separator=",">
                 #{id}
             </foreach>
