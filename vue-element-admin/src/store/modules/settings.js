@@ -20,7 +20,6 @@ const mutations = {
     if (state.hasOwnProperty(key)) {
       if (key === 'theme' || key === 'menuActiveText') {
         setThemeColor(value)
-        console.log('setcolor')
       }
       state[key] = value
     }

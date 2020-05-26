@@ -31,7 +31,7 @@
     },
     computed: {
       message() {
-        return '您访问的页面是否不存在...'
+        return '您访问的页面似乎不存在...'
       }
     },
     mounted() {

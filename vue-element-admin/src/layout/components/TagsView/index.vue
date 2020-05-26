@@ -15,7 +15,7 @@
         <span style="margin-left: 2px;">
           <svg-icon class-name="svg-icon" v-if="tag.title==='控制台'" icon-class="home"/>
           <svg-icon class-name="svg-icon" v-else icon-class="point"/>
-          {{ tag.title }}{{menuActiveText}}
+          {{ tag.title }}
         </span>
         <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
       </router-link>
