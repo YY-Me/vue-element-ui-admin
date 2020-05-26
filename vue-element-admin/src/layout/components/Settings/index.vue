@@ -5,22 +5,22 @@
 
       <div class="drawer-item">
         <span>主题色</span>
-        <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
+        <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange"/>
       </div>
 
       <div class="drawer-item">
         <span>打开标签-查看</span>
-        <el-switch v-model="tagsView" class="drawer-switch" />
+        <el-switch v-model="tagsView" class="drawer-switch"/>
       </div>
 
       <div class="drawer-item">
         <span>固定头</span>
-        <el-switch v-model="fixedHeader" class="drawer-switch" />
+        <el-switch v-model="fixedHeader" class="drawer-switch"/>
       </div>
 
       <div class="drawer-item">
         <span>侧边栏徽标</span>
-        <el-switch v-model="sidebarLogo" class="drawer-switch" />
+        <el-switch v-model="sidebarLogo" class="drawer-switch"/>
       </div>
 
     </div>
@@ -28,81 +28,91 @@
 </template>
 
 <script>
-import ThemePicker from '@/components/ThemePicker'
+  import ThemePicker from '@/components/ThemePicker'
 
-export default {
-  components: { ThemePicker },
-  data() {
-    return {}
-  },
-  computed: {
-    fixedHeader: {
-      get() {
-        return this.$store.state.settings.fixedHeader
+  export default {
+    components: { ThemePicker },
+    data() {
+      return {}
+    },
+    computed: {
+      fixedHeader: {
+        get() {
+          return this.$store.state.settings.fixedHeader
+        },
+        set(val) {
+          this.$store.dispatch('settings/changeSetting', {
+            key: 'fixedHeader',
+            value: val
+          })
+        }
       },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'fixedHeader',
-          value: val
-        })
+      tagsView: {
+        get() {
+          return this.$store.state.settings.tagsView
+        },
+        set(val) {
+          this.$store.dispatch('settings/changeSetting', {
+            key: 'tagsView',
+            value: val
+          })
+        }
+      },
+      sidebarLogo: {
+        get() {
+          return this.$store.state.settings.sidebarLogo
+        },
+        set(val) {
+          this.$store.dispatch('settings/changeSetting', {
+            key: 'sidebarLogo',
+            value: val
+          })
+        }
+      },
+      menuActiveText() {
+        return this.$store.state.settings.dynamicThemeColor
       }
     },
-    tagsView: {
-      get() {
-        return this.$store.state.settings.tagsView
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'tagsView',
-          value: val
-        })
-      }
+    mounted() {
+      this.themeChange(this.menuActiveText)
     },
-    sidebarLogo: {
-      get() {
-        return this.$store.state.settings.sidebarLogo
-      },
-      set(val) {
+    methods: {
+      themeChange(val) {
         this.$store.dispatch('settings/changeSetting', {
-          key: 'sidebarLogo',
+          key: 'theme',
+          value: val
+        })
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'menuActiveText',
           value: val
         })
       }
-    }
-  },
-  methods: {
-    themeChange(val) {
-      this.$store.dispatch('settings/changeSetting', {
-        key: 'theme',
-        value: val
-      })
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
-.drawer-container {
-  padding: 24px;
-  font-size: 14px;
-  line-height: 1.5;
-  word-wrap: break-word;
-
-  .drawer-title {
-    margin-bottom: 12px;
-    color: rgba(0, 0, 0, .85);
+  .drawer-container {
+    padding: 24px;
     font-size: 14px;
-    line-height: 22px;
-  }
+    line-height: 1.5;
+    word-wrap: break-word;
 
-  .drawer-item {
-    color: rgba(0, 0, 0, .65);
-    font-size: 14px;
-    padding: 12px 0;
-  }
+    .drawer-title {
+      margin-bottom: 12px;
+      color: rgba(0, 0, 0, .85);
+      font-size: 14px;
+      line-height: 22px;
+    }
 
-  .drawer-switch {
-    float: right
+    .drawer-item {
+      color: rgba(0, 0, 0, .65);
+      font-size: 14px;
+      padding: 12px 0;
+    }
+
+    .drawer-switch {
+      float: right
+    }
   }
-}
 </style>

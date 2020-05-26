@@ -39,7 +39,6 @@ export default {
   },
   watch: {
     show(value, oldValue) {
-      console.log(value, oldValue)
       if (value && !this.clickNotClose) {
         this.addEventClick()
       }

@@ -254,11 +254,11 @@ const systemTenantList = {
     }
   ]
 }
-Mock.mock('/dev-api/auth/login', 'post', login)
-Mock.mock('/dev-api/user/userInfo', 'get', userInfo)
-Mock.mock('/dev-api/auth/logout', 'post', response)
+//Mock.mock('/dev-api/auth/login', 'post', login)
+//Mock.mock('/dev-api/user/userInfo', 'get', userInfo)
+//Mock.mock('/dev-api/auth/logout', 'post', response)
 
-Mock.mock(RegExp('/dev-api/system/user.*'), 'get', systemUserList)
+//Mock.mock(RegExp('/dev-api/system/user.*'), 'get', systemUserList)
 
 Mock.mock(RegExp('/dev-api/system/tenant.*'), 'get', systemTenantList)
 

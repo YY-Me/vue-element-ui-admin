@@ -8,7 +8,7 @@
         :background-color="variables.menuBg"
         :text-color="variables.menuText"
         :unique-opened="false"
-        :active-text-color="variables.menuActiveText"
+        :active-text-color="menuActiveText"
         :collapse-transition="false"
         mode="vertical"
       >
@@ -31,6 +31,9 @@ export default {
       'permission_routes',
       'sidebar'
     ]),
+    menuActiveText() {
+      return this.$store.state.settings.menuActiveText
+    },
     activeMenu() {
       const route = this.$route
       const { meta, path } = route

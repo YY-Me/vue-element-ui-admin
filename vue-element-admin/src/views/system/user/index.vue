@@ -1,6 +1,6 @@
 <template>
   <el-card shadow="always">
-    <div slot="header" ref="sysUserSearchHeader">
+    <div slot="header" ref="topHeader">
       <el-form :inline="true" :model="listQuery">
         <el-form-item label="用户名:">
           <el-input style="width: 160px" v-model="listQuery.namePhone" placeholder="用户名/电话" clearable/>
@@ -24,12 +24,12 @@
       <el-table ref="tableCot" v-loading="loading" element-loading-text="请稍后..." :data="tableData" border
                 style="width: 100%" :max-height="customTableHeight">
         <el-table-column type="selection" width="40"/>
-        <el-table-column prop="userName" label="用户名" min-width="100" show-overflow-tooltip/>
+        <el-table-column prop="username" label="用户名" min-width="100" show-overflow-tooltip/>
         <el-table-column prop="nickName" label="昵称" min-width="100" show-overflow-tooltip/>
         <el-table-column prop="phone" label="电话" min-width="100" show-overflow-tooltip/>
         <el-table-column label="角色" min-width="150" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-tag v-for="r in scope.row.roles" size="mini">{{ r.name }}</el-tag>
+            <el-tag style="margin-left: 2px;" v-for="r in scope.row.roles" size="mini">{{ r.roleName }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="状态" min-width="100">
@@ -44,7 +44,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="createUserName" label="创建人" min-width="100" show-overflow-tooltip/>
+        <el-table-column prop="updateUserName" label="创建人" min-width="100" show-overflow-tooltip/>
         <el-table-column prop="updateTime" label="最近更新时间" min-width="120"/>
         <el-table-column fixed="right" label="操作" width="126">
           <template slot-scope="scope">
@@ -103,8 +103,9 @@
       this.getList()
       let that = this
       window.onresize = () => {
-        let tempHeaderHeight = this.$refs.sysUserSearchHeader.offsetHeight + 37
-        let tempHeight = document.body.clientHeight - (200 + tempHeaderHeight)
+        //37是box的header的padding，70=(60+10)是顶部的高度
+        let tempHeaderHeight = this.$refs.topHeader.offsetHeight + 37 + 70
+        let tempHeight = document.body.clientHeight - (106 + tempHeaderHeight)
         if (tempHeight < 300) {
           tempHeight = 300
         }
@@ -142,8 +143,8 @@
           closeOnClickModal: false,
           type: 'warning'
         }).then(() => {
-          systemUserApi.status(enable).then(res => {
-
+          systemUserApi.status(row.id, enable).then(res => {
+            this.$message.success('操作成功')
           }).catch(() => {
             row.isEnable = !enable
           })
@@ -156,7 +157,7 @@
           row.role = []
           if (row.roles) {
             row.roles.forEach(item => {
-              row.role.push(item.id)
+              row.role.push(item.roleId)
             })
           }
           this.addEditData = JSON.parse(JSON.stringify(row))
@@ -177,10 +178,13 @@
         })
       },
       closeDialog() {
+        if (this.addEditVisible) {
+          this.getList()
+        }
         this.addEditVisible = false
         this.addEditData = {
           id: null,
-          userName: '',
+          username: '',
           nickName: '',
           phone: '',
           role: [],

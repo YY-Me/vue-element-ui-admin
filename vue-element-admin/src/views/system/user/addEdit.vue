@@ -9,8 +9,11 @@
     @close="close"
   >
     <el-form ref="formName" :rules="rules" :model="tempData" label-width="70px">
-      <el-form-item label="用户名:" prop="userName">
-        <el-input v-model="tempData.userName" :disabled="tempData.id&&null!==tempData.id"/>
+      <el-form-item label="用户名:" prop="username">
+        <el-input v-model="tempData.username" :disabled="tempData.id&&null!==tempData.id"/>
+      </el-form-item>
+      <el-form-item v-if="!(tempData.id&&null!==tempData.id)" label="密码:" prop="password">
+        <el-input v-model="tempData.password"/>
       </el-form-item>
       <el-form-item label="昵称:">
         <el-input v-model="tempData.nickName"/>
@@ -41,6 +44,7 @@
 
 <script>
   import systemUserApi from '@/api/system/user'
+  import roleApi from '@/api/system/role'
 
   export default {
     name: 'UserAddEdit',
@@ -60,22 +64,30 @@
         roles: [],
         tempData: {
           id: null,
-          userName: '',
+          username: '',
+          password: '',
           nickName: '',
           phone: '',
           role: [],
           isEnable: true
         },
         rules: {
-          userName: [
+          username: [
             { required: true, message: '请输入账号', trigger: 'blur' },
             { min: 3, max: 12, message: '长度在 3 到 12 个字符', trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
           ]
         }
       }
     },
     watch: {
       dialogVisible: function(val) {
+        if (val) {
+          this.initRoles()
+        }
         this.tempVisible = val
       },
       data: function(val) {
@@ -83,7 +95,7 @@
       }
     },
     mounted() {
-      this.initRoles()
+
     },
     methods: {
       close() {
@@ -91,24 +103,15 @@
         this.$emit('close')
       },
       initRoles() {
-        this.roles = [{
-          id: 1,
-          name: '管理员'
-        },
-          {
-            id: 2,
-            name: '操作員'
-          },
-          {
-            id: 3,
-            name: '测试'
-          }]
+        roleApi.list({ pageSize: 200 }).then(res => {
+          this.roles = res.data || []
+        })
       },
       saveUpdate(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const temp = {
-              userName: this.tempData.userName,
+              username: this.tempData.username,
               nickName: this.tempData.nickName,
               phone: this.tempData.phone,
               role: this.tempData.role,
@@ -117,13 +120,15 @@
             if (this.tempData.id) {
               temp.id = this.tempData.id
               systemUserApi.update(temp).then(res => {
-
+                this.$message.success('更新成功')
+                this.close()
               }).catch(() => {
 
               })
             } else {
               systemUserApi.save(temp).then(res => {
-
+                this.$message.success('添加成功')
+                this.$emit('close')
               }).catch(() => {
 
               })

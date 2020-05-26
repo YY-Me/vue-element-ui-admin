@@ -1,20 +1,30 @@
 <template>
   <el-card shadow="always">
     <div>
-      <el-table :data="tableData" style="width: 100%;"
-                row-key="id" border default-expand-all
-                :max-height="customTableHeight"
+      <el-table :data="tableData" style="width: 100%;" v-loading="loading" element-loading-text="请稍后..."
+                row-key="id" border default-expand-all :max-height="customTableHeight"
                 :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-        <el-table-column prop="name" label="名称" min-width="150" show-overflow-tooltip>
+        <el-table-column prop="title" label="标题" min-width="100" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-input style="width: 50%" size="small" v-model="scope.row.name" v-if="scope.row.edit"
-                      placeholder="名称">
+            <el-input style="width: 50%" size="small" v-model="scope.row.title" v-if="scope.row.edit" placeholder="标题">
+              {{scope.row.title}}
+            </el-input>
+            <span @click="setTopMenu(scope.row)" class="menu-title" v-else-if="scope.row.pId===0&&scope.row.mType===1">
+              {{scope.row.title}}
+            </span>
+            <span v-else>{{scope.row.title}}</span>
+            <span v-if="scope.row.tName">（{{scope.row.tName}}）</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="name" label="name" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <el-input size="small" v-model="scope.row.name" v-if="scope.row.edit" placeholder="name">
               {{scope.row.name}}
             </el-input>
             <span v-else>{{scope.row.name}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="path" label="路由地址" min-width="150" show-overflow-tooltip>
+        <el-table-column prop="path" label="路由地址" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
             <el-input size="small" v-model="scope.row.path" v-if="scope.row.edit" placeholder="路由地址">
               {{scope.row.path}}
@@ -33,7 +43,7 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column prop="sort" label="序号" min-width="110">
+        <el-table-column prop="sort" label="序号" min-width="60">
           <template slot-scope="scope">
             <el-input-number v-model="scope.row.sort" size="small" controls-position="right" placeholder="序号"
                              v-if="scope.row.edit" :min="0" style="width: 90px"/>
@@ -85,133 +95,37 @@
           </template>
         </el-table-column>
       </el-table>
-      <icon
-        :dialog-visible="iconVisible"
-        :bind-data="iconBindData"
-        @selected="saveIcon"
-        @close="closeIconDialog"
-      />
+      <icon :dialog-visible="iconVisible" :bind-data="tempBindData" @selected="saveIcon" @close="closeTempDialog"/>
+      <top-menu-select :dialog-visible="topMenuVisible" :bind-data="tempBindData" @selected="saveTopMenu"
+                       @close="closeTempDialog"/>
     </div>
   </el-card>
 </template>
 <script>
   import icon from '@/views/system/menu/icon'
+  import topMenuSelect from '@/views/system/menu/topMenuSelect'
   import menuApi from '@/api/system/menu'
 
   export default {
-    name: 'systemMenu',
-    components: { icon },
+    title: 'systemMenu',
+    components: { icon, topMenuSelect },
     data() {
       return {
+        loading: false,
         iconVisible: false,
-        iconBindData: null,
+        topMenuVisible: false,
+        tempBindData: null,
         customTableHeight: 200,
-        tableData: [{
-          id: 1,
-          pId: 0,
-          name: '首页',
-          path: '/',
-          icon: 'dashboard',
-          type: 1,
-          sort: 0,
-          permission: 'index',
-          edit: false,
-          children: [{
-            id: 11,
-            pId: 1,
-            name: '控制台',
-            path: 'dashboard',
-            icon: 'dashboard',
-            type: 1,
-            permission: 'dashboard',
-            edit: false,
-            sort: 0,
-            children: []
-          }]
-        }, {
-          id: 2,
-          pId: 0,
-          name: '系统用户',
-          permission: 'sys:user:index',
-          path: '/system',
-          icon: 'system-user',
-          type: 1,
-          sort: 0,
-          edit: false,
-          children: [{
-            id: 21,
-            pId: 2,
-            name: '用户管理',
-            permission: 'sys:user:list',
-            path: 'user',
-            icon: 'system-user',
-            type: 1,
-            edit: false,
-            sort: 0,
-            children: []
-          }]
-        }, {
-          id: 3,
-          pId: 0,
-          name: '权限中心',
-          path: '/permission',
-          icon: 'permission',
-          permission: 'sys:permission:index',
-          type: 1,
-          sort: 0,
-          edit: false,
-          children: [{
-            id: 31,
-            pId: 3,
-            name: '角色管理',
-            permission: 'sys:role',
-            path: 'role',
-            icon: 'role',
-            type: 1,
-            edit: false,
-            sort: 0,
-            children: []
-          }, {
-            id: 32,
-            pId: 3,
-            name: '菜单管理',
-            permission: 'sys:menu',
-            path: 'menu',
-            icon: 'menu',
-            type: 1,
-            edit: false,
-            sort: 0,
-            children: []
-          }]
-        }, {
-          id: 4,
-          pId: 0,
-          name: '租户管理',
-          permission: 'sys:tenant:index',
-          path: '/tenant',
-          icon: 'tenant',
-          type: 1,
-          sort: 0,
-          edit: false,
-          children: [{
-            id: 41,
-            pId: 4,
-            name: '租户管理',
-            permission: 'sys:tenant:list',
-            path: 'tenant',
-            icon: 'tenant',
-            type: 1,
-            edit: false,
-            sort: 0,
-            children: []
-          }]
-        }]
+        tableData: [],
+        listQuery: {
+          mType: 1
+        }
       }
     },
     mounted() {
       let that = this
       window.onresize = () => {
-        let tempHeight = document.body.clientHeight - (150)
+        let tempHeight = document.body.clientHeight - (122)
         if (tempHeight < 300) {
           tempHeight = 300
         }
@@ -221,57 +135,50 @@
         const resizeEvent = new Event('resize')
         window.dispatchEvent(resizeEvent)
       }, 100)
+      this.getList()
     },
     destroyed() {
       window.onresize = null
     },
     methods: {
+      getList() {
+        this.loading = true
+        menuApi.listTree(this.listQuery).then(res => {
+          this.tableData = res.data || []
+          this.loading = false
+        }).catch(() => this.loading = false)
+      },
       editIcon(row) {
         this.iconVisible = true
-        this.iconBindData = row
+        this.tempBindData = row
       },
       saveIcon(data) {
-        menuApi.update({ id: data.id, icon: data.value }).then(res => {
+        console.log(data)
+        if (data.data.edit) {
           data.data.icon = data.value
-        })
+        } else {
+          menuApi.update({ id: data.data.id, title: data.data.title, icon: data.value }).then(res => {
+            data.data.icon = data.value
+          })
+        }
       },
       edit(row) {
         row.edit = true
         console.log(row)
       },
       save(row) {
+        let data = JSON.parse(JSON.stringify(row))
         if (row.newd && 1 === row.newd) {
-          menuApi.save({
-            pId: row.pId
-          }).then(res => {
+          data.id = null
+          data.mType = this.listQuery.mType
+          menuApi.save(data).then(res => {
             row.edit = false
             row.id = res.data.id
-            row.pId = res.data.pId
-            row.name = res.data.name
-            row.permission = res.data.permission
-            row.path = res.data.path
-            row.icon = res.data.icon
-            row.type = res.data.type
-            row.sort = res.data.sort
+            row.newd = 2
           })
         } else {
-          menuApi.update({
-            id: row.id,
-            name: row.name,
-            path: row.path,
-            sort: row.sort,
-            permission: row.permission,
-            type: row.type
-          }).then(res => {
+          menuApi.update(data).then(res => {
             row.edit = false
-            row.id = res.data.id
-            row.pId = res.data.pId
-            row.name = res.data.name
-            row.permission = res.data.permission
-            row.path = res.data.path
-            row.icon = res.data.icon
-            row.type = res.data.type
-            row.sort = res.data.sort
           })
         }
       },
@@ -282,7 +189,7 @@
         let tempData = {
           'id': new Date().getTime(),
           'pId': row.pId,
-          'name': '菜单名称',
+          'title': '菜单名称',
           'path': '',
           'icon': '',
           'sort': 0,
@@ -296,7 +203,7 @@
         if (type === 1) {
           let parent = this.getNode(row.pId)
           tempData.pId = row.pId
-          tempData.name = '同级菜单'
+          tempData.title = '同级菜单'
           if (row.pId === 0) {
             parent.push(tempData)
           } else {
@@ -305,13 +212,14 @@
         } else {
           row.children = row.children || []
           tempData.pId = row.id
-          tempData.name = '子菜单'
+          tempData.title = '子菜单'
           row.children.push(tempData)
         }
       },
-      closeIconDialog() {
+      closeTempDialog() {
         this.iconVisible = false
-        this.iconBindData = null
+        this.topMenuVisible = false
+        this.tempBindData = null
       },
       getNode(id) {
         if (id === 0) {
@@ -331,7 +239,25 @@
             }
           }
         }
+      },
+      saveTopMenu(data) {
+        menuApi.update({ id: data.data.id, title: data.data.title, tId: data.value.id }).then(res => {
+          this.$message.success('设置成功')
+          data.data.tId = data.value.id
+          data.data.tName = data.value.name
+        })
+      },
+      setTopMenu(row) {
+        this.tempBindData = row
+        this.topMenuVisible = true
       }
     }
   }
 </script>
+<style lang="scss" scoped>
+  .menu-title {
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+</style>

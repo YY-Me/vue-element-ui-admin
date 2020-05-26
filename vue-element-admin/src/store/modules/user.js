@@ -7,6 +7,7 @@ const state = {
   userName: '',
   nickName: '',
   avatar: '',
+  topMenu: [],
   menu: [],
   permission: [],
   roles: []
@@ -31,6 +32,9 @@ const mutations = {
   SET_MENU: (state, menu) => {
     state.menu = menu
   },
+  SET_TOP_MENU: (state, topMenu) => {
+    state.topMenu = topMenu
+  },
   SET_PERMISSION: (state, permission) => {
     state.permission = permission
   }
@@ -41,9 +45,8 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ username: username.trim(), password: password, notLoading: true }).then(response => {
         const { data } = response
-        console.log(data)
         commit('SET_TOKEN', data.access_token)
         setToken(data.access_token)
         resolve()
@@ -58,12 +61,13 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
         const { data } = response
-        const { userName, nickName, avatar, roles, menu, permission } = data
+        const { username, nickName, avatar, roles, topMenu, menu, permission } = data
         commit('SET_ROLES', roles)
-        commit('SET_NAME', userName)
-        commit('SET_AVATAR', avatar)
+        commit('SET_NAME', username)
+        commit('SET_AVATAR', avatar || 'https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1246207470,1516116328&fm=111&gp=0.jpg')
         commit('SET_NICK_NAME', nickName)
         commit('SET_MENU', menu)
+        commit('SET_TOP_MENU', topMenu)
         commit('SET_PERMISSION', permission)
         resolve(data)
       }).catch(error => {
@@ -78,7 +82,11 @@ const actions = {
       logout(state.access_token).then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
+        commit('SET_NAME', '')
+        commit('SET_AVATAR', '')
+        commit('SET_NICK_NAME', '')
         commit('SET_MENU', [])
+        commit('SET_TOP_MENU', [])
         commit('SET_PERMISSION', [])
         removeToken()
         resetRouter()
@@ -97,6 +105,12 @@ const actions = {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
+      commit('SET_NAME', '')
+      commit('SET_AVATAR', '')
+      commit('SET_NICK_NAME', '')
+      commit('SET_MENU', [])
+      commit('SET_TOP_MENU', [])
+      commit('SET_PERMISSION', [])
       removeToken()
       resolve()
     })

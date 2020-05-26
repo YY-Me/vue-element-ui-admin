@@ -7,6 +7,11 @@ const menuApi = {
     method: 'get',
     data: { notLoading: true }
   }),
+  listTree: params => request({
+    url: `system/menu/tree?${Qs.stringify(params)}`,
+    method: 'get',
+    data: { notLoading: true }
+  }),
   save: data => request({
     url: `system/menu`,
     method: 'post',

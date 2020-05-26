@@ -29,4 +29,11 @@ public interface SysUserRoleService extends IService<SysUserRole> {
      * @return R
      */
     List<Integer> getByRoleId(Integer userId);
+
+    /**
+     * 根据角色id删除关联
+     * @param roleId 角色id
+     */
+    void deleteByRoleId(Integer roleId);
+
 }

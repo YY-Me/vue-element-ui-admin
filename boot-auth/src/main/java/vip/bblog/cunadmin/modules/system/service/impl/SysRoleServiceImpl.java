@@ -18,6 +18,7 @@ import vip.bblog.cunadmin.modules.system.entity.SysRoleMenu;
 import vip.bblog.cunadmin.modules.system.mapper.SysRoleMapper;
 import vip.bblog.cunadmin.modules.system.service.SysRoleMenuService;
 import vip.bblog.cunadmin.modules.system.service.SysRoleService;
+import vip.bblog.cunadmin.modules.system.service.SysUserRoleService;
 import vip.bblog.cunadmin.util.Assert;
 import vip.bblog.cunadmin.util.UserUtils;
 
@@ -37,6 +38,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Autowired
     private SysRoleMenuService sysRoleMenuService;
+
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
 
     @Autowired
     private SysRoleMapper sysRoleMapper;
@@ -88,6 +92,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         this.checkSystem(roleId);
         this.removeById(roleId);
         sysRoleMenuService.deleteByRoleId(roleId);
+        sysUserRoleService.deleteByRoleId(roleId);
     }
 
     /**

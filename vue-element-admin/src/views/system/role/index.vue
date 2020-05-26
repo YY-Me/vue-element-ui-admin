@@ -1,6 +1,6 @@
 <template>
   <el-card shadow="always">
-    <div slot="header" ref="roleSearchHeader">
+    <div slot="header" ref="topHeader">
       <el-form :inline="true" :model="listQuery">
         <el-form-item label="角色名:">
           <el-input style="width: 160px" v-model="listQuery.name" placeholder="角色名" clearable/>
@@ -19,13 +19,13 @@
         <el-table-column type="index" width="40"/>
         <el-table-column prop="name" label="角色名" min-width="120" show-overflow-tooltip/>
         <el-table-column prop="description" label="角色描述" min-width="120" show-overflow-tooltip/>
-        <el-table-column prop="createUserName" label="创建人" min-width="120" show-overflow-tooltip/>
+        <el-table-column prop="updateUserName" label="创建人" min-width="120" show-overflow-tooltip/>
         <el-table-column prop="updateTime" label="最近更新时间" min-width="120" show-overflow-tooltip/>
         <el-table-column label="状态" min-width="100">
           <template slot-scope="scope">
-            <el-tooltip :content="scope.row.enable?'已启用':'已禁用'" placement="top">
+            <el-tooltip :content="scope.row.isEnable?'已启用':'已禁用'" placement="top">
               <el-switch
-                v-model="scope.row.enable"
+                v-model="scope.row.isEnable"
                 :active-value="true"
                 :inactive-value="false"
                 @change="switchChange(scope.row)"
@@ -35,10 +35,10 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="130">
           <template slot-scope="scope">
-            <el-tag v-if="!scope.row.system" style="cursor:pointer;" size="mini" @click="addEdit(scope.row)"><i
+            <el-tag style="cursor:pointer;" size="mini" @click="addEdit(scope.row)"><i
               class="el-icon-edit"/>编辑
             </el-tag>
-            <el-tag v-if="!scope.row.system" style="cursor:pointer;" size="mini" type="danger"
+            <el-tag v-if="!scope.row.isSystem" style="cursor:pointer;" size="mini" type="danger"
                     @click="remove(scope.row)"><i
               class="el-icon-delete"/>删除
             </el-tag>
@@ -82,23 +82,7 @@
         },
         dialogVisible: false,
         total: 0,
-        roleData: [{
-          id: 1,
-          name: '顶级管理员',
-          description: '开发人员专用',
-          createUserName: 'admin',
-          updateTime: '2020-12-31',
-          enable: true,
-          system: true
-        }, {
-          id: 2,
-          name: '管理员',
-          description: '管理员',
-          createUserName: 'admin',
-          updateTime: '2019-12-31',
-          enable: true,
-          system: false
-        }],
+        roleData: [],
         oneData: {
           id: null,
           name: null,
@@ -112,8 +96,9 @@
       this.getList()
       let that = this
       window.onresize = () => {
-        let tempHeaderHeight = this.$refs.roleSearchHeader.offsetHeight + 37
-        let tempHeight = document.body.clientHeight - (200 + tempHeaderHeight)
+        //37是box的header的padding，70=(60+10)是顶部的高度
+        let tempHeaderHeight = this.$refs.topHeader.offsetHeight + 37 + 70
+        let tempHeight = document.body.clientHeight - (106 + tempHeaderHeight)
         if (tempHeight < 300) {
           tempHeight = 300
         }
@@ -129,7 +114,7 @@
     },
     methods: {
       switchChange(row) {
-        const enable = row.enable
+        const enable = row.isEnable
         let text = '是否禁用角色？'
         if (enable) {
           text = '确认启用该角色？'
@@ -141,20 +126,26 @@
           closeOnClickModal: false,
           type: 'warning'
         }).then(() => {
-          roleApi.status(enable).then(res => {
+          roleApi.status(row.id, enable).then(res => {
 
           }).catch(() => {
-            row.enable = !enable
+            row.isEnable = !enable
           })
         }).catch(() => {
-          row.enable = !enable
+          row.isEnable = !enable
         })
       },
       search() {
-
+        this.listQuery.page = 1
+        this.listQuery.pageSize = 10
+        this.getList()
       },
       getList() {
-
+        this.loading = true
+        roleApi.list(this.listQuery).then(res => {
+          this.roleData = res.data || []
+          this.loading = false
+        }).catch(() => this.loading = false)
       },
       addEdit(row) {
         if (row) {
@@ -180,6 +171,9 @@
         })
       },
       closeDialog() {
+        if (this.dialogVisible) {
+          this.getList()
+        }
         this.dialogVisible = false
         this.oneData = {
           id: null,

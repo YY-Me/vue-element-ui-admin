@@ -53,6 +53,8 @@
           'role',
           'menu',
           'tenant',
+          'system-config',
+          'biz',
           'el-icon-delete-solid',
           'el-icon-s-tools',
           'el-icon-user-solid',
@@ -84,14 +86,7 @@
           'el-icon-folder',
           'el-icon-printer',
           'el-icon-paperclip',
-          'el-icon-takeaway-box',
-          'el-icon-monitor',
-          'el-icon-data-line',
-          'el-icon-pie-chart',
-          'el-icon-office-building',
-          'el-icon-thumb',
-          'el-icon-chat-dot-round',
-          'el-icon-time'
+          'el-icon-takeaway-box'
         ]
       }
     },

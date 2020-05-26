@@ -201,19 +201,10 @@ aside {
     }
   }
 }
-//ztree
-.ztree1{
-  >li{
-    display: block;
-    float: left;
-    width: 50%;
-    overflow-x: auto;
-  }
-}
 
 //el-message提示宽度
 .el-message{
-  width: auto;
-  min-width: auto;
+  width: auto !important;
+  min-width: auto !important;
   padding: 8px 16px !important;
 }

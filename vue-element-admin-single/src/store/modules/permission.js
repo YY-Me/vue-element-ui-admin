@@ -59,7 +59,6 @@ const actions = {
       let accessedRoutes
       accessedRoutes = filterAsyncRoutes(treePermission)
       accessedRoutes = accessedRoutes.concat(asyncRoutes)
-      console.log(accessedRoutes)
       //vuex里面存储动态的路由，以便于菜单显示
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)

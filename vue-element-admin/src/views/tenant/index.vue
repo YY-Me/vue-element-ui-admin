@@ -1,9 +1,9 @@
 <template>
   <el-card shadow="always">
-    <div slot="header" ref="tenantUserSearchHeader" class="sysUserSearchHeader">
+    <div slot="header" ref="topHeader" class="sysUserSearchHeader">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline">
-        <el-form-item label="用户名:">
-          <el-input style="width: 160px" v-model="listQuery.namePhone" placeholder="用户名/电话" clearable/>
+        <el-form-item label="app_id:">
+          <el-input style="width: 160px" v-model="listQuery.namePhone" placeholder="app_id" clearable/>
         </el-form-item>
         <el-form-item label="状态:">
           <el-select v-model="listQuery.isEnable" style="width: 120px" placeholder="用户状态" clearable>
@@ -24,9 +24,30 @@
       <el-table ref="tableCot" v-loading="loading" element-loading-text="请稍后..." :data="tableData" border
                 style="width: 100%" :max-height="customTableHeight">
         <el-table-column type="index" width="40"/>
-        <el-table-column prop="name" label="租户" min-width="120" show-overflow-tooltip/>
-        <el-table-column prop="appId" label="app_id" min-width="120" show-overflow-tooltip/>
-        <el-table-column prop="appSecret" label="app_secret" min-width="160" show-overflow-tooltip/>
+        <el-table-column prop="name" label="租户" min-width="120" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{scope.row.name}}</span>
+            <i v-clipboard:copy='getCopyData(scope.row)' v-clipboard:success='clipboardSuccess'
+               style="cursor: pointer;margin-left: 2px;position: absolute;right: 5px;top: 15px"
+               title="复制app_id和app_secret" class="el-icon-copy-document"/>
+          </template>
+        </el-table-column>
+        <el-table-column prop="appId" label="app_id" min-width="120" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{scope.row.appId}}</span>
+            <i v-clipboard:copy='scope.row.appId' v-clipboard:success='clipboardSuccess'
+               style="cursor: pointer;margin-left: 2px;position: absolute;right: 5px;top: 15px"
+               title="复制app_id" class="el-icon-copy-document"/>
+          </template>
+        </el-table-column>
+        <el-table-column prop="appSecret" label="app_secret" min-width="160" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{scope.row.appSecret}}</span>
+            <i v-clipboard:copy='scope.row.appSecret' v-clipboard:success='clipboardSuccess'
+               style="cursor: pointer;margin-left: 2px;position: absolute;right: 5px;top: 15px"
+               title="复制app_secret" class="el-icon-copy-document"/>
+          </template>
+        </el-table-column>
         <el-table-column prop="qps" label="QPS" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
             <span v-if="0!==scope.row.qps">{{scope.row.qps}}/s</span>
@@ -85,11 +106,12 @@
   import addEdit from '@/views/tenant/addEdit'
   import tenantUserApi from '@/api/tenant/user'
   import permission from '@/directive/permission/index.js'
+  import clipboard from '@/directive/clipboard/index.js'
 
   export default {
     name: 'tenant',
     components: { Pagination, addEdit },
-    directives: { permission },
+    directives: { permission, clipboard },
     data() {
       return {
         loading: false,
@@ -120,8 +142,9 @@
       this.getList()
       let that = this
       window.onresize = () => {
-        let tempHeaderHeight = this.$refs.tenantUserSearchHeader.offsetHeight + 37
-        let tempHeight = document.body.clientHeight - (200 + tempHeaderHeight)
+        //37是box的header的padding，70=(60+10)是顶部的高度
+        let tempHeaderHeight = this.$refs.topHeader.offsetHeight + 37 + 70
+        let tempHeight = document.body.clientHeight - (106 + tempHeaderHeight)
         if (tempHeight < 300) {
           tempHeight = 300
         }
@@ -205,6 +228,12 @@
           role: [],
           isEnable: true
         }
+      },
+      getCopyData(row) {
+        return `app_id：${row.appId}，app_secret：${row.appSecret}`
+      },
+      clipboardSuccess() {
+        this.$message.success('复制成功')
       }
     }
   }

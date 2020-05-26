@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vip.bblog.cunadmin.common.entity.BaseResult;
 import vip.bblog.cunadmin.common.entity.LoginUser;
 import vip.bblog.cunadmin.common.entity.PageResult;
@@ -27,6 +28,7 @@ import vip.bblog.cunadmin.modules.system.service.SysUserService;
 import vip.bblog.cunadmin.modules.system.vo.MenuTree;
 import vip.bblog.cunadmin.modules.system.vo.SysUserVO;
 import vip.bblog.cunadmin.modules.system.vo.UserRoleVO;
+import vip.bblog.cunadmin.util.Assert;
 import vip.bblog.cunadmin.util.UserUtils;
 
 import java.util.*;
@@ -65,6 +67,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @return R
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public LoginUser getLoginUserByUserName(String username) {
         SysUser info = this.getUserByUserName(username);
         if (null != info) {
@@ -146,6 +149,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     @Override
     public void delete(Integer userId) {
+        this.checkSystem(userId);
         this.removeById(userId);
         sysUserRoleService.deleteByUserId(userId);
     }
@@ -277,5 +281,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             }
         }
         return result;
+    }
+
+    /**
+     * 检查是否是系统级别
+     *
+     * @param userId 系统用户id
+     */
+    private void checkSystem(Integer userId) {
+        SysUser info = this.getById(userId);
+        if (null != info) {
+            Assert.isTrue(!"admin".equals(info.getUsername()), "系统级别，禁止操作");
+        }
     }
 }

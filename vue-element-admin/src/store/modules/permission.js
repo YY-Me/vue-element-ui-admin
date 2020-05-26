@@ -10,7 +10,12 @@ const componentList = {
   'systemUser': () => import('@/views/system/user/index'),
   'systemRole': () => import('@/views/system/role/index'),
   'systemMenu': () => import('@/views/system/menu/index'),
-  'tenant': () => import('@/views/tenant/index')
+  'tenant': () => import('@/views/tenant/index'),
+  'test1': () => import('@/views/test/test1'),
+  'test2': () => import('@/views/test/test2'),
+  'test3': () => import('@/views/test/test3'),
+  'test4': () => import('@/views/test/test4'),
+  'test5': () => import('@/views/test/test5')
 }
 const dynamicRoutes = [
   {
@@ -79,15 +84,18 @@ export function filterAsyncRoutes(routes) {
     if (item.pId !== 0) {
       component = componentList[item.name]
     }
-    const tempRoute = {
+    let tempRoute = {
       path: item.path,
       component: component,
       meta: { title: item.title, icon: item.icon }
     }
+    if (item.pId === 0) {
+      tempRoute.tId = item.tId
+    }
     if (item.name === 'dashboard' && item.pId !== 0) {
       tempRoute.meta.affix = true
     }
-    if (component === Layout && item.children[0]) {
+    if (component === Layout && item.children && item.children.length > 0 && item.children[0]) {
       tempRoute.redirect = item.children[0].path
     } else {
       if (item.name) {
