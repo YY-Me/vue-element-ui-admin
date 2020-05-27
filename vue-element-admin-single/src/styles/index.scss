@@ -6,6 +6,7 @@
 @import './btn.scss';
 
 body {
+  overflow: hidden;
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -138,8 +139,8 @@ aside {
 }
 
 .sub-navbar {
-  height: 60px;
-  line-height: 60px;
+  height: 50px;
+  line-height: 50px;
   position: relative;
   width: 100%;
   text-align: right;
@@ -196,20 +197,9 @@ aside {
     .el-dialog__body {
       padding: 10px 20px !important;
     }
-
-    .el-dialog__footer {
+    .el-dialog__footer{
       padding: 10px 20px !important;
     }
-  }
-}
-
-//ztree
-.ztree1 {
-  > li {
-    display: block;
-    float: left;
-    width: 50%;
-    overflow-x: auto;
   }
 }
 

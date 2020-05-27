@@ -15,7 +15,7 @@
 
       <div class="drawer-item">
         <span>固定头</span>
-        <el-switch v-model="fixedHeader" class="drawer-switch"/>
+        <el-switch disabled v-model="fixedHeader" class="drawer-switch"/>
       </div>
 
       <div class="drawer-item">

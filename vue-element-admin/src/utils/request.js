@@ -49,7 +49,7 @@ instance.interceptors.response.use(
     if (data.status === 200) return data
     // 失败后的错误提示
     const msg = data.message || '操作失败'
-    Message.error({ message: msg, duration: 2000, showClose: true })
+    Message.error({ message: msg, duration: 2000 })
     // 返回接口返回的错误信息
     return Promise.reject(new Error(msg))
   },
@@ -90,7 +90,7 @@ instance.interceptors.response.use(
     if (response.status === 502) {
       msg = '服务已停止或正在重启中'
     }
-    Message.error({ message: msg, duration: 2000 })
+    Message.error({ message: msg, duration: 1112000 })
     // 返回请求的错误信息
     return Promise.reject(new Error(msg))
   }

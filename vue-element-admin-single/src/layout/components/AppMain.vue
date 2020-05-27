@@ -23,7 +23,6 @@
 </script>
 
 <style lang="scss" scoped>
-
   .app-main {
     /* 50= navbar  50  */
     //min-height: calc(100vh - 50px);
@@ -33,32 +32,20 @@
   }
 
   .fixed-header + .app-main {
-    padding-top: 70px;
-    padding-left: 10px;
-    padding-right: 10px;
-    min-height: 100vh;
-    position: relative;
-    background-color: #f1f1f1;
-
-    > .el-card {
-      > .el-card__body {
-        padding: 15px !important;
-      }
-    }
+    padding-top: 50px;
   }
 
   .hasTagsView {
     .app-main {
       /* 84 = navbar + tags-view = 50 + 34 */
-      //min-height: calc(100vh - 84px);
-      min-height: 100vh;
-      background-color: #f1f1f1;
+      //min-height: calc(100vh - 60px);
+      height: calc(100% - 60px);
     }
+  }
 
-    .fixed-header + .app-main {
-      padding-top: 104px;
-      padding-left: 10px;
-      padding-right: 10px;
+  .fixedHeader {
+    .app-main {
+      padding: 10px 10px 10px;
     }
   }
 </style>
