@@ -3,11 +3,12 @@
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="miniLogo" class="sidebar-mini-logo" alt="权限管理系统">
-        <!--<h1 v-else class="sidebar-title">{{ title }} </h1>-->
+        <h1 v-else class="sidebar-title">{{ title }} </h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" alt="权限管理系统">
-        <!--<h1 class="sidebar-title">{{ title }} </h1>-->
+        <h1 class="sidebar-title">{{title}}</h1>
+        <!--<img v-if="logo" :src="logo" class="sidebar-logo" alt="权限管理系统">
+        <h1 v-else class="sidebar-title">{{ title }} </h1>-->
       </router-link>
     </transition>
   </div>
@@ -24,7 +25,7 @@
     },
     data() {
       return {
-        title: '后台管理系统',
+        title: 'XX系统',
         logo: '/logo.svg',
         miniLogo: '/logo-min.svg'
       }
@@ -73,7 +74,7 @@
         color: #fff;
         font-weight: 600;
         line-height: 60px;
-        font-size: 14px;
+        font-size: 18px;
         font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
         vertical-align: middle;
       }
