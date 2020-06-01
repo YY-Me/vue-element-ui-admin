@@ -15,9 +15,9 @@ public class PageParams implements Serializable {
 
     private static final long serialVersionUID = -1537176372467984421L;
 
-    private long page = 1;
+    private int page = 1;
 
-    private long pageSize = 10;
+    private int pageSize = 10;
 
     public <T> Page<T> getIPage() {
         return new Page<T>(page, pageSize);

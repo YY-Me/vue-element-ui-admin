@@ -10,16 +10,16 @@
 
       <div class="drawer-item">
         <span>打开标签-查看</span>
-        <el-switch v-model="tagsView" class="drawer-switch"/>
+        <el-switch :disabled="true" v-model="tagsView" class="drawer-switch"/>
       </div>
 
       <div class="drawer-item">
         <span>固定头</span>
-        <el-switch v-model="fixedHeader" class="drawer-switch"/>
+        <el-switch :disabled="true" v-model="fixedHeader" class="drawer-switch"/>
       </div>
 
       <div class="drawer-item">
-        <span>侧边栏徽标</span>
+        <span>侧边栏LOGO显示</span>
         <el-switch v-model="sidebarLogo" class="drawer-switch"/>
       </div>
 

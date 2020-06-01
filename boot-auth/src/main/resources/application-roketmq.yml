@@ -1,0 +1,136 @@
+spring:
+  cloud:
+    stream:
+      default-binder: rocketmq
+      rocketmq:
+        binder:
+          name-server: 192.168.0.199:9876
+          bindings:
+            jpushIdentityOutput:
+              producer:
+                group: jpushIdentity-pg1
+                sync: false
+            orderOutput:
+              producer:
+                group: producer-order-g1
+                sync: false
+            orderInput:
+              consumer:
+                orderly: true
+            orderLogOutput:
+              producer:
+                group: producer-order-log-g1
+                sync: false
+            orderLogInput:
+              consumer:
+                orderly: true
+            orderOperateLogOutput:
+              producer:
+                group: producer-order-operate-log-g1
+                sync: false
+            orderOperateLogInput:
+              consumer:
+                orderly: true
+            socketServiceOutput:
+              producer:
+                group: producer-socket-service-g1
+                sync: false
+            orderTimeOutCancelInput:
+              consumer:
+                orderly: true
+            orderTimeOutCancelOutput:
+              producer:
+                group: producer-socket-service-g1
+                sync: false
+            jpushIdentityInput:
+              consumer:
+                orderly: true
+            jpushNormalInput:
+              consumer:
+                orderly: true
+            socketServiceInput:
+              consumer:
+                orderly: true
+            orderPushInput:
+              consumer:
+                orderly: true
+      bindings:
+        #system
+        jpushIdentityOutput:
+          destination: jpush-identity-topic
+          content-type: application/json
+          group: jpushIdentity-pg1
+        #order
+        orderOutput:
+          destination: order-topic
+          content-type: application/json
+          group: producer-order-g1
+        orderInput:
+          destination: order-topic
+          content-type: application/json
+          group: consumer-order-g1
+          consumer:
+            concurrency: 100
+        orderLogOutput:
+          destination: order-log-topic
+          content-type: application/json
+          group: producer-order-log-g1
+        orderLogInput:
+          destination: order-log-topic
+          content-type: application/json
+          group: consumer-order-log-g1
+          consumer:
+            concurrency: 100
+        orderOperateLogOutput:
+          destination: order-operate-log-topic
+          content-type: application/json
+          group: producer-order-operate-log-g1
+        orderOperateLogInput:
+          destination: order-operate-log-topic
+          content-type: application/json
+          group: consumer-order-operate-log-g1
+          consumer:
+            concurrency: 100
+        socketServiceOutput:
+          destination: socket-service-topic
+          content-type: application/json
+          group: producer-socket-service-g1
+        orderTimeOutCancelInput:
+          destination: order-time-out-cancel-topic
+          content-type: application/json
+          group: consumer-order-time-out-cancel-g1
+          consumer:
+            concurrency: 100
+        orderTimeOutCancelOutput:
+          destination: order-time-out-cancel-topic
+          content-type: application/json
+          group: producer-order-time-out-cancel-g1
+        jpushNormalOutput:
+          destination: jpush-normal-topic
+          content-type: application/json
+          group: jpushNormal-g1
+        #push
+        jpushIdentityInput:
+          destination: jpush-identity-topic
+          content-type: text/plain
+          group: jpushIdentity-cg1
+          consumer:
+            concurrency: 100
+        jpushNormalInput:
+          destination: jpush-normal-topic
+          content-type: application/json
+          group: jpushNormal-cg2
+          consumer:
+            concurrency: 100
+        socketServiceInput:
+          destination: socket-service-topic
+          content-type: application/json
+          group: consumer-socket-service-g1
+          consumer:
+            concurrency: 100
+        orderPushInput:
+          destination: order-topic
+          content-type: application/json
+          group: consumer-order-push-g1
+          consumer:
+            concurrency: 100
