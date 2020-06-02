@@ -27,9 +27,11 @@ UI-2：
 4.  我一般关闭了ESLint，对我个人来说没用
 5.  此项目用途，据看你怎么用了，给人家做毕设，公司后台管理都可以
 
-如果您遇到使用此项目遇到了什么问题可以：
+如果您遇到使用此项目遇到了什么问题可以@：1396513066@qq.com
 
 <img src="https://images.gitee.com/uploads/images/2020/0602/120907_094790b5_1559021.jpeg"  height="100">
+
+-----
 
 <img src="https://images.gitee.com/uploads/images/2020/0602/120854_d13243ba_1559021.jpeg"  height="100">
 
