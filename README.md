@@ -27,6 +27,12 @@ UI-2：
 4.  我一般关闭了ESLint，对我个人来说没用
 5.  此项目用途，据看你怎么用了，给人家做毕设，公司后台管理都可以
 
+如果您遇到使用此项目遇到了什么问题可以：
+
+![微信](https://images.gitee.com/uploads/images/2020/0602/120907_094790b5_1559021.jpeg "IMG_20200602_120611.jpg")
+
+![QQ马化腾](https://images.gitee.com/uploads/images/2020/0602/120854_d13243ba_1559021.jpeg "IMG_20200602_120720.jpg")
+
 ps：后台是依赖springboot2.3.0的单app，如果您需要cloud，后面有时间上传吧。由于2.3.0最近发布的，部分应用有很多变动，比如data-es就弃用的弃用，移除的移除，第三方的框架可能会出现问题，比如stream-binder-rocketmq里面RocketMQMessageChannelBinder的还未支持，里面调用的方法已经被移除了。具体可参考官方[官方](http://https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.3-Release-Notes)
 
 #### 参与贡献
