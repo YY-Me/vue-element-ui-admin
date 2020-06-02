@@ -29,7 +29,7 @@ UI-2：
 
 如果您遇到使用此项目遇到了什么问题可以：
 
-![微信](https://images.gitee.com/uploads/images/2020/0602/120907_094790b5_1559021.jpeg "IMG_20200602_120611.jpg")
+![微信](https://images.gitee.com/uploads/images/2020/0602/120907_094790b5_1559021.jpeg "IMG_20200602_120611.jpg") {:width:"100px" height:"100px"}
 
 ![QQ马化腾](https://images.gitee.com/uploads/images/2020/0602/120854_d13243ba_1559021.jpeg "IMG_20200602_120720.jpg")
 
