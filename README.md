@@ -25,6 +25,7 @@ UI-2：
 2.  由于菜单是动态生成的，所以你开发的时候可能需要添加一个模块，但是又要去配置菜单哪些。很烦。你可以在store/modules/permission.js里面的变量tempRoutes按照树形菜单给设置上去，但是有顶部菜单的那个ui如果你的当前路由是在你的tempRouters里面，那么当你刷新的时候你的左侧菜单可能是空白，这时你需要随便点一个顶部菜单就可以了。具体树形菜单规则您也可以看vue-element-admin官方或者当前文件。这样你的路由就不会收到后台限制了，等开发完了再添加到后台
 3.  此基础项目非常的基础简洁，前后台也没有添加其他的配置或模块进去。
 4.  我一般关闭了ESLint，对我个人来说没用
+5.  此项目用途，据看你怎么用了，给人家做毕设，公司后台管理都可以
 
 ps：后台是依赖springboot2.3.0的单app，如果您需要cloud，后面有时间上传吧。由于2.3.0最近发布的，部分应用有很多变动，比如data-es就弃用的弃用，移除的移除，第三方的框架可能会出现问题，比如stream-binder-rocketmq里面RocketMQMessageChannelBinder的还未支持，里面调用的方法已经被移除了。具体可参考官方[官方](http://https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.3-Release-Notes)
 
