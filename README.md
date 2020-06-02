@@ -29,8 +29,7 @@ UI-2：
 
 如果您遇到使用此项目遇到了什么问题可以：
 
-<img src="https://images.gitee.com/uploads/images/2020/0602/120907_094790b5_1559021.jpeg" style="width:100px">
-
+<img src="https://images.gitee.com/uploads/images/2020/0602/120907_094790b5_1559021.jpeg"  height="330" width="495">
 
 ![微信](https://images.gitee.com/uploads/images/2020/0602/120907_094790b5_1559021.jpeg "IMG_20200602_120611.jpg") 
 
