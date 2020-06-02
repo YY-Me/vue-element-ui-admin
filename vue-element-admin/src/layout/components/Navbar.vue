@@ -109,7 +109,6 @@ export default {
       try {
         this.$refs.rightPanel.showRightPanel()
       } catch (e) {
-        console.log(e)
       }
     },
     closeDialog() {
@@ -183,6 +182,7 @@ export default {
           position: relative;
 
           .login-user {
+            margin-left: 5px;
             font-size: 14px;
             display: inline-block;
             overflow: hidden;
