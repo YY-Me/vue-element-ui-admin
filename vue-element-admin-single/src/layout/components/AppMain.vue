@@ -46,6 +46,9 @@
   .fixedHeader {
     .app-main {
       padding: 10px 10px 10px;
+      >.el-card{
+        border-radius: 2px;
+      }
     }
   }
 </style>

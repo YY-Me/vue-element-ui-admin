@@ -1,5 +1,5 @@
 <template>
-  <el-card shadow="always">
+  <el-card shadow="never">
     <div slot="header" ref="topHeader">
       <el-form :inline="true" :model="listQuery">
         <el-form-item label="角色名:">
@@ -35,7 +35,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="130">
           <template slot-scope="scope">
-            <el-tag style="cursor:pointer;" size="mini" @click="addEdit(scope.row)"><i
+            <el-tag style="cursor:pointer;margin-right: 4px;" size="mini" @click="addEdit(scope.row)"><i
               class="el-icon-edit"/>编辑
             </el-tag>
             <el-tag v-if="!scope.row.isSystem" style="cursor:pointer;" size="mini" type="danger"

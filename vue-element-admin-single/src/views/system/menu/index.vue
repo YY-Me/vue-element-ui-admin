@@ -1,5 +1,5 @@
 <template>
-  <el-card shadow="always">
+  <el-card shadow="never">
     <div>
       <div style="margin-bottom: 10px">
         <el-radio-group v-model="listQuery.mType" @change="getList">
@@ -92,7 +92,7 @@
             <el-tag v-if="scope.row.edit" style="cursor:pointer;" size="mini" @click="save(scope.row)">
               <i class="el-icon-finished"/>保存
             </el-tag>
-            <el-tag v-else style="cursor:pointer;" size="mini" @click="edit(scope.row)">
+            <el-tag v-else style="cursor:pointer;margin-right: 4px;" size="mini" @click="edit(scope.row)">
               <i class="el-icon-edit"/>编辑
             </el-tag>
             <el-dropdown @command="((type)=>handleCommand(type,scope.row))" size="mini">

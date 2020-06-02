@@ -1,5 +1,5 @@
 <template>
-  <el-card shadow="always">
+  <el-card shadow="never">
     <div slot="header" ref="topHeader">
       <el-form :inline="true" :model="listQuery">
         <el-form-item label="用户名:">
@@ -48,7 +48,7 @@
         <el-table-column prop="updateTime" label="最近更新时间" min-width="120"/>
         <el-table-column fixed="right" label="操作" width="126">
           <template slot-scope="scope">
-            <el-tag style="cursor:pointer;" size="mini" @click="addEdit(scope.row)"><i class="el-icon-edit"/>编辑</el-tag>
+            <el-tag style="cursor:pointer;margin-right: 4px;" size="mini" @click="addEdit(scope.row)"><i class="el-icon-edit"/>编辑</el-tag>
             <el-tag style="cursor:pointer;" size="mini" type="danger" @click="remove(scope.row)"><i
               class="el-icon-delete"/>删除
             </el-tag>
