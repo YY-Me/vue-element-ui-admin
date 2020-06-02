@@ -28,7 +28,7 @@ public class CustomTokenFilter extends OncePerRequestFilter {
 
     public static final String TOKEN_KEY = "Authorization";
 
-    private static final Long MINUTES_10 = 10 * 60 * 1000L;
+    private static final Long DAY = 24 * 3600 * 1000L;
 
     @Autowired
     private CustomTokenService customTokenService;
@@ -60,7 +60,7 @@ public class CustomTokenFilter extends OncePerRequestFilter {
         CustomToken customToken = loginUser.getCustomToken();
         Date expireTime = customToken.getExpires_in();
         long currentTime = System.currentTimeMillis();
-        if (expireTime.getTime() - currentTime <= MINUTES_10) {
+        if (expireTime.getTime() - currentTime <= DAY) {
             loginUser = (LoginUser) userDetailsService.loadUserByUsername(loginUser.getUsername());
             loginUser.setCustomToken(customToken);
             customTokenService.renew(loginUser);
@@ -76,7 +76,6 @@ public class CustomTokenFilter extends OncePerRequestFilter {
         if (StringUtils.isBlank(token)) {
             token = request.getHeader(TOKEN_KEY);
         }
-
         return token;
     }
 
