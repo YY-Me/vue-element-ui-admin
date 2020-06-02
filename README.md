@@ -22,8 +22,8 @@ UI-2：
 #### 使用说明
 
 1.  后台角色只是一种简单的角色，没有上下级关系，如果您需要类似部门等等，可以自行修改即可，前台把角色改成部门即可
-2.  由于菜单是动态生成的，所以你开发的时候可能需要添加一个模块，但是又要去配置菜单哪些。很烦，你可以在store/modules/permission.js里面的变量tempRoutes按照树形菜单给设置上去，具体规则您也可以看vue-element-admin官方，那么你的路由就不会收到后台限制了，等开发完了你在添加到后台
-3.  此基础项目非常的基础简洁，前后台也没有添加任何杂乱的配置或模块进去。
+2.  由于菜单是动态生成的，所以你开发的时候可能需要添加一个模块，但是又要去配置菜单哪些。很烦。对于没有顶部大菜单的那个ui你可以在store/modules/permission.js里面的变量tempRoutes按照树形菜单给设置上去，对于有顶部菜单的我先实验下怎么合理，到时候更新。具体树形菜单规则您也可以看vue-element-admin官方或者当前文件。这样你的路由就不会收到后台限制了，等开发完了再添加到后台
+3.  此基础项目非常的基础简洁，前后台也没有添加其他的配置或模块进去。
 
 ps：后台是依赖springboot2.3.0，由于最近发布的，部分应用有很多变动，比如data-es就弃用的弃用，移除的移除，第三方的框架可能会出现问题，比如stream-binder-rocketmq里面RocketMQMessageChannelBinder的还未支持，里面调用的方法已经被移除了。具体可参考官方[官方](http://https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.3-Release-Notes)
 
