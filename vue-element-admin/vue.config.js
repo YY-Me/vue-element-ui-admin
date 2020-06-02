@@ -43,8 +43,8 @@ module.exports = {
         },
         proxy: {
             '/dev-api': {
-                // 此处的写法，目的是为了 将 /api 替换成 https://www.baidu.com/
-                target: 'http://192.168.0.109:18051/gateway/api/',
+                // 此处的写法，目的是为了 将 /dev-api 替换成 https://www.baidu.com/
+                target: 'http://127.0.0.1:18080/',
                 // 允许跨域
                 changeOrigin: true,
                 ws: true,
