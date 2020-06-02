@@ -12,12 +12,31 @@ const componentList = {
   'systemMenu': () => import('@/views/system/menu/index'),
   'tenant': () => import('@/views/tenant/index'),
   'test1': () => import('@/views/test/test1'),
-  'test2': () => import('@/views/test/test2'),
-  'test3': () => import('@/views/test/test3'),
-  'test4': () => import('@/views/test/test4'),
-  'test5': () => import('@/views/test/test5')
+  'test2': () => import('@/views/test/test2')
 }
-
+const tempRoutesExample = [
+  {
+    path: '/example',
+    component: Layout,
+    redirect: 'test1',
+    meta: {icon: 'dashboard', title: 'example'},
+    children: [
+      {
+        path: 'test1',
+        component: () => import('@/views/test/test1'),
+        name: 'dashboard',
+        meta: {title: 'example', icon: 'dashboard'}
+      },
+      {
+        path: 'test2',
+        component: () => import('@/views/test/test2'),
+        name: 'dashboard',
+        meta: {title: 'example', icon: 'dashboard'}
+      }
+    ]
+  }
+]
+const tempRoutes = []
 /**
  * Use meta.role to determine if the current user has permission
  * @param roles
@@ -47,7 +66,7 @@ const mutations = {
     state.topRoutes = topRoutes
   },
   SET_TOP_LEFT_ROUTES: (state, topLeftRoutes) => {
-    state.topLeftRoutes = topLeftRoutes
+    state.topLeftRoutes = tempRoutes.concat(topLeftRoutes)
   }
 }
 
@@ -58,6 +77,7 @@ const actions = {
       //根据后端权限生成路由信息
       let accessedRoutes
       accessedRoutes = filterAsyncRoutes(treePermission)
+      accessedRoutes = accessedRoutes.concat(tempRoutes)
       accessedRoutes = accessedRoutes.concat(asyncRoutes)
       //vuex里面存储动态的路由，以便于菜单显示
       commit('SET_ROUTES', accessedRoutes)

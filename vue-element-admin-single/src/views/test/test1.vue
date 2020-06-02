@@ -1,7 +1,7 @@
 <template>
-    <div>
-      我是test1
-    </div>
+    <el-card shadow="never">
+        我是test1，我一直显示在这里
+    </el-card>
 </template>
 
 <script>

@@ -21,7 +21,7 @@
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
           <el-avatar size="small" :src="avatar + '?imageView2/1/w/80/h/80'" />
-          <span class="login-user">管理员<i class="el-icon-caret-bottom" /></span>
+          <span class="login-user">{{userName}}<i class="el-icon-caret-bottom" /></span>
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item @click.native="rePassVisible=true">
@@ -76,7 +76,6 @@ export default {
   },
   data() {
     return {
-      username: '管理员',
       rePassVisible: false
     }
   },
@@ -85,7 +84,10 @@ export default {
       'sidebar',
       'avatar',
       'device'
-    ])
+    ]),
+    userName() {
+      return this.$store.getters.name || '管理员'
+    }
   },
   methods: {
     toggleSideBar() {

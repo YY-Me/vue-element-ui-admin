@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import systemUserApi from '@/api/system/user'
+import systemUserApi from '@/api/tenant/user'
 
 export default {
   name: 'AddEdit',
