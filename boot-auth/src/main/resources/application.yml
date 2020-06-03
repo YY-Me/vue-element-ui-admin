@@ -19,7 +19,3 @@ spring:
   mvc:
     servlet:
       load-on-startup: 1
-  elasticsearch:
-    rest:
-      uris: http://192.168.0.199:9200
-      connection-timeout: 5s
