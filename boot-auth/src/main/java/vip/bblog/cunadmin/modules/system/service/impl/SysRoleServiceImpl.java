@@ -90,9 +90,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Transactional(rollbackFor = Exception.class)
     public void delete(Integer roleId) {
         this.checkSystem(roleId);
-        this.removeById(roleId);
         sysRoleMenuService.deleteByRoleId(roleId);
         sysUserRoleService.deleteByRoleId(roleId);
+        this.removeById(roleId);
     }
 
     /**
