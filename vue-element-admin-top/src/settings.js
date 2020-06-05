@@ -1,0 +1,37 @@
+module.exports = {
+  title: '权限管理系统',
+
+  /**
+   * @type {boolean} true | false
+   * @description Whether show the settings right-panel
+   */
+  showSettings: true,
+
+  /**
+   * 由于此系统的布局，不要将tagsView打开
+   * @type {boolean} true | false
+   * @description Whether need tagsView
+   */
+  tagsView: false,
+
+  /**
+   * 由于此系统的布局，不要将fixedHeader关闭
+   * @type {boolean} true | false
+   * @description Whether fix the header
+   */
+  fixedHeader: true,
+
+  /**
+   * @type {boolean} true | false
+   * @description Whether show the logo in sidebar
+   */
+  sidebarLogo: true,
+
+  /**
+   * @type {string | array} 'production' | ['production', 'development']
+   * @description Need show err logs component.
+   * The default is only used in the production env
+   * If you want to also use it in dev, you can pass ['production', 'development']
+   */
+  errorLog: 'production'
+}
