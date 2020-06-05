@@ -6,12 +6,13 @@ vue-element-ui-admin，springboot基础的权限管理系统
 #### 软件架构
 提供了两种常用的后台ui，都是基于[vue-element-admin](https://panjiachen.github.io/vue-element-admin-site/zh/guide/)，没有更改作者整体结构，人家已经做得很好了，只是改了部分逻辑，比如路由的方法计算
 
-UI-1：
+UI-1：左侧菜单类型
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0602/105601_f5f0f7cc_1559021.png "Snipaste_2020-06-02_10-54-18.png")
 
-UI-2：
+UI-2：左侧-顶部菜单联动类型，其中是由顶部菜单来控制
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0602/105621_6121d0fa_1559021.png "Snipaste_2020-06-02_10-39-10.png")
 
+UI-3：顶部菜单类型，待...
 
 #### 安装教程
 
@@ -23,7 +24,7 @@ UI-2：
 
 1.  后台角色只是一种简单的角色，没有上下级关系，如果您需要类似部门等等，可以自行修改即可，前台把角色改成部门即可
 2.  由于菜单是动态生成的，所以你开发的时候可能需要添加一个模块，但是又要去配置菜单哪些。很烦。你可以在store/modules/permission.js里面的变量tempRoutes按照树形菜单给设置上去，但是有顶部菜单的那个ui如果你的当前路由是在你的tempRouters里面，那么当你刷新的时候你的左侧菜单可能是空白，这时你需要随便点一个顶部菜单就可以了。具体树形菜单规则您也可以看vue-element-admin官方或者当前文件。这样你的路由就不会收到后台限制了，等开发完了再添加到后台
-3.  如果您需要左侧或者顶部进行多级菜单，您需要重写store/modules/permission.js的filterAsyncRoutes方法，而且需要添加对应router-view，具体您可到vue-element-admin官方有说明
+3.  多级菜单，您需要重写store/modules/permission.js的filterAsyncRoutes方法，按照官方文档生成对应的树，而且需要添加对应router-view，具体您可到vue-element-admin官方有说明
 4.  此基础项目非常的基础简洁，前后台也没有添加其他的配置或模块进去。
 5.  我一般关闭了ESLint，对我个人来说没用
 6.  此项目用途，据看你怎么用了，给人家做毕设，公司后台管理都可以
