@@ -180,7 +180,7 @@ export default {
     imageSuccessCBK(arr) {
       const _this = this
       arr.forEach(v => {
-        window.tinymce.get(_this.tinymceId).insertContent(`<img class="wscnph" src="blob:http://192.168.0.109:18090/d900ed86-8953-4b67-a117-c8d34734b468"  alt="" />`)
+        window.tinymce.get(_this.tinymceId).selection.setContent(`<img class="wscnph" src="${v.src}"  alt="" />`);
       })
     },
     ajaxUpload() {
