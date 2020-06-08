@@ -54,13 +54,13 @@ public class CustomTokenFilter extends OncePerRequestFilter {
 
     /**
      * 校验时间<br>
-     * 过期时间与当前时间对比，临近过期10分钟内的话，自动刷新缓存
+     * 如果jwt有过期时间，就不用使用此刷新redis时间了
      */
     private LoginUser checkLoginTime(LoginUser loginUser) {
         CustomToken customToken = loginUser.getCustomToken();
-        Date expireTime = customToken.getExpires_in();
+        long expireTime = customToken.getExpires_in().getTime();
         long currentTime = System.currentTimeMillis();
-        if (expireTime.getTime() - currentTime <= DAY) {
+        if (expireTime>currentTime&&expireTime - currentTime <= DAY) {
             loginUser = (LoginUser) userDetailsService.loadUserByUsername(loginUser.getUsername());
             loginUser.setCustomToken(customToken);
             customTokenService.renew(loginUser);

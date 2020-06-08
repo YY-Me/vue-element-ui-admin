@@ -1,5 +1,6 @@
 package vip.bblog.cunadmin.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -34,15 +35,16 @@ public class JwtUtils {
         SignatureAlgorithm signature = SignatureAlgorithm.HS256;
         byte[] secretBytes = DatatypeConverter.parseBase64Binary(SECRET);
         Key secretKey = new SecretKeySpec(secretBytes, signature.getJcaName());
+        Claims claims = Jwts.claims(value);
+        CustomToken customToken = new CustomToken();
         long expiration = System.currentTimeMillis() + (expireSeconds) * 1000;
         Date expirationDate = new Date(expiration);
+        //claims.setExpiration(expirationDate);
         String token = Jwts.builder()
                 .setIssuedAt(new Date())
-                .setExpiration(expirationDate)
                 .setIssuer(ISSUER)
-                .setClaims(value)
+                .setClaims(claims)
                 .signWith(signature, secretKey).compact();
-        CustomToken customToken = new CustomToken();
         customToken.setAccess_token(token);
         customToken.setExpires_in(expirationDate);
         customToken.setLogin_in(new Date());
