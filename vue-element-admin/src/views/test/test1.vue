@@ -1,12 +1,21 @@
 <template>
     <el-card shadow="never">
-        开发的时候可以使用此方式，我一直显示在左侧菜单栏
+        <Tinymce ref="editor" v-model="postForm.content" :height="400" />
     </el-card>
 </template>
 
 <script>
+    import Tinymce from '@/components/Tinymce'
     export default {
-        name: 'test1'
+        name: 'test1',
+        components: {Tinymce},
+        data(){
+            return{
+                postForm:{
+                    content: ''
+                }
+            }
+        }
     }
 </script>
 

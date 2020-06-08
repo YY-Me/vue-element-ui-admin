@@ -22,13 +22,26 @@ const tempRoutesExample = [
             {
                 path: 'test1',
                 component: () => import('@/views/test/test1'),
-                name: 'dashboard',
+                name: 'test1',
                 meta: {title: 'example', icon: 'dashboard'}
             }
         ]
     }
 ]
-const tempRoutes = []
+const tempRoutes = [{
+    path: '/example',
+    component: Layout,
+    redirect: 'test1',
+    meta: {icon: 'dashboard', title: 'example'},
+    children: [
+        {
+            path: 'test1',
+            component: () => import('@/views/test/test1'),
+            name: 'test1',
+            meta: {title: 'example', icon: 'dashboard'}
+        }
+    ]
+}]
 
 /**
  * Use meta.role to determine if the current user has permission
