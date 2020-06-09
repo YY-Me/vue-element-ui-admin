@@ -1,9 +1,10 @@
 <template>
     <div class="file-list" @click="fileOtherClick">
         <div class="file-list-top">
-            <el-button size="small" type="primary">上传文件</el-button>
-            <el-button size="small">新建目录</el-button>
-            <el-button size="small" type="danger" icon="el-icon-delete">删除</el-button>
+            <el-button size="small" type="primary" @click.stop="uploadFile">上传文件</el-button>
+            <el-button size="small" @click="createFolder">新建目录</el-button>
+            <el-button size="small" type="danger" icon="el-icon-delete" :disabled="canCallBack"
+                       @click.stop="deleteResource">删除</el-button>
             <el-button size="small">刷新</el-button>
         </div>
         <!--80是顶部和底部的大概高度，顶部的button固定为small-->
@@ -28,13 +29,21 @@
             </template>
             <el-button @click.stop="selectedCallBack" :disabled="canCallBack" class="callback-btn" type="primary" size="small">确认选择</el-button>
         </div>
+        <!--创建文件夹-->
+        <create-folder :dialog-visible="createFolderVisible" @close="createFolderVisible = false" @created="init" />
+        <!--上传文件-->
+        <upload-file :dialog-visible="uploadFileVisible" @close="uploadFileVisible = false" />
     </div>
 </template>
 
 <script>
     import { formatFileSize } from '@/utils/file'
+    import createFolder from "./createFolder"
+    import uploadFile from "./uploadFile"
+    import fileApi from '@/api/file/file'
     export default {
         name: "fileList",
+        components: {createFolder,uploadFile},
         props: {
             height: {
                 type: Number,
@@ -47,6 +56,9 @@
         },
         data(){
             return{
+                createFolderVisible: false,
+                uploadFileVisible: false,
+                currentPath: '/',
                 fileTypeList: {
                     "audio": "/images/file/audio.svg",
                     "cad": "/images/file/cad.svg",
@@ -419,10 +431,15 @@
                 }
             },
             fileCtrlClick(file,index){
-                let exist= this.checkSelected(index)
-                if (exist){
-                    this.fileSelectedList.splice(index,1)
-                }else {
+                let exist = false
+                for (let i = 0; i < this.fileSelectedList.length; i++) {
+                    if (this.fileSelectedList[i].index===index){
+                        exist = true
+                        this.fileSelectedList.splice(i,1)
+                        break
+                    }
+                }
+                if (!exist){
                     let temp=JSON.parse(JSON.stringify(file))
                     temp.index=index
                     this.fileSelectedList.push(temp)
@@ -432,7 +449,7 @@
                 this.fileSelectedList.splice(0)
             },
             selectedCallBack(){
-
+                this.$emit('callback',JSON.parse(JSON.stringify(this.fileSelectedList)))
             },
             getTypeImgByFileName(fileName){
                 let type= this.fileTypeList.other
@@ -447,6 +464,26 @@
             },
             getFormatFileSize(size){
                 return formatFileSize(size)
+            },
+            deleteResource(){
+                this.$confirm('此操作将永久删除该资源, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    fileApi.deleteResource({}).then(res=>{
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功'
+                        })
+                    })
+                })
+            },
+            uploadFile(){
+                this.uploadFileVisible = true
+            },
+            createFolder(){
+                this.createFolderVisible = true
             }
         }
     }

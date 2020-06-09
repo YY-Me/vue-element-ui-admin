@@ -1,11 +1,11 @@
 <template>
     <el-card :style="{maxHeight:customTableHeight+'px'}" shadow="never">
-        <file-list :height="fileListHeight"/>
+        <file-list :height="fileListHeight" @callback="callback"/>
     </el-card>
 </template>
 
 <script>
-    import fileList from "./fileList";
+    import fileList from "./components/fileList";
 
     export default {
         name: "fileBrowse",
@@ -37,6 +37,11 @@
         destroyed() {
             window.onresize = null
         },
+        methods: {
+            callback(data){
+                this.$message.success(JSON.stringify(data))
+            }
+        }
     }
 </script>
 
