@@ -7,7 +7,7 @@
 <script>
     import Tinymce from '@/components/Tinymce'
     export default {
-        name: 'test1',
+        name: 'richText',
         components: {Tinymce},
         data(){
             return{

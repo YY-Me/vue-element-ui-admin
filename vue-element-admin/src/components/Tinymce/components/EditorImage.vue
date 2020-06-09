@@ -52,17 +52,22 @@ export default {
       return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
     },
     handleSubmit() {
+      console.log(this.listObj)
+      console.log(this.fileList)
       const arr = Object.keys(this.listObj).map(v => this.listObj[v])
       if (!this.checkAllSuccess()) {
         this.$message('请等待所有图像成功上传。如果出现网络问题，请刷新页面，然后重新上传！')
         return
       }
+      console.log(arr)
       this.$emit('successCBK', arr)
       this.listObj = {}
       this.fileList = []
       this.dialogVisible = false
     },
     handleSuccess(response, file) {
+
+      return;
       const uid = file.uid
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
@@ -92,7 +97,7 @@ export default {
         const img = new Image()
         img.src = _URL.createObjectURL(file)
         img.onload = function() {
-          _self.listObj[fileName] = { hasSuccess: false, uid: file.uid, width: this.width, height: this.height }
+          _self.listObj[fileName] = { hasSuccess: true,url: img.src, uid: file.uid, width: this.width, height: this.height }
         }
         resolve(true)
       })

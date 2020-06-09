@@ -12,33 +12,30 @@ const componentList = {
     'systemMenu': () => import('@/views/system/menu/index'),
     'tenant': () => import('@/views/tenant/index')
 }
-const tempRoutesExample = [
-    {
-        path: '/example',
-        component: Layout,
-        redirect: 'test1',
-        meta: {icon: 'dashboard', title: 'example'},
-        children: [
-            {
-                path: 'test1',
-                component: () => import('@/views/test/test1'),
-                name: 'test1',
-                meta: {title: 'example', icon: 'dashboard'}
-            }
-        ]
-    }
-]
 const tempRoutes = [{
-    path: '/example',
+    path: '/rich-text',
     component: Layout,
-    redirect: 'test1',
-    meta: {icon: 'dashboard', title: 'example'},
+    redirect: 'index',
+    meta: {icon: 'richText', title: '富文本Tinymce'},
     children: [
         {
-            path: 'test1',
-            component: () => import('@/views/test/test1'),
-            name: 'test1',
-            meta: {title: 'example', icon: 'dashboard'}
+            path: 'index',
+            component: () => import('@/views/richText/index'),
+            name: 'richText',
+            meta: {title: '富文本Tinymce', icon: 'richText'}
+        }
+    ]
+},{
+    path: '/file-browse',
+    component: Layout,
+    redirect: 'index',
+    meta: {icon: 'fileBrowse', title: '文件浏览器'},
+    children: [
+        {
+            path: 'index',
+            component: () => import('@/views/fileBrowse/index'),
+            name: 'fileBrowse',
+            meta: {title: '文件浏览器', icon: 'fileBrowse'}
         }
     ]
 }]

@@ -1,5 +1,6 @@
 <template>
   <div :class="{fullscreen:fullscreen}" class="tinymce-container" :style="{width:containerWidth}">
+    <el-button @click="imageSuccess">测试</el-button>
     <textarea :id="tinymceId" class="tinymce-textarea" />
     <div class="editor-custom-btn-container">
       <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
@@ -178,10 +179,18 @@ export default {
       window.tinymce.get(this.tinymceId).getContent()
     },
     imageSuccessCBK(arr) {
+      console.log("url:",arr[0].url)
       const _this = this
-      arr.forEach(v => {
-        window.tinymce.get(_this.tinymceId).selection.setContent(`<img class="wscnph" src="${v.src}"  alt="" />`);
-      })
+      window.tinymce.get(_this.tinymceId).selection.setContent(`<img src="${arr[0].url}"  alt="" />`);
+      // arr.forEach(v => {
+      //   console.log(v)
+      //   window.tinymce.get(_this.tinymceId).selection.setContent(`<img class="wscnph" src="${v.url}"  alt="" />`);
+      // })
+    },
+    imageSuccess(arr) {
+      console.log("hh")
+      const _this = this
+      window.tinymce.get(_this.tinymceId).insertContent(`<img src="https://dss1.baidu.com/70cFfyinKgQFm2e88IuM_a/forum/pic/item/a8ec8a13632762d0797a0962a6ec08fa503dc6a3.jpg"  alt="" />`);
     },
     ajaxUpload() {
       return Promise.resolve({
