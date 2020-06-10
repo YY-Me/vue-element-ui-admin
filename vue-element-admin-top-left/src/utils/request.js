@@ -51,7 +51,7 @@ instance.interceptors.response.use(
     const msg = data.message || '操作失败'
     Message.error({ message: msg, duration: 2000 })
     // 返回接口返回的错误信息
-    return Promise.reject(new Error(msg))
+    return Promise.reject(data)
   },
   // 请求失败处理-http状态码非200
   error => {
@@ -95,7 +95,7 @@ instance.interceptors.response.use(
     }
     Message.error({ message: msg, duration: 2000, showClose: false })
     // 返回请求的错误信息
-    return Promise.reject(new Error(msg))
+    return Promise.reject(response)
   }
 )
 
