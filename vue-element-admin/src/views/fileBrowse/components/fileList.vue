@@ -4,7 +4,8 @@
             <el-button size="small" type="primary" @click.stop="uploadFile">上传文件</el-button>
             <el-button size="small" @click="createFolder">新建目录</el-button>
             <el-button size="small" type="danger" icon="el-icon-delete" :disabled="canCallBack"
-                       @click.stop="deleteResource">删除</el-button>
+                       @click.stop="deleteResource">删除
+            </el-button>
             <el-button size="small">刷新</el-button>
         </div>
         <!--80是顶部和底部的大概高度，顶部的button固定为small-->
@@ -12,7 +13,7 @@
             <div @click.stop="fileClick(file,index,$event)" v-for="(file,index) in fileList" class="file-item"
                  :class="{'file-item-checked':checkSelected(index)}">
                 <div class="file-head">
-                    <img :src="fileTypeList[file.type] || getTypeImgByFileName(file.name)" class="image" alt="">
+                    <img :src="fileTypeImgList[file.type] || getTypeImgByFileName(file.name)" class="image" alt="">
                 </div>
                 <div class="file-name">
                     <span>{{file.name}}</span>
@@ -24,26 +25,30 @@
             <span v-if="fileSelectedList.length>0">已选中{{fileSelectedList.length}}项</span>
             <template v-if="fileSelectedList.length===1">
                 <span>，信息:</span>
-                <span v-if="fileSelectedList[0].size&&fileSelectedList[0].size>0">大小:{{getFormatFileSize(fileSelectedList[0].size)}}</span>
+                <span v-if="fileSelectedList[0].size&&fileSelectedList[0].size>0">大小:{{formatFileSize(fileSelectedList[0].size)}}</span>
                 <span>修改时间:{{fileSelectedList[0].updateTime}}</span>
             </template>
-            <el-button @click.stop="selectedCallBack" :disabled="canCallBack" class="callback-btn" type="primary" size="small">确认选择</el-button>
+            <el-button @click.stop="selectedCallBack" :disabled="canCallBack" class="callback-btn" type="primary"
+                       size="small">确认选择
+            </el-button>
         </div>
         <!--创建文件夹-->
-        <create-folder :dialog-visible="createFolderVisible" @close="createFolderVisible = false" @created="init" />
+        <create-folder :dialog-visible="createFolderVisible" @close="createFolderVisible = false" @created="init"/>
         <!--上传文件-->
-        <upload-file :dialog-visible="uploadFileVisible" @close="uploadFileVisible = false" />
+        <upload-file :dialog-visible="uploadFileVisible" @close="uploadFileVisible = false"/>
     </div>
 </template>
 
 <script>
-    import { formatFileSize } from '@/utils/file'
+    import {formatFileSize} from '@/utils/file'
+    import {fileTypeImgList} from '@/utils/consts'
     import createFolder from "./createFolder"
     import uploadFile from "./uploadFile"
     import fileApi from '@/api/file/file'
+
     export default {
         name: "fileList",
-        components: {createFolder,uploadFile},
+        components: {createFolder, uploadFile},
         props: {
             height: {
                 type: Number,
@@ -54,355 +59,32 @@
                 default: false
             }
         },
-        data(){
-            return{
+        data() {
+            return {
+                fileTypeImgList,
                 createFolderVisible: false,
                 uploadFileVisible: false,
                 currentPath: '/',
-                fileTypeList: {
-                    "audio": "/images/file/audio.svg",
-                    "cad": "/images/file/cad.svg",
-                    "collect": "/images/file/collect.svg",
-                    "excel": "/images/file/excel.svg",
-                    "exe": "/images/file/exe.svg",
-                    "dir": "/images/file/folder.svg",
-                    "html": "/images/file/html.svg",
-                    "png": "/images/file/image.svg",
-                    "jpg": "/images/file/image.svg",
-                    "jpeg": "/images/file/image.svg",
-                    "gif": "/images/file/image.svg",
-                    "bmp": "/images/file/image.svg",
-                    "iso": "/images/file/iso.svg",
-                    "other": "/images/file/other.svg",
-                    "pdf": "/images/file/pdf.svg",
-                    "ppt": "/images/file/ppt.svg",
-                    "psd": "/images/file/psd.svg",
-                    "recycle": "/images/file/recycle.svg",
-                    "txt": "/images/file/txt.svg",
-                    "mp4": "/images/file/video.svg",
-                    "word": "/images/file/word.svg",
-                    "zip": "/images/file/zip.svg",
-                    "rar": "/images/file/zip.svg",
-                    "7z": "/images/file/zip.svg"
-                },
-                fileList:[
-                    {
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    },{
-                        name: '网站数据',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '视频文件',
-                        size: 0,
-                        type: 'dir',
-                        updateTime: '2020-06-09 12:00'
-                    },
-                    {
-                        name: '头像.png',
-                        size: 114179,
-                        type: 'png',
-                        updateTime: '2020-06-09 12:00'
-                    }
-                ],
-                fileSelectedList:[]
+                fileList: [{
+                    name: '视频文件',
+                    size: 0,
+                    type: 'dir',
+                    updateTime: '2020-06-09 12:00'
+                }, {
+                    name: '头像.png',
+                    size: 114179,
+                    type: 'png',
+                    updateTime: '2020-06-09 12:00'
+                }],
+                fileSelectedList: []
             }
         },
-        computed:{
-            checkSelected(){
-                return function(index){
+        computed: {
+            checkSelected() {
+                return function (index) {
                     let exist = false
                     for (let i = 0; i < this.fileSelectedList.length; i++) {
-                        if (this.fileSelectedList[i].index===index){
+                        if (this.fileSelectedList[i].index === index) {
                             exist = true
                             break
                         }
@@ -410,68 +92,66 @@
                     return exist
                 }
             },
-            canCallBack(){
-                return this.fileSelectedList.length===0
+            canCallBack() {
+                return this.fileSelectedList.length === 0
             }
         },
         mounted() {
             this.init()
         },
         methods: {
-            init(){
+            formatFileSize,
+            init() {
             },
-            fileClick(file,index,event){
-                if (event.ctrlKey){
-                    this.fileCtrlClick(file,index)
-                }else {
-                    this.fileSelectedList=[]
+            fileClick(file, index, event) {
+                if (event.ctrlKey) {
+                    this.fileCtrlClick(file, index)
+                } else {
+                    this.fileSelectedList = []
                     let temp = JSON.parse(JSON.stringify(file))
                     temp.index = index
                     this.fileSelectedList.push(temp)
                 }
             },
-            fileCtrlClick(file,index){
+            fileCtrlClick(file, index) {
                 let exist = false
                 for (let i = 0; i < this.fileSelectedList.length; i++) {
-                    if (this.fileSelectedList[i].index===index){
+                    if (this.fileSelectedList[i].index === index) {
                         exist = true
-                        this.fileSelectedList.splice(i,1)
+                        this.fileSelectedList.splice(i, 1)
                         break
                     }
                 }
-                if (!exist){
-                    let temp=JSON.parse(JSON.stringify(file))
-                    temp.index=index
+                if (!exist) {
+                    let temp = JSON.parse(JSON.stringify(file))
+                    temp.index = index
                     this.fileSelectedList.push(temp)
                 }
             },
-            fileOtherClick(){
+            fileOtherClick() {
                 this.fileSelectedList.splice(0)
             },
-            selectedCallBack(){
-                this.$emit('callback',JSON.parse(JSON.stringify(this.fileSelectedList)))
+            selectedCallBack() {
+                this.$emit('callback', JSON.parse(JSON.stringify(this.fileSelectedList)))
             },
-            getTypeImgByFileName(fileName){
-                let type= this.fileTypeList.other
-                if (fileName){
-                    let index1=fileName.lastIndexOf(".")
-                    if (index1!==-1){
-                        let suffix=fileName.substring(index1+1,fileName.length)
-                        type = this.fileTypeList[suffix] || type
+            getTypeImgByFileName(fileName) {
+                let type = this.fileTypeImgList.other
+                if (fileName) {
+                    let index1 = fileName.lastIndexOf(".")
+                    if (index1 !== -1) {
+                        let suffix = fileName.substring(index1 + 1, fileName.length)
+                        type = this.fileTypeImgList[suffix] || type
                     }
                 }
                 return type
             },
-            getFormatFileSize(size){
-                return formatFileSize(size)
-            },
-            deleteResource(){
+            deleteResource() {
                 this.$confirm('此操作将永久删除该资源, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    fileApi.deleteResource({}).then(res=>{
+                    fileApi.deleteResource({}).then(res => {
                         this.$message({
                             type: 'success',
                             message: '删除成功'
@@ -479,46 +159,52 @@
                     })
                 })
             },
-            uploadFile(){
+            uploadFile() {
                 this.uploadFileVisible = true
             },
-            createFolder(){
+            createFolder() {
                 this.createFolderVisible = true
             }
         }
     }
 </script>
 <style lang="scss" scoped>
-    .file-list{
+    .file-list {
         height: 100%;
         position: relative;
+
         .file-list-top {
 
         }
+
         .file-list-center {
             margin: 10px 0;
             overflow-y: auto;
             box-sizing: border-box;
-            .file-item{
+
+            .file-item {
                 position: relative;
                 display: inline-block;
                 width: 125px;
-                height:120px;
-                overflow:hidden;
+                height: 120px;
+                overflow: hidden;
                 padding: 10px 10px 0 10px;
                 margin: 0 5px;
-                &.file-item-checked{
+
+                &.file-item-checked {
                     border: 1px solid #1ed0ff;
                     padding: 9px 9px 0 9px;
                     border-radius: 1px;
                     background: #daf5ff;
                 }
-                .file-head{
+
+                .file-head {
                     height: 80px;
                     width: 100%;
-                    overflow:hidden;
+                    overflow: hidden;
                     text-align: center;
-                    img{
+
+                    img {
                         width: auto;
                         height: auto;
                         max-width: 100%;
@@ -526,26 +212,30 @@
                         border-radius: 2px;
                     }
                 }
-                .file-name{
+
+                .file-name {
                     height: 30px;
                     line-height: 30px;
                     width: 100%;
-                    overflow:hidden;
+                    overflow: hidden;
                     text-align: center;
                     font-size: 13px;
                 }
             }
         }
+
         .file-list-tip {
             position: relative;
             padding-left: 5px;
             font-size: 14px;
             color: #ababce;
-            >span{
+
+            > span {
                 margin-right: 5px;
                 line-height: 26px;
             }
-            .callback-btn{
+
+            .callback-btn {
                 position: absolute;
                 right: 10px;
             }

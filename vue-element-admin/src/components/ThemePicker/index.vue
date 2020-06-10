@@ -37,7 +37,7 @@ export default {
       const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))
 
       const $message = this.$message({
-        message: '  Compiling the theme',
+        message: '  主题加载中',
         customClass: 'theme-message',
         type: 'success',
         duration: 0,

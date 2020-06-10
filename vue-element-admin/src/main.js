@@ -19,7 +19,7 @@ import './permission'
 // global filters
 import * as filters from './filters'
 
-require('@/mock/mock-server')
+//require('@/mock/mock-server')
 
 Vue.use(Element, {
   // set element-ui default size

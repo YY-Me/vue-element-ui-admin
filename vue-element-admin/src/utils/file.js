@@ -1,3 +1,4 @@
+import {fileTypeImgList} from '@/utils/consts'
 /**
  *
  * @param a 文件大小，字节
@@ -19,4 +20,21 @@ export function formatFileSize(a, b) {
             "YB"],
         f = Math.floor(Math.log(a) / Math.log(c));
     return parseFloat((a/Math.pow(c, f)).toFixed(d))+" "+e[f]
+}
+
+/**
+ * 根据文件名称（后缀）获取图片
+ * @param fileName
+ * @returns {string}
+ */
+export function getTypeImgByFileName(fileName) {
+    let type = fileTypeImgList.other
+    if (fileName) {
+        let index1 = fileName.lastIndexOf(".")
+        if (index1 !== -1) {
+            let suffix = fileName.substring(index1 + 1, fileName.length)
+            type = fileTypeImgList[suffix] || type
+        }
+    }
+    return type
 }
