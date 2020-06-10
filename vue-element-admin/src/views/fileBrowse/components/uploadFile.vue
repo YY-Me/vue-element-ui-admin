@@ -11,6 +11,7 @@
         >
             <el-upload :class="{'editor-slide-upload': showDrag}"
                        ref="upload"
+                       :disabled="operation"
                        action="https://httpbin.org/post"
                        :drag="showDrag" multiple
                        :on-change="onChange"
@@ -22,8 +23,8 @@
                     <div class="el-upload__text">将文件拖到此处，最多可选20个，或<em>点击上传</em></div>
                 </template>
                 <template v-else>
-                    <el-button v-if="!operation" slot="trigger" size="small" type="primary">选取文件</el-button>
-                    <el-button v-if="!operation" style="margin-left: 10px;" size="small" type="success"
+                    <el-button :disabled="operation" slot="trigger" size="small" type="primary">选取文件</el-button>
+                    <el-button :disabled="operation" style="margin-left: 10px;" size="small" type="success"
                                @click="submitUpload">上传到服务器
                     </el-button>
                     <div slot="tip" class="el-upload__tip">最多可选20个</div>
@@ -33,16 +34,16 @@
                 <ul class="upload-file-list">
                     <li v-for="file in fileList">
                         <p class="file-name">
-                            <img :src="getTypeImgByFileName(file.data.name)||getTypeImgByFileName"/>
+                            <img :src="getTypeImgByFileName(file.data.name)||getTypeImgByFileName" alt=""/>
                             <span>{{file.data.name}}</span>
                         </p>
                         <p class="file-size">{{formatFileSize(file.data.size)}}</p>
                         <p class="file-delete" :class="{'none':operation}" @click="fileDelete(file)">
                             <i title="移除" class="el-icon-close"/>
                         </p>
-                        <p v-if="file.percentage===0&&file.tip" class="file-tip">{{file.tip}}</p>
+                        <p v-if="operation&&file.isTip" class="file-tip">{{file.tip}}</p>
                         <el-progress :text-inside="false" :stroke-width="56" :percentage="file.percentage"
-                                     :show-text="operation&&file.percentage>0">
+                                     :show-text="operation&&file.percentage>0&&!file.isTip">
                         </el-progress>
                     </li>
                 </ul>
@@ -74,7 +75,7 @@
         },
         data() {
             return {
-                multipart: true,//是否开启分片上传
+                multipart: false,//是否开启分片上传
                 splitSize: 5 * 1024 * 1024,//以5M为单位大小进行分片
                 bigFileSize: 50 * 1024 * 1024,//超过100M就进行分片上传（需要后台支持）
                 operation: false,
@@ -93,7 +94,10 @@
         methods: {
             formatFileSize,
             getTypeImgByFileName,
-            submitUpload() {
+            async submitUpload() {
+                if (this.operation) {
+                    return;
+                }
                 this.operation = true
                 for (const file of this.fileList) {
                     console.log(file)
@@ -103,16 +107,15 @@
                         const totalShard = parseInt((file.data.size + this.splitSize - 1) / this.splitSize)
                         if (totalShard > 1) {
                             for (let i = 1; i <= totalShard; i++) {
-                                console.log("upload shard "+ i)
+                                console.log("upload shard " + i)
                             }
                         } else {
-                            this.uploadOne(file)
+                            await this.uploadOne(file)
                         }
                     } else {
-                        this.uploadOne(file)
+                        await this.uploadOne(file)
                     }
                 }
-                return false
             },
             async uploadOne(file) {
                 let formData = new FormData()
@@ -120,10 +123,16 @@
                 await axios.post('https://httpbin.org/post', formData, {
                     headers: {'Content-Type': 'multipart/form-data'},
                     onUploadProgress: (evt) => {
+                        file.isTip = false
                         file.percentage = evt.loaded / evt.total * 100 | 0
+                        if (file.percentage === 100) {
+                            file.isTip = true
+                            file.tip = '数据接收中...'
+                        }
                     }
                 }).then((resp) => {
-                    console.log(resp)
+                    file.isTip = false
+                    console.log("resp:", resp)
                 }).catch((error) => {
                     this.operation = false
                     console.log(error)
@@ -133,9 +142,13 @@
 
             },
             onChange(file, fileList) {
+                if (this.operation) {
+                    return;
+                }
                 let tempFile = {
                     percentage: 0,
-                    tip: null,
+                    isTip: true,
+                    tip: '等待上传...',
                     data: file
                 }
                 if (this.fileList.length >= 20) {
