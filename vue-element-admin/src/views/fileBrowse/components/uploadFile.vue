@@ -34,7 +34,7 @@
                 <ul class="upload-file-list">
                     <li v-for="file in fileList">
                         <p class="file-name">
-                            <img :src="getTypeImgByFileName(file.data.name)||getTypeImgByFileName" alt=""/>
+                            <img v-lazy="getTypeImgByFileName(file.data.name)||getTypeImgByFileName" alt=""/>
                             <span>{{file.data.name}}</span>
                         </p>
                         <p class="file-size">{{formatFileSize(file.data.size)}}</p>
@@ -42,8 +42,9 @@
                             <i title="移除" class="el-icon-close"/>
                         </p>
                         <p v-if="operation&&file.isTip" class="file-tip">{{file.tip}}</p>
-                        <el-progress :text-inside="false" :stroke-width="56" :percentage="file.percentage"
-                                     :show-text="operation&&file.percentage>0&&!file.isTip">
+                        <el-progress :text-inside="false" :stroke-width="56"
+                                     :percentage="(file.uploadedSize / file.size * 100 | 0)"
+                                     :show-text="operation&&file.uploadedSize>0&&!file.isTip">
                         </el-progress>
                     </li>
                 </ul>
@@ -54,6 +55,9 @@
 
 <script>
     import axios from 'axios'
+    import request from '@/utils/request'
+    import md5 from 'js-md5'
+    import {getToken} from '@/utils/auth'
     import {formatFileSize, getTypeImgByFileName} from '@/utils/file'
 
     export default {
@@ -65,7 +69,7 @@
             },
             parentPath: {
                 type: String,
-                default: ''
+                default: '/'
             }
         },
         computed: {
@@ -75,11 +79,13 @@
         },
         data() {
             return {
-                multipart: false,//是否开启分片上传
-                splitSize: 5 * 1024 * 1024,//以5M为单位大小进行分片
-                bigFileSize: 50 * 1024 * 1024,//超过100M就进行分片上传（需要后台支持）
-                operation: false,
-                tempVisible: true,
+                multipart: true,//是否开启分片上传
+                splitSize: 2 * 1024 * 1024,//以5M为单位大小进行分片
+                bigFileSize: 50 * 1024 * 1024,//超过10M就进行分片上传（需要后台支持）
+                uploadPool: 5,//同时上传的请求，最小值1
+                uploadingNum: 0,//正在请求上传的数量，不要改，结合uploadPool使用
+                operation: false, //上传中
+                tempVisible: false,
                 tempData: {
                     folderName: ''
                 },
@@ -102,13 +108,34 @@
                 for (const file of this.fileList) {
                     console.log(file)
                     file.tip = '连接中...'
-                    if (this.multipart/*&&file.data.size>this.bigFileSize*/) {
-                        Object.freeze(this.splitSize)
+                    file.isTip = true
+                    if (this.multipart && file.data.size > this.bigFileSize) {
                         const totalShard = parseInt((file.data.size + this.splitSize - 1) / this.splitSize)
                         if (totalShard > 1) {
+                            //获取上传的唯一id，可以从服务器获取，根据文件大小，文件名称，其他参数组合成一个唯一的id
+                            let uploadId = this.getUploadId(file);
+                            //从服务器获取已上传的有哪些分片，如果上传了该分片，旧不要上传了
+                            file.isTip = false
                             for (let i = 1; i <= totalShard; i++) {
-                                console.log("upload shard " + i)
+                                let start = (i - 1) * this.splitSize
+                                let end = start + this.splitSize
+                                if (end >= file.size) {
+                                    end = file.size + 1
+                                }
+                                let shardData = file.data.raw.slice(start, end)
+                                let tempFormData = new FormData()
+                                tempFormData.append("uploadId", uploadId)
+                                tempFormData.append("totalShard", totalShard)
+                                tempFormData.append("shard", i)
+                                tempFormData.append("data", shardData)
+                                this.shardUpload(tempFormData, file)
+                                //虚拟的同步判断，防止发送大量的ajax请求，因为shardUpload方法未加同步机制
+                                await this.virtualSleep()
                             }
+                            //发送合并请求
+                            /*if (file.uploadedSize === file.size) {
+                                await this.mergeShardFile(uploadId, file)
+                            }*/
                         } else {
                             await this.uploadOne(file)
                         }
@@ -116,16 +143,22 @@
                         await this.uploadOne(file)
                     }
                 }
+                this.fileList = []
+                this.operation = false
+                this.$emit('uploaded')
             },
             async uploadOne(file) {
                 let formData = new FormData()
+                formData.append('prefix', this.parentPath)
                 formData.append('file', file.data.raw)
-                await axios.post('https://httpbin.org/post', formData, {
-                    headers: {'Content-Type': 'multipart/form-data'},
+                await axios.post('/system/file', formData, {
+                    baseURL: process.env.VUE_APP_BASE_API,
+                    headers: {'Content-Type': 'multipart/form-data', 'Authorization': getToken()},
                     onUploadProgress: (evt) => {
                         file.isTip = false
-                        file.percentage = evt.loaded / evt.total * 100 | 0
-                        if (file.percentage === 100) {
+                        //file.percentage = evt.loaded / evt.total * 100 | 0
+                        file.uploadedSize = evt.loaded
+                        if (evt.loaded === evt.total) {
                             file.isTip = true
                             file.tip = '数据接收中...'
                         }
@@ -138,14 +171,67 @@
                     console.log(error)
                 })
             },
-            shardUpload(formData) {
-
+            shardUpload(formData, file) {
+                this.uploadingNum = this.uploadingNum + 1
+                request({
+                    url: '/system/file/shard',
+                    method: 'post',
+                    data: {data: formData, NOSERI: true, notLoading: true},
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then((resp) => {
+                    file.uploadedSize += formData.get("data").size
+                    this.uploadingNum = this.uploadingNum - 1
+                    console.log("resp:", resp)
+                }).catch((error) => {
+                    console.log(error)
+                })
+            },
+            virtualSleep() {
+                let _this = this
+                return new Promise(function (resolve, reject) {
+                    let interval = setInterval(function () {
+                        if (_this.uploadingNum < _this.uploadPool) {
+                            clearInterval(interval)
+                            resolve()
+                        }
+                    }, 100)
+                })
+            },
+            async mergeShardFile(uploadId, file) {
+                file.tip = '文件合并中...'
+                file.isTip = true
+                let data = {
+                    uploadId: uploadId,
+                    fileName: file.data.name
+                }
+                await request({
+                    url: '/system/file/mergeShard',
+                    method: 'post',
+                    data
+                }).then(res => {
+                    file.tip = '已完成'
+                    file.isTip = false
+                    console.log("resp:", res)
+                }).catch(res => {
+                    file.tip = '合并文件异常...'
+                    file.isTip = true
+                    console.log("resp:", res)
+                })
+            },
+            getUploadId(file) {
+                //这里通过name，size生成唯一id
+                return md5(file.data.name + file.data.size)
             },
             onChange(file, fileList) {
+                console.log(file)
                 if (this.operation) {
                     return;
                 }
                 let tempFile = {
+                    size: file.size,
+                    uploadedSize: 0,
                     percentage: 0,
                     isTip: true,
                     tip: '等待上传...',
@@ -167,6 +253,8 @@
                 }
             },
             close() {
+                this.fileList = []
+                this.operation = false
                 this.$emit('close')
             },
         }

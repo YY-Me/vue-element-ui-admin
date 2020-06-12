@@ -1,0 +1,4 @@
+#此处是除开基础的权限管理后的其他配置
+localFile:
+  basePath: D:\software\nginx-1.18.0\html\public
+  shardPath: D:\software\nginx-1.18.0\html\shard

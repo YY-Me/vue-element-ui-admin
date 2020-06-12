@@ -21,20 +21,27 @@ import * as filters from './filters'
 
 //require('@/mock/mock-server')
 
+//img lazy load
+import VueLazyload from 'vue-lazyload'
+
+Vue.use(VueLazyload, {
+    loading: '/images/file/loading.gif',
+})
+
 Vue.use(Element, {
-  // set element-ui default size
-  size: Cookies.get('size') || 'medium'
+    // set element-ui default size
+    size: Cookies.get('size') || 'medium'
 })
 
 // register global utility filters
 Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
+    Vue.filter(key, filters[key])
 })
 Vue.config.productionTip = false
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
+    el: '#app',
+    router,
+    store,
+    render: h => h(App)
 })

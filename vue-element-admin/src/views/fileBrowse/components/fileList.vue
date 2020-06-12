@@ -6,14 +6,22 @@
             <el-button size="small" type="danger" icon="el-icon-delete" :disabled="canCallBack"
                        @click.stop="deleteResource">删除
             </el-button>
-            <el-button size="small">刷新</el-button>
+            <el-button size="small" @click="listFile">刷新</el-button>
         </div>
+        <el-breadcrumb class="file-crumb" separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item>根目录</el-breadcrumb-item>
+            <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+            <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+            <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+        </el-breadcrumb>
         <!--80是顶部和底部的大概高度，顶部的button固定为small-->
         <div class="file-list-center" :style="{height: (height-80) +'px'}">
             <div @click.stop="fileClick(file,index,$event)" v-for="(file,index) in fileList" class="file-item"
+                 @dblclick.stop="fileDBClick(file,index,$event)"
                  :class="{'file-item-checked':checkSelected(index)}">
                 <div class="file-head">
-                    <img :src="fileTypeImgList[file.type] || getTypeImgByFileName(file.name)" class="image" alt="">
+                    <img v-lazy="file.dir?fileTypeImgList['dir']:(fileTypeImgList[file.suffix] || getTypeImgByFileName(file.name))"
+                         class="image" alt="">
                 </div>
                 <div class="file-name">
                     <span>{{file.name}}</span>
@@ -33,13 +41,16 @@
             </el-button>
         </div>
         <!--创建文件夹-->
-        <create-folder :dialog-visible="createFolderVisible" @close="createFolderVisible = false" @created="init"/>
+        <create-folder :dialog-visible="createFolderVisible" @close="createFolderVisible = false" @created="listFile"/>
         <!--上传文件-->
-        <upload-file :dialog-visible="uploadFileVisible" @close="uploadFileVisible = false"/>
+        <upload-file :parent-path="currentPath" :dialog-visible="uploadFileVisible"
+                     @uploaded="listFile"
+                     @close="uploadFileVisible = false"/>
     </div>
 </template>
 
 <script>
+
     import {formatFileSize} from '@/utils/file'
     import {fileTypeImgList} from '@/utils/consts'
     import createFolder from "./createFolder"
@@ -65,17 +76,7 @@
                 createFolderVisible: false,
                 uploadFileVisible: false,
                 currentPath: '/',
-                fileList: [{
-                    name: '视频文件',
-                    size: 0,
-                    type: 'dir',
-                    updateTime: '2020-06-09 12:00'
-                }, {
-                    name: '头像.png',
-                    size: 114179,
-                    type: 'png',
-                    updateTime: '2020-06-09 12:00'
-                }],
+                fileList: [],
                 fileSelectedList: []
             }
         },
@@ -97,11 +98,14 @@
             }
         },
         mounted() {
-            this.init()
+            this.listFile()
         },
         methods: {
             formatFileSize,
-            init() {
+            listFile() {
+                fileApi.listFile({prefix: '/'}).then(res => {
+                    this.fileList = res.data || []
+                })
             },
             fileClick(file, index, event) {
                 if (event.ctrlKey) {
@@ -112,6 +116,9 @@
                     temp.index = index
                     this.fileSelectedList.push(temp)
                 }
+            },
+            fileDBClick(file, index, event) {
+                this.fileSelectedList = []
             },
             fileCtrlClick(file, index) {
                 let exist = false
@@ -151,11 +158,16 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    fileApi.deleteResource({}).then(res => {
+                    let source = []
+                    this.fileSelectedList.forEach(file => {
+                        source.push(`${this.currentPath + file.name}`)
+                    })
+                    fileApi.deleteResource(source).then(res => {
                         this.$message({
                             type: 'success',
                             message: '删除成功'
                         })
+                        this.listFile()
                     })
                 })
             },
@@ -177,6 +189,16 @@
 
         }
 
+        .file-crumb {
+            line-height: 14px;
+            overflow: hidden;
+            margin-top: 15px;
+
+            /deep/ .el-breadcrumb__item {
+
+            }
+        }
+
         .file-list-center {
             margin: 10px 0;
             overflow-y: auto;
@@ -185,11 +207,11 @@
             .file-item {
                 position: relative;
                 display: inline-block;
-                width: 125px;
-                height: 120px;
+                width: 105px;
+                height: 100px;
                 overflow: hidden;
                 padding: 10px 10px 0 10px;
-                margin: 0 5px;
+                margin-right: 5px;
 
                 &.file-item-checked {
                     border: 1px solid #1ed0ff;
@@ -199,7 +221,7 @@
                 }
 
                 .file-head {
-                    height: 80px;
+                    height: 60px;
                     width: 100%;
                     overflow: hidden;
                     text-align: center;
@@ -220,6 +242,8 @@
                     overflow: hidden;
                     text-align: center;
                     font-size: 13px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
             }
         }

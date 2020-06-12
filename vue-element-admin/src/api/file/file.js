@@ -2,7 +2,7 @@ import request from '@/utils/request'
 import Qs from 'qs'
 
 const fileApi = {
-    list: params => request({
+    listFile: params => request({
         url: `system/file?${Qs.stringify(params)}`,
         method: 'get',
         data: {notLoading: true}

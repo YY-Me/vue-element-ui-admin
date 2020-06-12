@@ -19,7 +19,7 @@ export const fileTypeImgList = {
     "recycle": "/images/file/recycle.svg",
     "txt": "/images/file/txt.svg",
     "mp4": "/images/file/video.svg",
-    "word": "/images/file/word.svg",
+    "doc": "/images/file/word.svg",
     "zip": "/images/file/zip.svg",
     "rar": "/images/file/zip.svg",
     "7z": "/images/file/zip.svg"
