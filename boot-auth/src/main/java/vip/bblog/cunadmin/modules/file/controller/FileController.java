@@ -53,7 +53,7 @@ public class FileController {
     }
 
     @PostMapping("mergeShard")
-    public BaseResult<FileInfo> mergeShard(@Validated @RequestBody ShardMergeInfo shardMergeInfo) {
+    public BaseResult<FileInfo> mergeShard(@Validated ShardMergeInfo shardMergeInfo) {
         FileService fileService = fileServiceFactory.getFileService(FileSource.LOCAL.toString());
         fileService.mergeShard(shardMergeInfo);
         return BaseResult.success();
