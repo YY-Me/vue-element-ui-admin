@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
- * @author <a href="1396513066@qq.com">Yu Yong</a>
+ * @author <a href="1396513066@qq.com">yy</a>
  * @version 1.0
  * @date 2020年06月12日 10:53
  * @desc ShardMergeInfo

@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * @author <a href="1396513066@qq.com">Yu Yong</a>
+ * @author <a href="1396513066@qq.com">yy</a>
  * @version 1.0
  * @date 2020年06月11日 15:45
  * @desc ShardInfo 文件分片信息

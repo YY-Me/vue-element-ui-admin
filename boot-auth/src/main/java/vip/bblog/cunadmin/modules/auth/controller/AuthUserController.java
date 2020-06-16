@@ -16,7 +16,7 @@ import vip.bblog.cunadmin.modules.auth.CustomTokenService;
 import vip.bblog.cunadmin.util.UserUtils;
 
 /**
- * @author <a href="1396513066@qq.com">Yu Yong</a>
+ * @author <a href="1396513066@qq.com">yy</a>
  * @version 1.0
  * @date 2019年10月14日 10:44
  * @desc UserController 用户相关控制器

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import vip.bblog.cunadmin.common.exception.BizException;
+import vip.bblog.cunadmin.modules.file.dto.ShardMergeInfo;
 import vip.bblog.cunadmin.modules.file.entity.FileInfo;
 import vip.bblog.cunadmin.modules.file.entity.ShardInfo;
 
@@ -18,7 +19,7 @@ import java.nio.channels.FileChannel;
 import java.util.*;
 
 /**
- * @author <a href="1396513066@qq.com">Yu Yong</a>
+ * @author <a href="1396513066@qq.com">yy</a>
  * @version 1.0
  * @date 2020年06月11日 15:21
  * @desc LocalFileServiceImpl 本地存储
@@ -87,21 +88,20 @@ public class LocalFileServiceImpl extends AbstractFileServiceImpl {
         if (null != files) {
             List<FileInfo> result = new ArrayList<>(files.length);
             List<File> fileList = Arrays.asList(files);
-            fileList.sort(new Comparator<File>() {
-                @Override
-                public int compare(File o1, File o2) {
-                    if (o1.isDirectory()) {
-                        if (o2.isDirectory()) {
-                            return -1;
-                        } else {
-                            return o1.getName().compareTo(o2.getName());
-                        }
+            fileList.sort((o1, o2) -> {
+                if (o1.isDirectory()) {
+                    if (o2.isDirectory()) {
+                        return o1.getName().substring(0, 1).toLowerCase()
+                                .compareTo(o2.getName().substring(0, 1).toLowerCase());
                     } else {
-                        if (o2.isDirectory()) {
-                            return 1;
-                        } else {
-                            return o1.getName().compareTo(o2.getName());
-                        }
+                        return -1;
+                    }
+                } else {
+                    if (o2.isDirectory()) {
+                        return 1;
+                    } else {
+                        return o1.getName().substring(0, 1).toLowerCase()
+                                .compareTo(o2.getName().substring(0, 1).toLowerCase());
                     }
                 }
             });
@@ -150,19 +150,18 @@ public class LocalFileServiceImpl extends AbstractFileServiceImpl {
 
     /**
      * 合并分片
-     *
-     * @param uploadId 唯一id
      */
     @Override
-    public void mergeShard(String uploadId, String fileName) {
-        String shardParent = String.format("%s%s%s", shardPath, File.separator, uploadId);
+    public void mergeShard(ShardMergeInfo shardMergeInfo) {
+        String shardParent = String.format("%s%s%s", shardPath, File.separator, shardMergeInfo.getUploadId());
         Collection<File> shardFiles = FileUtils.listFiles(new File(shardParent), null, false);
         File[] sortShardFiles = shardFiles.stream().sorted((o1, o2) -> {
             int num1 = Integer.parseInt(o1.getName().split("_")[1]);
             int num2 = Integer.parseInt(o2.getName().split("_")[1]);
             return num1 - num2;
         }).toArray(File[]::new);
-        File resultFile = new File(String.format("D:\\software\\nginx-1.18.0\\html\\shard\\%s", fileName));
+        File resultFile = new File(String.format("%s%s%s%s", basePath, shardMergeInfo.getPrefix(), File.separator,
+                shardMergeInfo.getFileName()));
         long start = System.currentTimeMillis();
         mergeFile(sortShardFiles, resultFile);
         long end = System.currentTimeMillis();

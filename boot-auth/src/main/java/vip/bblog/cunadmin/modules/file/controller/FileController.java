@@ -17,7 +17,7 @@ import vip.bblog.cunadmin.modules.file.service.FileService;
 import java.util.List;
 
 /**
- * @author <a href="1396513066@qq.com">Yu Yong</a>
+ * @author <a href="1396513066@qq.com">yy</a>
  * @version 1.0
  * @date 2020年06月11日 14:22
  * @desc FileController
@@ -53,9 +53,9 @@ public class FileController {
     }
 
     @PostMapping("mergeShard")
-    public BaseResult<FileInfo> mergeShard(@Validated ShardMergeInfo shardMergeInfo) {
+    public BaseResult<FileInfo> mergeShard(@Validated @RequestBody ShardMergeInfo shardMergeInfo) {
         FileService fileService = fileServiceFactory.getFileService(FileSource.LOCAL.toString());
-        fileService.mergeShard(shardMergeInfo.getUploadId(), shardMergeInfo.getFileName());
+        fileService.mergeShard(shardMergeInfo);
         return BaseResult.success();
     }
 

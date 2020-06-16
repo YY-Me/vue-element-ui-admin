@@ -1,5 +1,6 @@
 package vip.bblog.cunadmin.modules.file.service;
 
+import vip.bblog.cunadmin.modules.file.dto.ShardMergeInfo;
 import vip.bblog.cunadmin.modules.file.dto.UploadInfo;
 import vip.bblog.cunadmin.modules.file.entity.FileInfo;
 import vip.bblog.cunadmin.modules.file.entity.ShardInfo;
@@ -7,7 +8,7 @@ import vip.bblog.cunadmin.modules.file.entity.ShardInfo;
 import java.util.List;
 
 /**
- * @author <a href="1396513066@qq.com">Yu Yong</a>
+ * @author <a href="1396513066@qq.com">yy</a>
  * @version 1.0
  * @date 2020年06月11日 14:24
  * @desc FileService 文件管理
@@ -57,11 +58,9 @@ public interface FileService {
 
     /**
      * 合并分片
-     *
-     * @param uploadId 唯一id
-     * @param fileName 文件名
+     * @param shardMergeInfo 信息
      */
-    void mergeShard(String uploadId, String fileName);
+    void mergeShard(ShardMergeInfo shardMergeInfo);
 
     /**
      * 删除资源

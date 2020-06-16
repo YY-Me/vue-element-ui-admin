@@ -133,9 +133,9 @@
                                 await this.virtualSleep()
                             }
                             //发送合并请求
-                            /*if (file.uploadedSize === file.size) {
+                            if (file.uploadedSize === file.size) {
                                 await this.mergeShardFile(uploadId, file)
-                            }*/
+                            }
                         } else {
                             await this.uploadOne(file)
                         }
@@ -203,6 +203,7 @@
                 file.tip = '文件合并中...'
                 file.isTip = true
                 let data = {
+                    prefix: this.parentPath,
                     uploadId: uploadId,
                     fileName: file.data.name
                 }
