@@ -133,9 +133,7 @@
                                 await this.virtualSleep()
                             }
                             //发送合并请求
-                            if (file.uploadedSize === file.size) {
-                                await this.mergeShardFile(uploadId, file)
-                            }
+                            await this.mergeShardFile(uploadId, file)
                         } else {
                             await this.uploadOne(file)
                         }
@@ -199,7 +197,7 @@
                     }, 100)
                 })
             },
-            async mergeShardFile(uploadId, file) {
+            mergeShardFile(uploadId, file) {
                 file.tip = '文件合并中...'
                 file.isTip = true
                 let data = {
@@ -207,18 +205,26 @@
                     uploadId: uploadId,
                     fileName: file.data.name
                 }
-                await request({
-                    url: '/system/file/mergeShard',
-                    method: 'post',
-                    data
-                }).then(res => {
-                    file.tip = '已完成'
-                    file.isTip = false
-                    console.log("resp:", res)
-                }).catch(res => {
-                    file.tip = '合并文件异常...'
-                    file.isTip = true
-                    console.log("resp:", res)
+                return new Promise(function (resolve, reject) {
+                    let interval = setInterval(function () {
+                        if (file.uploadedSize >= file.size) {
+                            clearInterval(interval)
+                            request({
+                                url: '/system/file/mergeShard',
+                                method: 'post',
+                                data
+                            }).then(res => {
+                                file.tip = '已完成'
+                                file.isTip = false
+                                resolve()
+                                console.log("resp:", res)
+                            }).catch(res => {
+                                file.tip = '合并文件异常...'
+                                file.isTip = true
+                                console.log("resp:", res)
+                            })
+                        }
+                    }, 100)
                 })
             },
             getUploadId(file) {
