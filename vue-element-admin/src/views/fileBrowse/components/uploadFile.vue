@@ -59,6 +59,7 @@
     import md5 from 'js-md5'
     import {getToken} from '@/utils/auth'
     import {formatFileSize, getTypeImgByFileName} from '@/utils/file'
+    import { Loading } from 'element-ui'
 
     export default {
         name: "uploadFile",
@@ -96,6 +97,9 @@
             dialogVisible: function (val) {
                 this.tempVisible = val
             }
+        },
+        mounted() {
+            
         },
         methods: {
             formatFileSize,

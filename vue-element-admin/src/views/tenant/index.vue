@@ -145,7 +145,7 @@
             let that = this
             window.onresize = () => {
                 //37是box的header的padding，70=(60+10)是顶部的高度
-                let tempHeaderHeight = this.$refs.topHeader.offsetHeight + 37 + 70
+                let tempHeaderHeight = this.$refs.topHeader.offsetHeight + 37 + 95
                 let tempHeight = document.body.clientHeight - (106 + tempHeaderHeight)
                 if (tempHeight < 300) {
                     tempHeight = 300
