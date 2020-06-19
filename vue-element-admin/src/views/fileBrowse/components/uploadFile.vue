@@ -43,7 +43,7 @@
                         </p>
                         <p v-if="operation&&file.isTip" class="file-tip">{{file.tip}}</p>
                         <el-progress :text-inside="false" :stroke-width="56"
-                                     :percentage="(file.uploadedSize / file.size * 100 | 0)"
+                                     :percentage="file.percentage"
                                      :show-text="operation&&file.uploadedSize>0&&!file.isTip">
                         </el-progress>
                     </li>
@@ -59,7 +59,6 @@
     import md5 from 'js-md5'
     import {getToken} from '@/utils/auth'
     import {formatFileSize, getTypeImgByFileName} from '@/utils/file'
-    import { Loading } from 'element-ui'
 
     export default {
         name: "uploadFile",
@@ -99,7 +98,7 @@
             }
         },
         mounted() {
-            
+
         },
         methods: {
             formatFileSize,
@@ -110,7 +109,6 @@
                 }
                 this.operation = true
                 for (const file of this.fileList) {
-                    console.log(file)
                     file.tip = '连接中...'
                     file.isTip = true
                     if (this.multipart && file.data.size > this.bigFileSize) {
@@ -158,19 +156,17 @@
                     headers: {'Content-Type': 'multipart/form-data', 'Authorization': getToken()},
                     onUploadProgress: (evt) => {
                         file.isTip = false
-                        //file.percentage = evt.loaded / evt.total * 100 | 0
+                        file.percentage = evt.loaded / evt.total * 100 | 0
                         file.uploadedSize = evt.loaded
                         if (evt.loaded === evt.total) {
                             file.isTip = true
                             file.tip = '数据接收中...'
                         }
                     }
-                }).then((resp) => {
+                }).then(() => {
                     file.isTip = false
-                    console.log("resp:", resp)
-                }).catch((error) => {
+                }).catch(() => {
                     this.operation = false
-                    console.log(error)
                 })
             },
             shardUpload(formData, file) {
@@ -182,17 +178,15 @@
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
-                }).then((resp) => {
+                }).then(() => {
                     file.uploadedSize += formData.get("data").size
+                    file.percentage = (file.uploadedSize / file.size * 100 | 0)
                     this.uploadingNum = this.uploadingNum - 1
-                    console.log("resp:", resp)
-                }).catch((error) => {
-                    console.log(error)
                 })
             },
             virtualSleep() {
                 let _this = this
-                return new Promise(function (resolve, reject) {
+                return new Promise(function (resolve) {
                     let interval = setInterval(function () {
                         if (_this.uploadingNum < _this.uploadPool) {
                             clearInterval(interval)
@@ -207,9 +201,10 @@
                 let data = {
                     prefix: this.parentPath,
                     uploadId: uploadId,
-                    fileName: file.data.name
+                    fileName: file.data.name,
+                    notLoading: true
                 }
-                return new Promise(function (resolve, reject) {
+                return new Promise(function (resolve) {
                     let interval = setInterval(function () {
                         if (file.uploadedSize >= file.size) {
                             clearInterval(interval)
@@ -217,15 +212,13 @@
                                 url: '/system/file/mergeShard',
                                 method: 'post',
                                 data
-                            }).then(res => {
+                            }).then(() => {
                                 file.tip = '已完成'
                                 file.isTip = false
                                 resolve()
-                                console.log("resp:", res)
-                            }).catch(res => {
+                            }).catch(() => {
                                 file.tip = '合并文件异常...'
                                 file.isTip = true
-                                console.log("resp:", res)
                             })
                         }
                     }, 100)
@@ -235,8 +228,7 @@
                 //这里通过name，size生成唯一id
                 return md5(file.data.name + file.data.size)
             },
-            onChange(file, fileList) {
-                console.log(file)
+            onChange(file) {
                 if (this.operation) {
                     return;
                 }

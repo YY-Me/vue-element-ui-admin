@@ -8,7 +8,7 @@ const fileApi = {
         data: {notLoading: true}
     }),
     createFolder: data => request({
-        url: `system/file`,
+        url: `system/file/folder`,
         method: 'post',
         data
     }),

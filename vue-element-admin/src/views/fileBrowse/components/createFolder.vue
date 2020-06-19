@@ -12,7 +12,7 @@
             <el-form :rules="rules" :model="tempData" ref="ruleForm" label-width="70px" class="demo-ruleForm">
                 <el-form-item label="目录名" prop="folderName">
                     <el-input type="text" placeholder="请输入目录名" v-model="tempData.folderName"
-                              maxlength="10" show-word-limit >
+                              maxlength="12" show-word-limit >
                     </el-input>
                 </el-form-item>
             </el-form>
@@ -37,7 +37,7 @@
             },
             parentPath: {
                 type: String,
-                default: ''
+                default: '/'
             }
         },
         data(){
@@ -48,8 +48,8 @@
                 },
                 rules: {
                     folderName: [
-                        {required: true, message: '请输入账号', trigger: 'blur'},
-                        {min: 3, max: 12, message: '长度在 3 到 12 个字符', trigger: 'blur'}
+                        {required: true, message: '请输入文件夹名称', trigger: 'blur'},
+                        {min: 1, max: 12, message: '长度在 3 到 12 个字符', trigger: 'blur'}
                     ],
                 }
             }
@@ -64,7 +64,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         fileApi.createFolder({
-                            parentPath: this.parentPath,
+                            prefix: this.parentPath,
                             folderName: this.tempData.folderName
                         }).then(res=>{
                             this.$message.success('创建成功')

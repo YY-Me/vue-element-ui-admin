@@ -47,7 +47,8 @@
             </el-button>
         </div>
         <!--创建文件夹-->
-        <create-folder :dialog-visible="createFolderVisible" @close="createFolderVisible = false" @created="listFile"/>
+        <create-folder :parent-path="currentPath" :dialog-visible="createFolderVisible"
+                       @close="createFolderVisible = false" @created="listFile"/>
         <!--上传文件-->
         <upload-file :parent-path="currentPath" :dialog-visible="uploadFileVisible"
                      @uploaded="listFile"
@@ -232,8 +233,10 @@
                         source.push(`${this.currentPath + item.name}`)
                     })
                     if (this.rightClickFile) {
-                        source.push(`${this.currentPath + this.rightClickFile.name}`)
-                        this.rightClickFile = null
+                        if (source.indexOf(`${this.currentPath + this.rightClickFile.name}`) === -1) {
+                            source.push(`${this.currentPath + this.rightClickFile.name}`)
+                            this.rightClickFile = null
+                        }
                     }
                     fileApi.deleteResource(source).then(res => {
                         this.$message({

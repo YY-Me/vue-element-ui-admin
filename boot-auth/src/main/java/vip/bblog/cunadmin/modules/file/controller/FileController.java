@@ -2,11 +2,15 @@ package vip.bblog.cunadmin.modules.file.controller;
 
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.bblog.cunadmin.common.entity.BaseResult;
 import vip.bblog.cunadmin.modules.file.config.FileServiceFactory;
+import vip.bblog.cunadmin.modules.file.dto.CreateFolderDTO;
 import vip.bblog.cunadmin.modules.file.dto.ShardMergeInfo;
 import vip.bblog.cunadmin.modules.file.dto.UploadInfo;
 import vip.bblog.cunadmin.modules.file.entity.FileInfo;
@@ -38,6 +42,18 @@ public class FileController {
         return BaseResult.success(fileInfos);
     }
 
+    @ApiOperation(value = "创建文件夹", notes = "在某个路径下创建文件夹")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "prefix", value = "文件夹创建target", example = "/test"),
+            @ApiImplicitParam(name = "folderName", value = "文件夹名称", example = "hello")
+    })
+    @PostMapping("folder")
+    public BaseResult<String> createFolder(@Validated @RequestBody CreateFolderDTO folder) {
+        FileService fileService = fileServiceFactory.getFileService(FileSource.LOCAL.toString());
+        fileService.createFolder(folder);
+        return BaseResult.success();
+    }
+
     @PostMapping
     public BaseResult<FileInfo> uploadFile(@Validated UploadInfo uploadInfo) {
         FileService fileService = fileServiceFactory.getFileService(FileSource.LOCAL.toString());
@@ -46,7 +62,7 @@ public class FileController {
     }
 
     @PostMapping("shard")
-    public BaseResult<String> shardUpload(@Validated ShardInfo shard) {
+    public BaseResult<String> uploadShard(@Validated ShardInfo shard) {
         FileService fileService = fileServiceFactory.getFileService(FileSource.LOCAL.toString());
         fileService.saveShard(shard);
         return BaseResult.success();

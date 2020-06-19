@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import vip.bblog.cunadmin.common.exception.BizException;
+import vip.bblog.cunadmin.modules.file.dto.CreateFolderDTO;
 import vip.bblog.cunadmin.modules.file.dto.ShardMergeInfo;
 import vip.bblog.cunadmin.modules.file.entity.FileInfo;
 import vip.bblog.cunadmin.modules.file.entity.ShardInfo;
@@ -65,13 +66,16 @@ public class LocalFileServiceImpl extends AbstractFileServiceImpl {
     /**
      * 文件夹创建
      *
-     * @param prefix     前缀
-     * @param folderName 文件夹名称
-     * @return R
+     * @param folder 前缀
      */
     @Override
-    public boolean createFolder(String prefix, String folderName) {
-        return false;
+    public void createFolder(CreateFolderDTO folder) {
+        File file = new File(String.format("%s%s%s%s", basePath, folder.getPrefix(), File.separator,
+                folder.getFolderName()));
+        if (file.exists()) {
+            throw new BizException("文件夹已存在");
+        }
+        file.mkdir();
     }
 
     /**
@@ -164,6 +168,15 @@ public class LocalFileServiceImpl extends AbstractFileServiceImpl {
                 shardMergeInfo.getFileName()));
         long start = System.currentTimeMillis();
         mergeFile(sortShardFiles, resultFile);
+        //如果没有出现异常，则删除分片文件
+        File shardParentFile = new File(shardParent);
+        if (shardParentFile.exists()) {
+            try {
+                FileUtils.deleteDirectory(shardParentFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         long end = System.currentTimeMillis();
         System.err.println(end - start);
     }

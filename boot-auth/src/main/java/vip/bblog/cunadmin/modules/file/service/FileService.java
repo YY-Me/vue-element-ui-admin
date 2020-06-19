@@ -1,5 +1,6 @@
 package vip.bblog.cunadmin.modules.file.service;
 
+import vip.bblog.cunadmin.modules.file.dto.CreateFolderDTO;
 import vip.bblog.cunadmin.modules.file.dto.ShardMergeInfo;
 import vip.bblog.cunadmin.modules.file.dto.UploadInfo;
 import vip.bblog.cunadmin.modules.file.entity.FileInfo;
@@ -34,11 +35,9 @@ public interface FileService {
     /**
      * 文件夹创建
      *
-     * @param prefix     前缀
-     * @param folderName 文件夹名称
-     * @return R
+     * @param folder 文件夹
      */
-    boolean createFolder(String prefix, String folderName);
+    void createFolder(CreateFolderDTO folder);
 
     /**
      * 根据前缀列举文件或文件夹
