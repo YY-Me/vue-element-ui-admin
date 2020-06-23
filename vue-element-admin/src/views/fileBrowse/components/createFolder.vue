@@ -8,6 +8,7 @@
                 :close-on-press-escape="false"
                 :close-on-click-modal="false"
                 @close="close"
+                append-to-body
         >
             <el-form :rules="rules" :model="tempData" ref="ruleForm" label-width="70px" class="demo-ruleForm">
                 <el-form-item label="目录名" prop="folderName">

@@ -35,6 +35,9 @@ public class LocalFileServiceImpl extends AbstractFileServiceImpl {
     @Value("${localFile.shardPath}")
     private String shardPath;
 
+    @Value("${localFile.baseUrl}")
+    private String baseUrl;
+
     /**
      * 保存文件
      *
@@ -122,6 +125,8 @@ public class LocalFileServiceImpl extends AbstractFileServiceImpl {
                     if (i != -1) {
                         fileInfo.setSuffix(fileInfo.getName().substring(i + 1));
                     }
+                    String absolutePath = temp.getAbsolutePath();
+                    fileInfo.setUrl(String.format("%s%s", baseUrl, absolutePath.replace(basePath, "")).replaceAll("\\\\", "/"));
                 }
                 fileInfo.setUpdateTime(new Date(temp.lastModified()));
                 result.add(fileInfo);

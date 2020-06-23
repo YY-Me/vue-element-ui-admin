@@ -1,4 +1,5 @@
 import {fileTypeImgList} from '@/utils/consts'
+
 /**
  *
  * @param a 文件大小，字节
@@ -6,7 +7,7 @@ import {fileTypeImgList} from '@/utils/consts'
  * @returns {string}
  */
 export function formatFileSize(a, b) {
-    if(0===a)return"0 Bytes";
+    if (0 === a) return "0 Bytes";
     const c = 1024,
         d = b || 2,
         e = ["Bytes",
@@ -19,7 +20,7 @@ export function formatFileSize(a, b) {
             "ZB",
             "YB"],
         f = Math.floor(Math.log(a) / Math.log(c));
-    return parseFloat((a/Math.pow(c, f)).toFixed(d))+" "+e[f]
+    return parseFloat((a / Math.pow(c, f)).toFixed(d)) + " " + e[f]
 }
 
 /**
@@ -37,4 +38,12 @@ export function getTypeImgByFileName(fileName) {
         }
     }
     return type
+}
+
+export function isImg(f) {
+    return /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f);
+}
+
+export function isVideo(f) {
+    return /\.(mp4|avi|mkv|wmv|webm|MP4|AVI|MKV|WMV|WEBM)$/.test(f);
 }

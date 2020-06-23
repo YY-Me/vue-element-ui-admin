@@ -8,6 +8,7 @@
                 :close-on-press-escape="false"
                 :close-on-click-modal="false"
                 @close="close"
+                append-to-body
         >
             <el-upload :class="{'editor-slide-upload': showDrag}"
                        ref="upload"

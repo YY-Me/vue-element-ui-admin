@@ -1,6 +1,6 @@
 <template>
     <el-card :style="{maxHeight:customTableHeight+'px'}" style="transition: none !important;" shadow="never">
-        <file-list :height="fileListHeight" @callback="callback"/>
+        <file-list :height="fileListHeight"/>
     </el-card>
 </template>
 
@@ -38,9 +38,6 @@
             window.onresize = null
         },
         methods: {
-            callback(data) {
-                this.$message.success(JSON.stringify(data))
-            }
         }
     }
 </script>

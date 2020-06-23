@@ -13,6 +13,11 @@
                                 style="cursor: pointer !important;">
                 <a @click.stop="breadcrumbClick(item.path)">{{item.name}}</a>
             </el-breadcrumb-item>
+            <span v-if="breadcrumbItem.length>1"
+                  @click.stop="breadcrumbClick(breadcrumbItem[breadcrumbItem.length-2].path)"
+                  class="no-select" style="float: right;cursor: pointer;margin-right: 4px;">
+                <i class="el-icon-back"/>返回
+            </span>
         </el-breadcrumb>
         <!--80是顶部和底部的大概高度，顶部的button固定为small-->
         <div class="file-list-center" :style="{height: (height-100) +'px'}">
@@ -42,7 +47,8 @@
                 <span v-if="fileSelectedList[0].size&&fileSelectedList[0].size>0">大小:{{formatFileSize(fileSelectedList[0].size)}}</span>
                 <span>修改时间:{{fileSelectedList[0].updateTime}}</span>
             </template>
-            <el-button @click.stop="selectedCallBack" :disabled="canCallBack" class="callback-btn" type="primary"
+            <el-button v-if="callback" @click.stop="selectedCallBack" :disabled="canCallBack" class="callback-btn"
+                       type="primary"
                        size="small">确认选择
             </el-button>
         </div>
@@ -219,7 +225,7 @@
                 }
             },
             selectedCallBack() {
-                this.$emit('callback', JSON.parse(JSON.stringify(this.fileSelectedList)))
+                this.$emit('callback', JSON.parse(JSON.stringify(this.fileSelectedList.filter(item => !item.dir))))
             },
             deleteResource() {
                 this.confirmDelete = true
