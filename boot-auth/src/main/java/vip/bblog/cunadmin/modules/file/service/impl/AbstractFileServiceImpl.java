@@ -38,6 +38,7 @@ public abstract class AbstractFileServiceImpl implements FileService {
             fileInfo.setDir(false);
             fileInfo.setPath(uploadInfo.getPrefix());
             save(fileInfo, file);
+            return fileInfo;
         } catch (IOException e) {
             e.printStackTrace();
         }

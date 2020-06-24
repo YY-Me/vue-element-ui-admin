@@ -2,3 +2,4 @@
 localFile:
   basePath: D:\software\nginx-1.18.0\html\public
   shardPath: D:\software\nginx-1.18.0\html\shard
+  baseUrl: http://192.168.0.109:8051/uploadFile

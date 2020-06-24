@@ -1,6 +1,7 @@
 <template>
     <div :class="{fullscreen:fullscreen}" class="tinymce-container" :style="{width:containerWidth}">
-        <el-button @click="imageSuccess">测试</el-button>
+        <el-button @click="insertContent">插入内容</el-button>
+        <el-button @click="getContent">获取内容</el-button>
         <label>
             <textarea :id="tinymceId" class="tinymce-textarea"/>
         </label>
@@ -24,6 +25,7 @@
     import load from './dynamicLoadScript'
     import FileList from "@/views/fileBrowse/components/fileList"
     import {isImg, isVideo} from '@/utils/file'
+    import request from "@/utils/request";
 
     const localUrl = '/plugins/tinymce4/tinymce/tinymce.min.js'
 
@@ -139,15 +141,9 @@
                             editor.setContent(_this.value)
                         }
                         _this.hasInit = true
-                        editor.on('NodeChange Change KeyUp SetContent', () => {
-                            this.hasChange = true
-                            this.$emit('input', editor.getContent())
-                        })
                         editor.fileBrowser = function () {
                             _this.fileBrowserVisible = true
-                            console.log("文件浏览器")
                         }
-                        console.log(editor)
                     },
                     setup(editor) {
                         editor.on('FullscreenStateChanged', (e) => {
@@ -155,11 +151,20 @@
                         })
                     },
                     images_upload_handler(blobInfo, success, failure, progress) {
-                        console.log(blobInfo)
-                        console.log(success)
-                        console.log(failure)
-                        _this.ajaxUpload(blobInfo.blob()).then((data) => {
-                            success(data.uploadedImageUrl)
+                        let formData = new FormData()
+                        formData.append('prefix', '/')
+                        formData.append('file', blobInfo.blob())
+                        request({
+                            url: '/system/file/richText',
+                            method: 'post',
+                            data: {data: formData, NOSERI: true, notLoading: true},
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }).then((res) => {
+                            success(res.data.url)
+                        }).catch((res) => {
+                            failure((res && res.data && res.data.message) || '上传失败')
                         })
                     },
                     video_template_callback: function (data) {
@@ -182,35 +187,23 @@
                 window.tinymce.get(this.tinymceId).setContent(value)
             },
             getContent() {
-                window.tinymce.get(this.tinymceId).getContent()
+                this.$message.success(window.tinymce.get(this.tinymceId).getContent())
             },
-            imageSuccessCBK(arr) {
-                console.log("url:", arr[0].url)
-                const _this = this
-                window.tinymce.get(_this.tinymceId).selection.setContent(`<img src="${arr[0].url}"  alt="" />`);
-                // arr.forEach(v => {
-                //   console.log(v)
-                //   window.tinymce.get(_this.tinymceId).selection.setContent(`<img class="wscnph" src="${v.url}"  alt="" />`);
-                // })
-            },
-            imageSuccess(arr) {
-                console.log("hh")
+            insertContent(arr) {
                 const _this = this
                 window.tinymce.get(_this.tinymceId).insertContent(`<img src="https://dss1.baidu.com/70cFfyinKgQFm2e88IuM_a/forum/pic/item/a8ec8a13632762d0797a0962a6ec08fa503dc6a3.jpg"  alt="" />`);
-            },
-            ajaxUpload() {
-                return Promise.resolve({
-                    uploadedImageUrl: 'https://www.xiyoukeji.com/images/logo_xs.gif'
-                })
             },
             fileSelected(data) {
                 let _this = this
                 let file = data || []
                 file.forEach(item => {
                     if (isImg(item.url)) {
-                        window.tinymce.get(_this.tinymceId).insertContent(`<img src="${item.url}"  alt="${item.name}" />`);
+                        window.tinymce.get(_this.tinymceId).insertContent(`<img src="${item.url}"  alt="${item.name}" style="max-width: 100%;" />`);
                     } else if (isVideo(item.url)) {
-
+                        window.tinymce.get(_this.tinymceId).insertContent(`<video controls="controls" style="max-width: 100%;">
+                  <source src="${item.url}" /></video>`)
+                    } else {
+                        window.tinymce.get(_this.tinymceId).insertContent(`<p><a href="${item.url}" target="_blank" rel="noopener">${item.name}</a></p>`)
                     }
                 })
                 this.fileBrowserVisible = false

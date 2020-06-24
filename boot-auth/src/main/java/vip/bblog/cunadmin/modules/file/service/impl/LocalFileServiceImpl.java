@@ -50,6 +50,8 @@ public class LocalFileServiceImpl extends AbstractFileServiceImpl {
             File destination = new File(String.format("%s%s%s%s", basePath, fileInfo.getPath(), File.separator,
                     fileInfo.getName()));
             FileUtils.copyInputStreamToFile(file.getInputStream(), destination);
+            String absolutePath = destination.getAbsolutePath();
+            fileInfo.setUrl(String.format("%s%s", baseUrl, absolutePath.replace(basePath, "")).replaceAll("\\\\", "/"));
         } catch (IOException e) {
             throw new BizException("上传失败");
         }

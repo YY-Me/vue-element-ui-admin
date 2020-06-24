@@ -18,6 +18,8 @@ import vip.bblog.cunadmin.modules.file.entity.ShardInfo;
 import vip.bblog.cunadmin.modules.file.enums.FileSource;
 import vip.bblog.cunadmin.modules.file.service.FileService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,6 +59,15 @@ public class FileController {
     @PostMapping
     public BaseResult<FileInfo> uploadFile(@Validated UploadInfo uploadInfo) {
         FileService fileService = fileServiceFactory.getFileService(FileSource.LOCAL.toString());
+        FileInfo fileInfo = fileService.saveFile(uploadInfo);
+        return BaseResult.success(fileInfo);
+    }
+
+    @PostMapping("richText")
+    public BaseResult<FileInfo> uploadFileByRichText(@Validated UploadInfo uploadInfo) {
+        FileService fileService = fileServiceFactory.getFileService(FileSource.LOCAL.toString());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        uploadInfo.setPrefix("/uploadFile/" + simpleDateFormat.format(new Date()));
         FileInfo fileInfo = fileService.saveFile(uploadInfo);
         return BaseResult.success(fileInfo);
     }
