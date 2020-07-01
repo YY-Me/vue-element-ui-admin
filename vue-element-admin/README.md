@@ -21,7 +21,6 @@ npm run build
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0701/110231_5a2f0bad_1559021.png "Snipaste_2020-07-01_11-02-06.png")
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0701/114729_ec08e503_1559021.gif "QQ录屏202007011125252020711142319.gif")
 
 
 ### 文本编辑器
@@ -29,6 +28,9 @@ npm run build
 [点击查看](https://panjiachen.github.io/vue-element-admin-site/zh/feature/component/rich-editor.html)
 
 在tinymce编辑器中，默认实现了对接上面的文件浏览器，可以插入文件浏览器的文件
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0701/115512_8c5b5ec4_1559021.png "Snipaste_2020-07-01_11-55-00.png")
+
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0701/114741_395bec06_1559021.gif "QQ录屏202007011109162020711137258.gif")
 
 ### 如何将他们引入你的项目，很简单，复制views下面对应的文件夹，并且把里面的vue文件依赖相关的js等复制过去就行了
