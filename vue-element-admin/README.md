@@ -1,19 +1,6 @@
 # vue-element-admin
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
+## 此项目包含了文件浏览器、富文本编辑器
 
 ### 文件浏览器
 文件浏览器，可以对文件进行操作，目前对接的本地的文件，也可以实现里面的阿里云oss或者是其他云存储，和本地实现一样的，本地的需要注意后台配置的application-other.yml的配置，
