@@ -21,6 +21,8 @@ npm run build
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0701/110231_5a2f0bad_1559021.png "Snipaste_2020-07-01_11-02-06.png")
 
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0701/120006_57b33829_1559021.gif "QQ录屏2020070111252520207111592614.gif")
+
 
 
 ### 文本编辑器
