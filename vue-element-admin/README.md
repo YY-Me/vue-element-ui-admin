@@ -15,10 +15,7 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+### 文本编辑器
+富文本选择的是vue-element-admin作者推荐的tinymce，具体可以看作者说明
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
