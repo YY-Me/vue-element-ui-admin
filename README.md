@@ -3,7 +3,7 @@
 #### 介绍
 vue-element-ui-admin，springboot基础的权限管理系统
 
-#### 软件架构
+#### 软件架构，如果仓库有更新，请务必还是更新下，有时候会修复一些小bug，有时候也是写着写着bug才被发现
 提供了两种常用的后台ui，都是基于[vue-element-admin](https://panjiachen.github.io/vue-element-admin-site/zh/guide/)，没有更改作者整体结构，人家已经做得很好了，只是改了部分逻辑，比如路由的方法计算
 
 [点击查看文件管理和富文本](https://gitee.com/yy1122/vue-element-ui-admin/tree/master/vue-element-admin)
