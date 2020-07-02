@@ -6,7 +6,7 @@ vue-element-ui-admin，springboot基础的权限管理系统
 #### 软件架构，如果仓库有更新，请务必还是更新下，有时候会修复一些小bug，有时候也是写着写着bug才被发现
 提供了两种常用的后台ui，都是基于[vue-element-admin](https://panjiachen.github.io/vue-element-admin-site/zh/guide/)，没有更改作者整体结构，人家已经做得很好了，只是改了部分逻辑，比如路由的方法计算
 
-[点击查看文件管理和富文本](https://gitee.com/yy1122/vue-element-ui-admin/tree/master/vue-element-admin)
+富文本和文件管理器：[点击查看](https://gitee.com/yy1122/vue-element-ui-admin/tree/master/vue-element-admin)
 
 
 UI-1：左侧菜单类型
@@ -34,6 +34,7 @@ UI-3：顶部菜单类型，这种可能适合一些地图操作啊，或者其�
 6.  此项目用途，据看你怎么用了，给人家做毕设，公司后台管理都可以
 
 如果您遇到使用此项目遇到了什么问题可以@：1396513066@qq.com
+
 
 <img src="https://images.gitee.com/uploads/images/2020/0602/120907_094790b5_1559021.jpeg"  height="100">
 
