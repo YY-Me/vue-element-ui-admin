@@ -11,6 +11,7 @@ import vip.bblog.cunadmin.modules.file.dto.CreateFolderDTO;
 import vip.bblog.cunadmin.modules.file.dto.ShardMergeInfo;
 import vip.bblog.cunadmin.modules.file.entity.FileInfo;
 import vip.bblog.cunadmin.modules.file.entity.ShardInfo;
+import vip.bblog.cunadmin.modules.system.dto.UserAddDTO;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -227,6 +228,15 @@ public class LocalFileServiceImpl extends AbstractFileServiceImpl {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        UserAddDTO userAddDTO = new UserAddDTO();
+        userAddDTO.setId(1);
+        UserAddDTO userAddDTO1 = new UserAddDTO();
+        userAddDTO1.setId(2);
+        System.err.println(userAddDTO.hashCode());
+        System.err.println(userAddDTO1.hashCode());
     }
 
 }
