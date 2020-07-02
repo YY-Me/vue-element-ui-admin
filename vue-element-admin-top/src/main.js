@@ -23,7 +23,7 @@ require('@/mock/mock-server')
 
 Vue.use(Element, {
   // set element-ui default size
-  size: Cookies.get('size') || 'small'
+  size: Cookies.get('size') || 'medium'
 })
 
 // register global utility filters

@@ -1,5 +1,6 @@
 import { asyncRoutes, constantRoutes } from '@/router'
 import Layout from '@/layout/index'
+import path from "path";
 
 /**
  * 前端的路由-和后端返回的进行判断，key规则：router的name
@@ -18,7 +19,7 @@ const tempRoutesExample = [
   {
     path: '/example',
     component: Layout,
-    redirect: 'test1',
+    redirect: '/example/test1',
     meta: {icon: 'dashboard', title: 'example'},
     children: [
       {
@@ -124,7 +125,7 @@ export function filterAsyncRoutes(routes) {
         tempRoute.meta.affix = true
       }
       if (component === Layout && item.children && item.children.length > 0 && item.children[0]) {
-        tempRoute.redirect = item.children[0].path
+        tempRoute.redirect = path.resolve(item.path, item.children[0].path)
       } else {
         if (item.name) {
           tempRoute.name = item.name

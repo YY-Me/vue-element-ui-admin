@@ -73,7 +73,7 @@ instance.interceptors.response.use(
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        store.dispatch('user/resetToken').then(() => {
+        store.dispatch('user/resetAuth').then(() => {
           location.reload()
         })
       })
@@ -87,13 +87,10 @@ instance.interceptors.response.use(
     if (response.status === 404) {
       msg = '请求路径未找到'
     }
-    if (response.status === 500) {
-      msg = '服务器异常，请稍后再试'
-    }
     if (response.status === 502) {
       msg = '服务已停止或正在重启中'
     }
-    Message.error({ message: msg, duration: 2000, showClose: false })
+    Message.error({ message: msg, duration: 2000 })
     // 返回请求的错误信息
     return Promise.reject(response)
   }

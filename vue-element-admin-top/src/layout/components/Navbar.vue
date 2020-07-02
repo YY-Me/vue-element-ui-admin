@@ -1,11 +1,9 @@
 <template>
     <div class="navbar">
-        <hamburger
-                id="hamburger-container"
-                :is-active="sidebar.opened"
-                class="hamburger-container"
-                @toggleClick="toggleSideBar"
-        />
+
+        <div style="float: left;width: 200px;">
+            <logo :collapse="false"/>
+        </div>
 
         <top-menu style="float: left"/>
 
@@ -18,8 +16,7 @@
 
             </template>
 
-            <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover"
-                         :show-timeout="100" :hide-timeout="100">
+            <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
                 <div class="avatar-wrapper">
                     <el-avatar size="small" :src="avatar + '?imageView2/1/w/80/h/80'"/>
                     <span class="login-user">{{userName}}<i class="el-icon-caret-bottom"/></span>
@@ -64,7 +61,8 @@
     import SizeSelect from '@/components/SizeSelect'
     import Settings from './Settings'
     import rePassword from '@/components/RePassword/index'
-    import topMenu from '@/components/TopMenu/index'
+    import TopMenu from '@/layout/components/TopMenu/index'
+    import Logo from '@/layout/components/TopMenu/Logo'
 
     export default {
         components: {
@@ -73,7 +71,8 @@
             SizeSelect,
             Settings,
             rePassword,
-            topMenu
+            TopMenu,
+            Logo
         },
         data() {
             return {
@@ -91,9 +90,6 @@
             }
         },
         methods: {
-            toggleSideBar() {
-                this.$store.dispatch('app/toggleSideBar')
-            },
             async logout() {
                 const that = this
                 this.$confirm('是否退出登录？', '提示', {
@@ -128,7 +124,7 @@
         box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
 
         .hamburger-container {
-            line-height: 60px;
+            line-height: 46px;
             height: 100%;
             float: left;
             cursor: pointer;
@@ -138,10 +134,6 @@
             &:hover {
                 background: rgba(0, 0, 0, .025)
             }
-        }
-
-        .breadcrumb-container {
-            float: left;
         }
 
         .errLog-container {

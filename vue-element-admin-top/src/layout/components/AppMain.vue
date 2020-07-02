@@ -39,16 +39,13 @@
     .app-main {
       /* 84 = navbar + tags-view = 50 + 34 */
       //min-height: calc(100vh - 60px);
-      height: calc(100% - 60px);
+      //height: calc(100% - 60px);
     }
   }
 
   .fixedHeader {
     .app-main {
       padding: 10px 10px 10px;
-      >.el-card{
-        border-radius: 2px;
-      }
     }
   }
 </style>
