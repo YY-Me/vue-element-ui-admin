@@ -269,10 +269,10 @@
     .editor-slide-upload {
         /deep/ .el-upload {
             width: 100% !important;
+        }
 
-            /deep/ .el-upload-dragger {
-                width: 100% !important;
-            }
+        /deep/ .el-upload-dragger {
+            width: 100% !important;
         }
     }
 
