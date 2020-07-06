@@ -21,8 +21,11 @@ UI-3：顶部菜单类型，这种可能适合一些地图操作啊，或者其�
 
 #### vue版本说明
 对于前端这些工具我不是专业的，相关版本具体你可以看一下截图，希望能用到
+
 问了下朋友说vue-cli 内嵌了webpack。配置就能用
+
 我创建项目就是vue create hello-world，没有配置webpack，看package.json里面的的版本是4.2.3，截图里面的应该是被我升级了
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0706/115441_d51fb20a_1559021.png "屏幕截图.png")
 
 
