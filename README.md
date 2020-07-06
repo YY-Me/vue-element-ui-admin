@@ -15,8 +15,16 @@ UI-1：左侧菜单类型
 UI-2：左侧-顶部菜单联动类型，其中是由顶部菜单来控制
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0602/105621_6121d0fa_1559021.png "Snipaste_2020-06-02_10-39-10.png")
 
-UI-3：顶部菜单类型，这种可能适合一些地图操作啊，或者其他，[点我进入制作logo](https://www.logoly.pro/#/)😀
+UI-3：顶部菜单类型，这种可能适合一些地图操作啊，或者其他偏操作类的系统，[点我进入制作logo](https://www.logoly.pro/#/)😀
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0702/174537_af19b8c7_1559021.png "Snipaste_2020-07-02_17-42-00.png")
+
+
+#### vue版本说明
+对于前端这些工具我不是专业的，相关版本具体你可以看一下截图，希望能用到
+问了下朋友说vue-cli 内嵌了webpack。配置就能用
+我创建项目就是vue create hello-world，没有配置webpack，看package.json里面的的版本是4.2.3，截图里面的应该是被我升级了
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0706/115441_d51fb20a_1559021.png "屏幕截图.png")
+
 
 #### 安装教程
 
