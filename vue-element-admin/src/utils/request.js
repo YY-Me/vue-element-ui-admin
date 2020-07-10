@@ -74,7 +74,7 @@ instance.interceptors.response.use(
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                store.dispatch('user/resetAuth').then(() => {
+                store.dispatch('user/resetToken').then(() => {
                     location.reload()
                 })
             })
