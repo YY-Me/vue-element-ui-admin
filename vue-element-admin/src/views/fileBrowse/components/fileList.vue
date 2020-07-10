@@ -24,7 +24,7 @@
             <file-item :file="file" @click.stop.native="fileClick(file,index,$event)" v-for="(file,index) in fileList"
                        @dblclick.stop.native="fileDBClick(file,index,$event)"
                        @contextmenu.prevent.native="openMenu(file,$event)"
-                       :class="{'file-item-checked':checkSelected(index)}">
+                       :class="{'file-item-checked':checkSelected(file.name)}">
             </file-item>
             <ul v-show="menuVisible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
                 <li>打开</li>
@@ -99,10 +99,10 @@
         },
         computed: {
             checkSelected() {
-                return function (index) {
+                return function (name) {
                     let exist = false
                     for (let i = 0; i < this.fileSelectedList.length; i++) {
-                        if (this.fileSelectedList[i].index === index) {
+                        if (this.fileSelectedList[i].name === name) {
                             exist = true
                             break
                         }
@@ -247,6 +247,7 @@
                             type: 'success',
                             message: '删除成功'
                         })
+                        this.fileSelectedList = []
                         this.listFile()
                     })
                     this.confirmDelete = false
