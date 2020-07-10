@@ -263,6 +263,7 @@
                 this.createFolderVisible = true
             },
             openMenu(file, e) {
+                this.fileSelectedList = []
                 this.rightClickFile = file
                 const menuMinWidth = 105
                 const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
