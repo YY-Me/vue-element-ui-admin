@@ -239,12 +239,10 @@
                         source.push(`${this.currentPath + item.name}`)
                     })
                     if (this.rightClickFile) {
-                        if (source.indexOf(`${this.currentPath + this.rightClickFile.name}`) === -1) {
-                            source.push(`${this.currentPath + this.rightClickFile.name}`)
-                            this.rightClickFile = null
-                        }
+                        source.push(`${this.currentPath + this.rightClickFile.name}`)
+                        this.rightClickFile = null
                     }
-                    fileApi.deleteResource(source).then(res => {
+                    fileApi.deleteResource(Array.from(new Set(source))).then(res => {
                         this.$message({
                             type: 'success',
                             message: '删除成功'
@@ -263,7 +261,9 @@
                 this.createFolderVisible = true
             },
             openMenu(file, e) {
-                this.fileSelectedList = []
+                if (!this.checkFileExistList(file)) {
+                    this.fileSelectedList = []
+                }
                 this.rightClickFile = file
                 const menuMinWidth = 105
                 const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
@@ -282,6 +282,14 @@
             },
             closeMenu() {
                 this.menuVisible = false
+            },
+            checkFileExistList(file) {
+                for (let i = 0; i < this.fileSelectedList.length; i++) {
+                    if (file.name === this.fileSelectedList[i].name) {
+                        return true
+                    }
+                }
+                return false
             }
         }
     }
