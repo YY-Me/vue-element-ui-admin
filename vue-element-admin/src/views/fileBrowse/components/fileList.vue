@@ -236,10 +236,10 @@
                 }).then(() => {
                     let source = []
                     this.fileSelectedList.forEach(item => {
-                        source.push(`${this.currentPath + item.name}`)
+                        source.push(`${this.currentPath}/${item.name}`)
                     })
                     if (this.rightClickFile) {
-                        source.push(`${this.currentPath + this.rightClickFile.name}`)
+                        source.push(`${this.currentPath}/${this.rightClickFile.name}`)
                         this.rightClickFile = null
                     }
                     fileApi.deleteResource(Array.from(new Set(source))).then(res => {
