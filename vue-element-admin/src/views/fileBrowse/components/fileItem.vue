@@ -1,8 +1,10 @@
 <template>
     <div class="file-item">
         <div class="file-head">
-            <img v-lazy="file.dir?fileTypeImgList['dir']:(fileTypeImgList[file.suffix] || getTypeImgByFileName(file.name))"
-                 class="image" alt="">
+            <el-image v-if="checkImg(file.name)" class="image" lazy :src="file.url" :key="file.url"
+                      fit="contain" :preview-src-list="[file.url]" :alt="file.name"></el-image>
+            <el-image v-else class="image" lazy :src="file.dir?fileTypeImgList['dir']:(fileTypeImgList[file.suffix] || getTypeImgByFileName(file.name))"
+                      fit="contain" :alt="file.name"></el-image>
         </div>
         <div class="file-name">
             <span>{{file.name}}</span>
@@ -57,7 +59,9 @@
             width: 100%;
             overflow: hidden;
             text-align: center;
-
+            .image{
+                height: 60px;
+            }
             img {
                 width: auto;
                 height: auto;
