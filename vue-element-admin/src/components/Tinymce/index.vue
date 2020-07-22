@@ -198,7 +198,7 @@
                 let file = data || []
                 file.forEach(item => {
                     if (isImg(item.url)) {
-                        window.tinymce.get(_this.tinymceId).insertContent(`<img src="${item.url}"  alt="${item.name}" style="max-width: 100%;" />`);
+                        window.tinymce.get(_this.tinymceId).insertContent(`<img src="${item.url}"  alt="${item.name}" style="max-width: 100%;max-height: auto" />`);
                     } else if (isVideo(item.url)) {
                         window.tinymce.get(_this.tinymceId).insertContent(`<video controls="controls" style="max-width: 100%;">
                   <source src="${item.url}" /></video>`)
