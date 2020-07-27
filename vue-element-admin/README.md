@@ -16,8 +16,11 @@
 富文本选择的是vue-element-admin作者推荐的tinymce，具体可以看作者说明
 [点击查看](https://panjiachen.github.io/vue-element-admin-site/zh/feature/component/rich-editor.html)
 
-注意：目前使用的tinymce4，插件在public下面，里面有两个插件，image，media，被修改过，其中image下面的js，382行的style被修改，限制了图片的最大宽度
-；其二media，具体可以百度tinymce个人中文社区，作者魔改过，具体可以到js里面搜索魔改二字就可看到
+注意：
+目前使用的tinymce5，插件在public下面，里面有两个插件，image，media，被修改过，其中image下面的js，style被修改，可以搜索max-width关键字，限制了图片的最大宽度
+；
+其二media，具体可以百度tinymce个人中文社区，作者魔改过，具体可以到js里面搜索魔改二字就可看到
+其三：是加入了文件选择器，具体可以看插件filebrowser
 
 在tinymce编辑器中，默认实现了对接上面的文件浏览器，可以插入文件浏览器的文件
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0701/115512_8c5b5ec4_1559021.png "Snipaste_2020-07-01_11-55-00.png")
