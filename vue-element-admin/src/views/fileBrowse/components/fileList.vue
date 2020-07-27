@@ -24,7 +24,7 @@
             <file-item :file="file" @click.stop.native="fileClick(file,index,$event)" v-for="(file,index) in fileList"
                        @dblclick.stop.native="fileDBClick(file,index,$event)"
                        @contextmenu.prevent.native="openMenu(file,$event)"
-                       :class="{'file-item-checked':checkSelected(index)}">
+                       :class="{'file-item-checked':checkSelected(file.name)}">
             </file-item>
             <ul v-show="menuVisible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
                 <li>打开</li>
@@ -99,10 +99,10 @@
         },
         computed: {
             checkSelected() {
-                return function (index) {
+                return function (name) {
                     let exist = false
                     for (let i = 0; i < this.fileSelectedList.length; i++) {
-                        if (this.fileSelectedList[i].index === index) {
+                        if (this.fileSelectedList[i].name === name) {
                             exist = true
                             break
                         }
@@ -236,19 +236,18 @@
                 }).then(() => {
                     let source = []
                     this.fileSelectedList.forEach(item => {
-                        source.push(`${this.currentPath + item.name}`)
+                        source.push(`${this.currentPath}/${item.name}`)
                     })
                     if (this.rightClickFile) {
-                        if (source.indexOf(`${this.currentPath + this.rightClickFile.name}`) === -1) {
-                            source.push(`${this.currentPath + this.rightClickFile.name}`)
-                            this.rightClickFile = null
-                        }
+                        source.push(`${this.currentPath}/${this.rightClickFile.name}`)
+                        this.rightClickFile = null
                     }
-                    fileApi.deleteResource(source).then(res => {
+                    fileApi.deleteResource(Array.from(new Set(source))).then(res => {
                         this.$message({
                             type: 'success',
                             message: '删除成功'
                         })
+                        this.fileSelectedList = []
                         this.listFile()
                     })
                     this.confirmDelete = false
@@ -263,6 +262,9 @@
                 this.createFolderVisible = true
             },
             openMenu(file, e) {
+                if (!this.checkFileExistList(file)) {
+                    this.fileSelectedList = []
+                }
                 this.rightClickFile = file
                 const menuMinWidth = 105
                 const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
@@ -281,6 +283,14 @@
             },
             closeMenu() {
                 this.menuVisible = false
+            },
+            checkFileExistList(file) {
+                for (let i = 0; i < this.fileSelectedList.length; i++) {
+                    if (file.name === this.fileSelectedList[i].name) {
+                        return true
+                    }
+                }
+                return false
             }
         }
     }
