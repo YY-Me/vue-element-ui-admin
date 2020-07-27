@@ -18,7 +18,6 @@
 
 注意：
 目前使用的tinymce5，插件在public下面，里面有两个插件，image，media，被修改过，其中image下面的js，style被修改，可以搜索max-width关键字，限制了图片的最大宽度
-；
 其二media，具体可以百度tinymce个人中文社区，作者魔改过，具体可以到js里面搜索魔改二字就可看到
 其三：是加入了文件选择器，具体可以看插件filebrowser
 
