@@ -1,9 +1,9 @@
 <template>
     <div class="file-item">
         <div class="file-head">
-            <el-image v-if="checkImg(file.name)" class="image" lazy :src="file.url" :key="file.url"
+            <el-image v-if="checkImg(file.name)" class="image" :src="file.url" :key="file.url"
                       fit="contain" :preview-src-list="[file.url]" :alt="file.name"></el-image>
-            <el-image v-else class="image" lazy :src="file.dir?fileTypeImgList['dir']:(fileTypeImgList[file.suffix] || getTypeImgByFileName(file.name))"
+            <el-image v-else class="image" :src="file.dir?fileTypeImgList['dir']:(fileTypeImgList[file.suffix] || getTypeImgByFileName(file.name))"
                       fit="contain" :alt="file.name"></el-image>
         </div>
         <div class="file-name">
@@ -14,6 +14,7 @@
 
 <script>
     import {fileTypeImgList} from '@/utils/consts'
+    import {isImg} from '@/utils/file'
 
     export default {
         name: "fileItem",
@@ -40,6 +41,9 @@
                 }
                 return type
             },
+            checkImg(name){
+                return isImg(name)
+            }
         }
     }
 </script>
