@@ -1,7 +1,7 @@
 <template>
     <div :class="{fullscreen:fullscreen}" class="tinymce-container" :style="{width:containerWidth}">
         <el-button @click="insertContent">插入内容</el-button>
-        <el-button @click="$message.success(getContent())">获取内容</el-button>
+        <el-button @click="getContent">获取内容</el-button>
         <label>
             <textarea :id="tinymceId" class="tinymce-textarea"/>
         </label>
@@ -10,7 +10,7 @@
                 title="文件浏览器"
                 :visible.sync="fileBrowserVisible"
                 width="820px">
-            <file-list :height="450" :callback="true" @callback="fileSelected"/>
+            <file-list :height="400" :callback="true" @callback="fileSelected"/>
         </el-dialog>
     </div>
 </template>
@@ -27,7 +27,7 @@
     import {isImg, isVideo} from '@/utils/file'
     import request from "@/utils/request";
 
-    const localUrl = '/plugins/tinymce5/tinymce/tinymce.min.js'
+    const localUrl = '/plugins/tinymce4/tinymce/tinymce.min.js'
 
     export default {
         name: 'Tinymce',
@@ -36,12 +36,12 @@
             id: {
                 type: String,
                 default: function () {
-                    return 'vue-tinymce-1'
+                    return 'vue-tinymce-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
                 }
             },
             value: {
                 type: String,
-                default: ''
+                default: 'hello'
             },
             toolbar: {
                 type: Array,
@@ -86,11 +86,8 @@
         watch: {
             value(val) {
                 if (!this.hasChange && this.hasInit) {
-                    this.$nextTick(() => {
-                        setTimeout(() => {
-                            window.tinymce.get(this.tinymceId).setContent(val || '')
-                        }, 500)
-                    })
+                    this.$nextTick(() =>
+                        window.tinymce.get(this.tinymceId).setContent(val || ''))
                 }
             }
         },
@@ -127,7 +124,7 @@
                     body_class: 'panel-body ',
                     object_resizing: false,
                     toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
-                    menubar: [],
+                    menubar: this.menubar,
                     plugins: plugins,
                     powerpaste_word_import: 'propmt',// 参数可以是propmt, merge, clear，效果自行切换对比
                     powerpaste_html_import: 'propmt',// propmt, merge, clear
@@ -158,7 +155,7 @@
                         formData.append('prefix', '/')
                         formData.append('file', blobInfo.blob())
                         request({
-                            url: '/aed-res/file/richText',
+                            url: '/system/file/richText',
                             method: 'post',
                             data: {data: formData, NOSERI: true, notLoading: true},
                             headers: {
@@ -190,10 +187,7 @@
                 window.tinymce.get(this.tinymceId).setContent(value)
             },
             getContent() {
-                return window.tinymce.get(this.tinymceId).getContent()
-            },
-            getText() {
-                return window.tinymce.get(this.tinymceId).getContent({ format: 'text' })
+                this.$message.success(window.tinymce.get(this.tinymceId).getContent())
             },
             insertContent(arr) {
                 const _this = this
@@ -204,7 +198,7 @@
                 let file = data || []
                 file.forEach(item => {
                     if (isImg(item.url)) {
-                        window.tinymce.get(_this.tinymceId).insertContent(`<img src="${item.url}"  alt="${item.name}" style="max-width: 100%;max-height: auto;" />`);
+                        window.tinymce.get(_this.tinymceId).insertContent(`<img src="${item.url}"  alt="${item.name}" style="max-width: 100%;max-height: auto" />`);
                     } else if (isVideo(item.url)) {
                         window.tinymce.get(_this.tinymceId).insertContent(`<video controls="controls" style="max-width: 100%;">
                   <source src="${item.url}" /></video>`)
