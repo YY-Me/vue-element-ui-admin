@@ -15,7 +15,7 @@
         </el-button>
       </div>
       <el-table :data="tableData" style="width: 100%;" v-loading="loading" element-loading-text="请稍后..."
-                row-key="id" border default-expand-all :max-height="customTableHeight"
+                row-key="id" border default-expand-all
                 :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
         <el-table-column prop="title" label="标题" min-width="100" show-overflow-tooltip>
           <template slot-scope="scope">
@@ -128,7 +128,6 @@
         iconVisible: false,
         topMenuVisible: false,
         tempBindData: null,
-        customTableHeight: 200,
         tableData: [],
         listQuery: {
           mType: 1
@@ -136,22 +135,7 @@
       }
     },
     mounted() {
-      let that = this
-      window.onresize = () => {
-        let tempHeight = document.body.clientHeight - (122)
-        if (tempHeight < 300) {
-          tempHeight = 300
-        }
-        that.customTableHeight = tempHeight
-      }
-      setTimeout(function() {
-        const resizeEvent = new Event('resize')
-        window.dispatchEvent(resizeEvent)
-      }, 100)
       this.getList()
-    },
-    destroyed() {
-      window.onresize = null
     },
     methods: {
       getList() {

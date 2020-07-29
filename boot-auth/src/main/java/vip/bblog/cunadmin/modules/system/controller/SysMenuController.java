@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.bblog.cunadmin.annotation.group.Default;
@@ -36,18 +37,21 @@ public class SysMenuController {
     private SysMenuService sysMenuService;
 
     @ApiOperation(value = "添加菜单")
+    @PreAuthorize("hasAnyAuthority('sys:menu:add')")
     @PostMapping
     public BaseResult<SysMenu> addRole(@Validated(Default.class) @RequestBody SysMenu menu) {
         return BaseResult.success(sysMenuService.addMenu(menu));
     }
 
     @ApiOperation(value = "更新菜单信息")
+    @PreAuthorize("hasAnyAuthority('sys:menu:update')")
     @PutMapping
     public BaseResult<SysMenu> updateRole(@Validated(Update.class) @RequestBody SysMenu menu) {
         return BaseResult.success(sysMenuService.updateMenu(menu));
     }
 
     @ApiOperation(value = "刪除菜单")
+    @PreAuthorize("hasAnyAuthority('sys:menu:del')")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "menuId", value = "菜单id", paramType = "path")
     })
@@ -58,6 +62,7 @@ public class SysMenuController {
     }
 
     @ApiOperation(value = "tree结构查询")
+    @PreAuthorize("hasAnyAuthority('sys:menu:list','sys:menu:add','sys:menu:update','sys:menu:del')")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "mType", value = "布局类型，1：左侧菜单，2：顶部菜单", paramType = "query")
     })
@@ -67,6 +72,7 @@ public class SysMenuController {
     }
 
     @ApiOperation(value = "简单结构查询")
+    @PreAuthorize("hasAnyAuthority('sys:menu:list','sys:menu:add','sys:menu:update','sys:menu:del')")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "mType", value = "布局类型，1：左侧菜单，2：顶部菜单", paramType = "query")
     })

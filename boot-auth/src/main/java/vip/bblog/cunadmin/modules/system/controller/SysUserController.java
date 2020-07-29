@@ -5,6 +5,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.bblog.cunadmin.annotation.group.Default;
@@ -37,6 +38,7 @@ public class SysUserController {
     private SysUserService sysUserService;
 
     @ApiOperation(value = "添加用户")
+    @PreAuthorize("hasAnyAuthority('sys:user:add')")
     @PostMapping
     public BaseResult<String> addUser(@Validated(Default.class) @RequestBody UserAddDTO user) {
         sysUserService.addUser(user);
@@ -44,12 +46,14 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "更新用户信息")
+    @PreAuthorize("hasAnyAuthority('sys:user:update')")
     @PutMapping
     public BaseResult<UserAddDTO> updateUser(@Validated(Update.class) @RequestBody UserAddDTO user) {
         return BaseResult.success(sysUserService.updateUser(user));
     }
 
     @ApiOperation(value = "更新状态")
+    @PreAuthorize("hasAnyAuthority('sys:user:enable')")
     @PutMapping("{userId}/status/{enable}")
     public BaseResult<RoleAddDTO> updateRole(@PathVariable Integer userId, @PathVariable Boolean enable) {
         sysUserService.updateRoleStatus(userId, enable);
@@ -57,6 +61,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "刪除用户")
+    @PreAuthorize("hasAnyAuthority('sys:user:del')")
     @DeleteMapping("{userId}")
     public BaseResult<RoleAddDTO> deleteUser(@PathVariable Integer userId) {
         sysUserService.delete(userId);
@@ -64,12 +69,14 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "分页查询")
+    @PreAuthorize("hasAnyAuthority('sys:user:list','sys:user:add','sys:user:update','sys:user:del','sys:user:enable')")
     @GetMapping
     public PageResult<List<SysUserVO>> listPage(UserQueryParams params) {
         return sysUserService.listPage(params);
     }
 
     @ApiOperation(value = "根据id查找")
+    @PreAuthorize("hasAnyAuthority('sys:user:list','sys:user:add','sys:user:update','sys:user:del','sys:user:enable')")
     @GetMapping("{userId}")
     public BaseResult<UserAddDTO> selectById(@PathVariable Integer userId) {
         return sysUserService.selectById(userId);

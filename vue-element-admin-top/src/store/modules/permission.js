@@ -79,6 +79,10 @@ const actions = {
 export function filterAsyncRoutes(routes) {
     const res = []
     routes.forEach(item => {
+        if (item.type === 2) {
+            //2表示是按钮
+            return
+        }
         let component = Layout
         if (item.pId !== 0) {
             component = componentList[item.name]
@@ -102,7 +106,10 @@ export function filterAsyncRoutes(routes) {
             }
         }
         if (item.children && item.children.length > 0) {
-            tempRoute.children = filterAsyncRoutes(item.children)
+            let tempChild = filterAsyncRoutes(item.children)
+            if (tempChild.length > 0) {
+                tempRoute.children = tempChild
+            }
         }
         res.push(tempRoute)
     })

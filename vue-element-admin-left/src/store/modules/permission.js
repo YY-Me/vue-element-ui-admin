@@ -29,7 +29,21 @@ const tempRoutesExample = [
         ]
     }
 ]
-const tempRoutes = []
+//开发中可以临时将菜单写在这里，看tempRoutesExample，之后开发完后再把它们写入数据库
+const tempRoutes = [{
+    path: '/example',
+    component: Layout,
+    redirect: '/example/test1',
+    meta: {icon: 'dashboard', title: 'example'},
+    children: [
+        {
+            path: 'test1',
+            component: () => import('@/views/test/test1'),
+            name: 'dashboard',
+            meta: {title: 'example', icon: 'dashboard'}
+        }
+    ]
+}]
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -79,6 +93,10 @@ const actions = {
 export function filterAsyncRoutes(routes) {
     const res = []
     routes.forEach(item => {
+        if (item.type === 2) {
+            //2表示是按钮
+            return
+        }
         let component = Layout
         if (item.pId !== 0) {
             component = componentList[item.name]
@@ -102,7 +120,10 @@ export function filterAsyncRoutes(routes) {
             }
         }
         if (item.children && item.children.length > 0) {
-            tempRoute.children = filterAsyncRoutes(item.children)
+            let tempChild = filterAsyncRoutes(item.children)
+            if (tempChild.length > 0) {
+                tempRoute.children = tempChild
+            }
         }
         res.push(tempRoute)
     })

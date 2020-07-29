@@ -9,7 +9,6 @@
         row-key="id"
         border
         default-expand-all
-        :max-height="customTableHeight"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
         <el-table-column prop="title" label="标题" min-width="100" show-overflow-tooltip>
@@ -127,7 +126,6 @@ export default {
       loading: false,
       iconVisible: false,
       tempBindData: null,
-      customTableHeight: 200,
       tableData: [],
       listQuery: {
         mType: 1
@@ -135,22 +133,7 @@ export default {
     }
   },
   mounted() {
-    const that = this
-    window.onresize = () => {
-      let tempHeight = document.body.clientHeight - (122)
-      if (tempHeight < 300) {
-        tempHeight = 300
-      }
-      that.customTableHeight = tempHeight
-    }
-    setTimeout(function() {
-      const resizeEvent = new Event('resize')
-      window.dispatchEvent(resizeEvent)
-    }, 100)
     this.getList()
-  },
-  destroyed() {
-    window.onresize = null
   },
   methods: {
     getList() {

@@ -5,6 +5,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.bblog.cunadmin.annotation.group.Default;
@@ -36,6 +37,7 @@ public class SysRoleController {
     private SysRoleService sysRoleService;
 
     @ApiOperation(value = "添加角色")
+    @PreAuthorize("hasAnyAuthority('sys:role:add')")
     @PostMapping
     public BaseResult<String> addRole(@Validated(Default.class) @RequestBody RoleAddDTO role) {
         sysRoleService.addRole(role);
@@ -43,12 +45,14 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "更新角色信息")
+    @PreAuthorize("hasAnyAuthority('sys:role:update')")
     @PutMapping
     public BaseResult<RoleAddDTO> updateRole(@Validated(Update.class) @RequestBody RoleAddDTO role) {
         return BaseResult.success(sysRoleService.updateRole(role));
     }
 
     @ApiOperation(value = "更新状态")
+    @PreAuthorize("hasAnyAuthority('sys:role:enable')")
     @PutMapping("{roleId}/status/{enable}")
     public BaseResult<RoleAddDTO> updateRole(@PathVariable Integer roleId, @PathVariable Boolean enable) {
         sysRoleService.updateRoleStatus(roleId, enable);
@@ -56,6 +60,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "刪除角色")
+    @PreAuthorize("hasAnyAuthority('sys:role:del')")
     @DeleteMapping("{roleId}")
     public BaseResult<RoleAddDTO> deleteRole(@PathVariable Integer roleId) {
         sysRoleService.delete(roleId);
@@ -63,12 +68,14 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "分页查询")
+    @PreAuthorize("hasAnyAuthority('sys:role:list','sys:role:add','sys:role:update','sys:role:del','sys:role:enable','sys:user:list')")
     @GetMapping
     public PageResult<List<SysRole>> listPage(PageParams pageParams) {
         return sysRoleService.listPage(pageParams);
     }
 
     @ApiOperation(value = "根据id查找")
+    @PreAuthorize("hasAnyAuthority('sys:role:list','sys:role:add','sys:role:update','sys:role:del','sys:role:enable','sys:user:list')")
     @GetMapping("{roleId}")
     public BaseResult<RoleAddDTO> selectById(@PathVariable Integer roleId) {
         return sysRoleService.selectById(roleId);

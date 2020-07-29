@@ -2,6 +2,7 @@ package vip.bblog.cunadmin.advice;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -13,7 +14,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import vip.bblog.cunadmin.common.entity.BaseResult;
 import vip.bblog.cunadmin.common.exception.BizException;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 /**

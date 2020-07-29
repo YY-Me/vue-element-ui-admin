@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 02/06/2020 13:16:34
+ Date: 29/07/2020 10:18:52
 */
 
 SET NAMES utf8mb4;
@@ -53,7 +53,7 @@ CREATE TABLE `sys_menu`  (
   `icon` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图标',
   `sort` int(3) NOT NULL DEFAULT 0 COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -63,8 +63,8 @@ INSERT INTO `sys_menu` VALUES (2, '控制台', 'dashboard', 'dashboard', 1, 0, 1
 INSERT INTO `sys_menu` VALUES (3, '系统用户', NULL, 'sys:user:index', 0, 11, 1, 1, '/system', 'system-user', 3);
 INSERT INTO `sys_menu` VALUES (4, '用户管理', 'systemUser', 'sys:user:list', 3, 0, 1, 1, 'user', 'system-user', 0);
 INSERT INTO `sys_menu` VALUES (5, '权限中心', NULL, 'sys:permission:index', 0, 11, 1, 1, '/permission', 'permission', 4);
-INSERT INTO `sys_menu` VALUES (6, '角色管理', 'systemRole', 'sys:role', 5, 0, 1, 1, 'role', 'role', 0);
-INSERT INTO `sys_menu` VALUES (7, '菜单管理', 'systemMenu', 'sys:menu', 5, 0, 1, 1, 'menu', 'menu', 0);
+INSERT INTO `sys_menu` VALUES (6, '角色管理', 'systemRole', 'sys:role:list', 5, 0, 1, 1, 'role', 'role', 0);
+INSERT INTO `sys_menu` VALUES (7, '菜单管理', 'systemMenu', 'sys:menu:list', 5, 0, 1, 1, 'menu', 'menu', 0);
 INSERT INTO `sys_menu` VALUES (8, '租户管理', NULL, 'sys:tenant:index', 0, 12, 1, 1, '/tenant', 'tenant', 2);
 INSERT INTO `sys_menu` VALUES (9, '租户管理', 'tenant', 'sys:tenant:list', 8, 0, 1, 1, 'tenant', 'tenant', 0);
 INSERT INTO `sys_menu` VALUES (11, '系统配置', NULL, 'top:user:center', 0, 0, 1, 2, '/top2', 'system-config', 2);
@@ -72,6 +72,15 @@ INSERT INTO `sys_menu` VALUES (12, '业务系统', NULL, 'top:biz:center', 0, 0,
 INSERT INTO `sys_menu` VALUES (14, '顶部菜单', '', 'top:test:1', 0, 0, 1, 2, '/top3', 'menu', 3);
 INSERT INTO `sys_menu` VALUES (15, '测试1', 'test1', 'top:test:1:1', 14, 0, 1, 2, 'test1', 'test', 1);
 INSERT INTO `sys_menu` VALUES (16, '测试2', 'test2', 'top:test:1:2', 14, 0, 1, 2, 'test2', 'test', 2);
+INSERT INTO `sys_menu` VALUES (19, '增加菜单', NULL, 'sys:menu:add', 7, 0, 2, 1, NULL, NULL, 0);
+INSERT INTO `sys_menu` VALUES (20, '删除菜单', NULL, 'sys:menu:del', 7, 0, 2, 1, NULL, NULL, 0);
+INSERT INTO `sys_menu` VALUES (21, '修改菜单', NULL, 'sys:menu:update', 7, 0, 2, 1, NULL, NULL, 0);
+INSERT INTO `sys_menu` VALUES (23, '增加用户', NULL, 'sys:user:add', 4, 0, 2, 1, '', '', 0);
+INSERT INTO `sys_menu` VALUES (24, '删除用户', NULL, 'sys:user:del', 4, 0, 2, 1, '', '', 0);
+INSERT INTO `sys_menu` VALUES (25, '修改用户', NULL, 'sys:user:update', 4, 0, 2, 1, '', '', 0);
+INSERT INTO `sys_menu` VALUES (26, '增加角色', NULL, 'sys:role:add', 6, 0, 2, 1, '', '', 0);
+INSERT INTO `sys_menu` VALUES (27, '删除角色', NULL, 'sys:role:del', 6, 0, 2, 1, '', '', 0);
+INSERT INTO `sys_menu` VALUES (28, '修改角色', NULL, 'sys:role:update', 6, 0, 2, 1, '', '', 0);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -87,7 +96,7 @@ CREATE TABLE `sys_role`  (
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '最近更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-角色' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-角色' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
@@ -123,6 +132,15 @@ INSERT INTO `sys_role_menu` VALUES (1, 12);
 INSERT INTO `sys_role_menu` VALUES (1, 14);
 INSERT INTO `sys_role_menu` VALUES (1, 15);
 INSERT INTO `sys_role_menu` VALUES (1, 16);
+INSERT INTO `sys_role_menu` VALUES (1, 19);
+INSERT INTO `sys_role_menu` VALUES (1, 20);
+INSERT INTO `sys_role_menu` VALUES (1, 21);
+INSERT INTO `sys_role_menu` VALUES (1, 23);
+INSERT INTO `sys_role_menu` VALUES (1, 24);
+INSERT INTO `sys_role_menu` VALUES (1, 25);
+INSERT INTO `sys_role_menu` VALUES (1, 26);
+INSERT INTO `sys_role_menu` VALUES (1, 27);
+INSERT INTO `sys_role_menu` VALUES (1, 28);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -140,12 +158,12 @@ CREATE TABLE `sys_user`  (
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '最近更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-用户' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-用户' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', '顶级管理员', '$2a$10$wstYYE51yTB8MI4do5obpeC7iw/Bngv5Z39mloL0NPQvjabD..knC', NULL, 1, 0, 'admin', '2020-05-15 16:21:02', '2020-05-18 17:19:13');
+INSERT INTO `sys_user` VALUES (1, 'admin', '顶级管理员', '$2a$10$wstYYE51yTB8MI4do5obpeC7iw/Bngv5Z39mloL0NPQvjabD..knC', NULL, 1, 0, 'admin', '2020-05-15 16:21:02', '2020-07-02 10:41:31');
 INSERT INTO `sys_user` VALUES (2, 'test001', 'test001', '$2a$10$6G1tv9izcOxyuavexuS9/OSX9LYbWBGXKVtzwQ2znJEtxbYIxN5Ai', NULL, 1, 0, 'admin', '2020-05-18 17:23:53', '2020-05-18 17:23:53');
 
 -- ----------------------------
