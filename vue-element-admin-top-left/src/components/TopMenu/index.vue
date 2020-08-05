@@ -82,7 +82,7 @@
                             if (item) {
                                 this.activeIndex = item.path
                                 this.resolveTopLeftMenu(item)
-                            } else {
+                            } else if (this.$route.path !== key) {
                                 this.$router.push({
                                     path: key
                                 })
