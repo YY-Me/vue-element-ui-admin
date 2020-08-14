@@ -172,7 +172,7 @@
                     },
                     video_template_callback: function (data) {
                         return `<video controls="controls" style="max-width: 100%;">
-                  <source src="${data.source1}" type="${data.source1mime}" /></video>`;
+                  <source src="${data.source}" type="${data.sourcemime}" /></video>`;
                     }
                 })
             },
@@ -193,7 +193,7 @@
                 return window.tinymce.get(this.tinymceId).getContent()
             },
             getText() {
-                return window.tinymce.get(this.tinymceId).getContent({ format: 'text' })
+                return window.tinymce.get(this.tinymceId).getContent({format: 'text'})
             },
             insertContent(arr) {
                 const _this = this
