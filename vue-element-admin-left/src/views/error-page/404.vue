@@ -13,6 +13,7 @@
         </div>
         <div class="bullshit__headline">{{ message }}</div>
         <div class="bullshit__info">请检查您输入的URL是否正确，或单击下面的按钮返回首页。</div>
+        <div class="bullshit__info" style="color: red;">如果登录就跳转404：您看你的登录地址有一个重定向地址，它登录后会跳转到那个地址，结果该账户未分配菜单权限（具体看 views/dashboard/indexPre.vue），所以动态路由里面根本就没给加你要跳转的地址路由，所以会出现404</div>
         <a @click="back" class="bullshit__return-home">&nbsp;&nbsp;回到首页（{{time}}）</a>
       </div>
     </div>
