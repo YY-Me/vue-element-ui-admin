@@ -11,10 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import vip.bblog.cunadmin.modules.system.vo.MenuTree;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author <a href="1396513066@qq.com">yy</a>
@@ -48,9 +45,9 @@ public class LoginUser implements UserDetails, Serializable {
     @ApiModelProperty(value = "权限信息")
     private Set<String> permission;
 
-    private List<MenuTree> topMenu;
+    private List<MenuTree> topMenu = new ArrayList<>(0);
 
-    private List<MenuTree> menu;
+    private List<MenuTree> menu = new ArrayList<>(0);
 
     private String token;
 

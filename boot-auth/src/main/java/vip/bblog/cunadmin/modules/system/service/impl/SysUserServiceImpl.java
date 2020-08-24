@@ -108,10 +108,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void addUser(UserAddDTO user) {
         SysUser entity = new SysUser();
         BeanUtils.copyProperties(user, entity);
+        //检查用户名
+        SysUser exist = this.getUserByUserName(user.getUsername());
+        Assert.isNull(exist, "用户名已经存在");
         if (StringUtils.isBlank(user.getPassword())) {
             entity.setPassword(UUID.randomUUID().toString());
-            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         }
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         if (StringUtils.isBlank(user.getNickName())) {
             entity.setNickName(user.getUsername());
         }

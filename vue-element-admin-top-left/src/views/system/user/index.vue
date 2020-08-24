@@ -173,7 +173,7 @@
           type: 'warning'
         }).then(() => {
           systemUserApi.remove(row.id).then(res => {
-
+            this.getList()
           })
         })
       },

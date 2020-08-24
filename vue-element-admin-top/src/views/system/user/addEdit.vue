@@ -112,6 +112,7 @@
           if (valid) {
             const temp = {
               username: this.tempData.username,
+              password: this.tempData.password,
               nickName: this.tempData.nickName,
               phone: this.tempData.phone,
               role: this.tempData.role,
