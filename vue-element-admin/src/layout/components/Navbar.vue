@@ -101,7 +101,7 @@ export default {
         type: 'warning'
       }).then(async function() {
         await that.$store.dispatch('user/logout')
-        that.$router.push(`/login?redirect=${that.$route.fullPath}`)
+        await that.$router.push(`/login?redirect=${that.$route.fullPath}`)
       }).catch(() => {
       })
     },

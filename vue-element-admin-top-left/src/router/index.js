@@ -51,7 +51,8 @@ export const constantRoutes = [
   },
   {
     path: '/',
-    redirect: 'index/console',
+    //redirect: 'index/console',
+    component: () => import('@/views/dashboard/indexPre'),
     hidden: true
   },
   {
