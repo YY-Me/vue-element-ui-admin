@@ -45,7 +45,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <pagination :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList"/>
+            <pagination :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize" @pagination="getList"/>
             <add-edit :dialog-visible="dialogVisible" :data="oneData" @close="closeDialog"/>
         </div>
     </el-card>

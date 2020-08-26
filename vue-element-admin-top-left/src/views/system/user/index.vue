@@ -56,7 +56,7 @@
         </el-table-column>
       </el-table>
       <!--分頁-->
-      <pagination :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList"/>
+      <pagination :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize" @pagination="getList"/>
       <!--添加/编辑-->
       <add-edit
         :dialog-visible="addEditVisible"
