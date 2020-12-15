@@ -10,13 +10,13 @@ vue-element-ui-admin，springboot基础的权限管理系统
 富文本和文件管理器：[点击查看](https://gitee.com/yy1122/vue-element-ui-admin/tree/master/vue-element-admin)
 
 
-UI-1：左侧菜单类型
+vue-element-admin-left：左侧菜单类型
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0602/105601_f5f0f7cc_1559021.png "Snipaste_2020-06-02_10-54-18.png")
 
-UI-2：左侧-顶部菜单联动类型，其中是由顶部菜单来控制
+vue-element-admin-top-left：左侧-顶部菜单联动类型，其中是由顶部菜单来控制
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0602/105621_6121d0fa_1559021.png "Snipaste_2020-06-02_10-39-10.png")
 
-UI-3：顶部菜单类型，这种可能适合一些地图操作啊，或者其他偏操作类的系统，[点我进入制作logo](https://www.logoly.pro/#/)😀
+vue-element-admin-top：顶部菜单类型，这种可能适合一些地图操作啊，或者其他偏操作类的系统，[点我进入制作logo](https://www.logoly.pro/#/)😀
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0702/174537_af19b8c7_1559021.png "Snipaste_2020-07-02_17-42-00.png")
 
 
@@ -36,7 +36,7 @@ UI-3：顶部菜单类型，这种可能适合一些地图操作啊，或者其�
 
 #### 安装教程
 
-1.  git，你会看到三个文件夹，其中boot-auth是后台，其中两个是不同的ui，之所以没做成一个，是感觉没必要，哪个符合就用哪个
+1.  git，你会看到三个文件夹，其中boot-auth是后台，vue-element-admin这个已经打包到后台，启动后台后访问http://127.0.0.1:18080/index.html  即可，其中两个是不同的ui，之所以没做成一个，是感觉没必要，哪个符合就用哪个
 2.  后台依赖redis，mysql，请先安装好并且yml也要配置好导入sql文件，前台vue环境是肯定的
 3.  后台启动（`npm run serve`），前台开发环境启动即可，前台开发环境配置了proxy，以dev-api就会转发到对应的target，可以看vue.config.js的47行；正是环境是prod-api，如果你打包（`npm run build`）后，肯定proxy无效了，你需要配置自己的nginx代理
 
