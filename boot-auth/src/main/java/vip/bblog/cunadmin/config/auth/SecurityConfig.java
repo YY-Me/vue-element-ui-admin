@@ -71,12 +71,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers("/test/**", "/auth/**", "/doc.html", "/api-docs-ext/**", "/webjars/**",
-                        "/swagger-resources/**", "/v2/**", "/swagger-ui.html", "**.js", "**.css").permitAll()
+                .antMatchers("/test/**", "/auth/**", "/api-docs-ext/**", "/webjars/**",
+                        "/swagger-resources/**", "/v2/**", "/**/*.js", "/**/*.css", "/**/*.html", "/**/*.ico",
+                        "/**/*.woff", "/**/*.ttf")
+                .permitAll()
                 .anyRequest()
-                .authenticated()
-                .and()
-                .csrf().disable();
+                .authenticated();
 
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
         http.logout().logoutUrl("/auth/logout").logoutSuccessHandler(logoutSuccessHandler);
