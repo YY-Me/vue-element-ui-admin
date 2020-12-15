@@ -25,10 +25,10 @@
           <template slot-scope="scope">
             <el-tooltip :content="scope.row.isEnable?'已启用':'已禁用'" placement="top">
               <el-switch
-                v-model="scope.row.isEnable"
-                :active-value="true"
-                :inactive-value="false"
-                @change="switchChange(scope.row)"
+                  v-model="scope.row.isEnable"
+                  :active-value="true"
+                  :inactive-value="false"
+                  @change="switchChange(scope.row)"
               />
             </el-tooltip>
           </template>
@@ -36,11 +36,11 @@
         <el-table-column fixed="right" label="操作" width="130">
           <template slot-scope="scope">
             <el-tag style="cursor:pointer;margin-right: 4px;" size="mini" @click="addEdit(scope.row)"><i
-              class="el-icon-edit"/>编辑
+                class="el-icon-edit"/>编辑
             </el-tag>
             <el-tag v-if="!scope.row.isSystem" style="cursor:pointer;" size="mini" type="danger"
                     @click="remove(scope.row)"><i
-              class="el-icon-delete"/>删除
+                class="el-icon-delete"/>删除
             </el-tag>
           </template>
         </el-table-column>
@@ -51,137 +51,138 @@
   </el-card>
 </template>
 <script>
-  import Pagination from '@/components/Pagination'
-  import addEdit from '@/views/system/role/addEdit'
-  import roleApi from '@/api/system/role'
+import Pagination from '@/components/Pagination'
+import addEdit from '@/views/system/role/addEdit'
+import roleApi from '@/api/system/role'
 
-  export default {
-    name: 'systemRole',
-    components: { Pagination, addEdit },
-    data() {
-      return {
-        ztreeObj: null,
-        setting: {
-          check: {
-            enable: true
-          },
-          data: {
-            simpleData: {
-              enable: true,
-              idKey: 'id',
-              pIdKey: 'pId',
-              rootPId: 0
-            }
+export default {
+  name: 'systemRole',
+  components: {Pagination, addEdit},
+  data() {
+    return {
+      ztreeObj: null,
+      setting: {
+        check: {
+          enable: true
+        },
+        data: {
+          simpleData: {
+            enable: true,
+            idKey: 'id',
+            pIdKey: 'pId',
+            rootPId: 0
           }
-        },
-        loading: false,
-        listQuery: {
-          name: '',
-          page: 1,
-          pageSize: 10
-        },
-        dialogVisible: false,
-        total: 0,
-        roleData: [],
-        oneData: {
-          id: null,
-          name: null,
-          description: null,
-          permission: []
-        },
-        customTableHeight: 200
-      }
-    },
-    mounted() {
-      this.getList()
-      let that = this
-      window.onresize = () => {
-        //37是box的header的padding，70=(60+10)是顶部的高度
-        let tempHeaderHeight = this.$refs.topHeader.offsetHeight + 37 + 70
-        let tempHeight = document.body.clientHeight - (106 + tempHeaderHeight)
-        if (tempHeight < 300) {
-          tempHeight = 300
         }
-        that.customTableHeight = tempHeight
+      },
+      loading: false,
+      listQuery: {
+        name: '',
+        page: 1,
+        pageSize: 10
+      },
+      dialogVisible: false,
+      total: 0,
+      roleData: [],
+      oneData: {
+        id: null,
+        name: null,
+        description: null,
+        permission: []
+      },
+      customTableHeight: 200
+    }
+  },
+  mounted() {
+    this.getList()
+    let that = this
+    window.onresize = () => {
+      //37是box的header的padding，70=(60+10)是顶部的高度
+      let tempHeaderHeight = this.$refs.topHeader.offsetHeight + 37 + 70
+      let tempHeight = document.body.clientHeight - (106 + tempHeaderHeight)
+      if (tempHeight < 300) {
+        tempHeight = 300
       }
-      setTimeout(function() {
-        const resizeEvent = new Event('resize')
-        window.dispatchEvent(resizeEvent)
-      }, 100)
-    },
-    destroyed() {
-      window.onresize = null
-    },
-    methods: {
-      switchChange(row) {
-        const enable = row.isEnable
-        let text = '是否禁用角色？'
-        if (enable) {
-          text = '确认启用该角色？'
-        }
-        this.$confirm(text, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          closeOnPressEscape: false,
-          closeOnClickModal: false,
-          type: 'warning'
-        }).then(() => {
-          roleApi.status(row.id, enable).then(res => {
+      that.customTableHeight = tempHeight
+    }
+    setTimeout(function () {
+      const resizeEvent = new Event('resize')
+      window.dispatchEvent(resizeEvent)
+    }, 100)
+  },
+  destroyed() {
+    window.onresize = null
+  },
+  methods: {
+    switchChange(row) {
+      const enable = row.isEnable
+      let text = '是否禁用角色？'
+      if (enable) {
+        text = '确认启用该角色？'
+      }
+      this.$confirm(text, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        closeOnPressEscape: false,
+        closeOnClickModal: false,
+        type: 'warning'
+      }).then(() => {
+        roleApi.status(row.id, enable).then(res => {
 
-          }).catch(() => {
-            row.isEnable = !enable
-          })
         }).catch(() => {
           row.isEnable = !enable
         })
-      },
-      search() {
-        this.listQuery.page = 1
-        this.listQuery.pageSize = 10
-        this.getList()
-      },
-      getList() {
-        this.loading = true
-        roleApi.list(this.listQuery).then(res => {
-          this.roleData = res.data || []
-          this.loading = false
-        }).catch(() => this.loading = false)
-      },
-      addEdit(row) {
-        if (row) {
-          this.dialogVisible = true
-          this.oneData = JSON.parse(JSON.stringify(row))
-        } else {
-          this.dialogVisible = true
-        }
-      },
-      remove(row) {
-        this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          roleApi.remove(row.id).then(res => {
-            this.$message({
-              type: 'success',
-              message: '删除成功'
-            })
-            this.getList()
+      }).catch(() => {
+        row.isEnable = !enable
+      })
+    },
+    search() {
+      this.listQuery.page = 1
+      this.listQuery.pageSize = 10
+      this.getList()
+    },
+    getList() {
+      this.loading = true
+      roleApi.list(this.listQuery).then(res => {
+        this.roleData = res.data || []
+        this.total = res.count || 0
+        this.loading = false
+      }).catch(() => this.loading = false)
+    },
+    addEdit(row) {
+      if (row) {
+        this.dialogVisible = true
+        this.oneData = JSON.parse(JSON.stringify(row))
+      } else {
+        this.dialogVisible = true
+      }
+    },
+    remove(row) {
+      this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        roleApi.remove(row.id).then(res => {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
           })
-        })
-      },
-      closeDialog() {
-        if (this.dialogVisible) {
           this.getList()
-        }
-        this.dialogVisible = false
-        this.oneData = {
-          id: null,
-          name: null,
-          description: null,
-          permission: []
-        }
+        })
+      })
+    },
+    closeDialog() {
+      if (this.dialogVisible) {
+        this.getList()
+      }
+      this.dialogVisible = false
+      this.oneData = {
+        id: null,
+        name: null,
+        description: null,
+        permission: []
       }
     }
   }
+}
 </script>
